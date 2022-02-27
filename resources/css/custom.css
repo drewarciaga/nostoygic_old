@@ -3525,6 +3525,15 @@ html, body, .main-content{
     background-image: url('/images/banner.jpg');
     background-size: cover;
 }
+.bg-main2{
+    background-image: url('/images/x-men/phoenix.jpg');
+    background-size: cover;
+}
+.mask-svg{
+    mask-size: 100vmin;
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
 
 .title-nostoygic{
     font-size: 120pt;

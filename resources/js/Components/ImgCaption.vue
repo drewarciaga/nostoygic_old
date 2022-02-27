@@ -1,6 +1,6 @@
 <template>
     
-	<div class="flex flex-wrap bg-cover h-screen lazy" :data-original="bg">
+	<div class="flex flex-wrap bg-cover h-screen lazy" :class="mask" :style="maskImgStyle" :data-original="bg">
 
 		<div class="bg-white-400 h-full w-full">
 
@@ -29,7 +29,12 @@
 <script>
     
 export default {
-	props: ['bg', 'caption', 'message', 'link'],
+	props: ['bg', 'caption', 'message', 'link', 'mask', 'maskImg'],
+	computed: {
+		maskImgStyle () {
+			return  'mask-image: url(' +this.maskImg+');'
+		}
+	},
 };
 
 </script>
@@ -39,6 +44,13 @@ export default {
 	.mtop-70 {
 		margin-top: 70%;
 	}
-
-
+    .bg-contain{
+        background-size: contain !important;
+        background-repeat: no-repeat;
+        background-position: initial;
+    }
+    .bg-cover{
+        background-repeat: no-repeat;
+        background-position: initial;
+    }
 </style>

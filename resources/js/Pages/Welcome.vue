@@ -4,6 +4,7 @@ import BreezeCarousel from '@/Components/Carousel.vue';
 import BreezeFullText from '@/Components/FullText.vue';
 import BreezeCard from '@/Components/Card.vue';
 import BreezeImgCaption from '@/Components/ImgCaption.vue';
+import BreezeMaskedImage from '@/Components/MaskedImage.vue';
 
 defineProps({
     canLogin: Boolean,
@@ -116,8 +117,12 @@ defineProps({
 
     <div class="flex flex-wrap  bg-dark">
         <div class="sm:w-full lg:w-2/3 h-screen">
-            <BreezeImgCaption bg="/images/shf/street_fighter/akuma.jpg"></BreezeImgCaption>
-
+            <BreezeImgCaption
+                bg="/images/x-men/phoenix.jpg"
+                mask='mask-svg'
+                maskImg="'/images/mask/x-men.svg'"
+            >
+            </BreezeImgCaption>
         </div>
         <div class=" sm:w-full lg:w-1/3 h-screen flex">
             <BreezeCard 
@@ -136,10 +141,39 @@ defineProps({
         <BreezeFullText 
             caption="ABOUT US"
             message="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
+            message2="Justice League"
+            textColor="text-white"
+            paddingY="py-16"
+        >
+        </BreezeFullText>
+    </div>
+        <BreezeFullText 
+            caption="ABOUT US"
+            message="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
             message2="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
             textColor="text-white"
+            bgColor="bg-dark"
         >
-    </BreezeFullText>
+        </BreezeFullText>
+    <div class="flex flex-wrap bg-dark">
+        <div class="sm:w-full lg:w-1/2 h-screen my-8">
+            <BreezeMaskedImage
+                mask='mask-svg'
+                maskImg="'/images/mask/x-men.svg'"
+                bg="/images/x-men/x-men-1.jpg"
+                bgSize="bg-contain"
+            ></BreezeMaskedImage>
+
+        </div>
+        <div class=" sm:w-full lg:w-1/2 h-screen my-8">
+            <BreezeFullText 
+                caption="X-Men Fans!"
+                message="Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
+                textColor="text-white"
+                paddingY="py-10"
+            >
+            </BreezeFullText>
+        </div>
     </div>
 </template>
 <style scoped>
