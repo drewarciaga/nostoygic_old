@@ -32,7 +32,12 @@ export default {
 	props: ['bg', 'caption', 'message', 'link', 'mask', 'maskImg'],
 	computed: {
 		maskImgStyle () {
-			return  'mask-image: url(' +this.maskImg+');'
+			if(this.maskImg != null){
+				return  'mask-image: url(' +this.maskImg+');'
+			}else{
+				return ''
+			}
+			
 		}
 	},
 };

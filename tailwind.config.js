@@ -6,6 +6,7 @@ module.exports = {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
+        './resources/**/*.{html,js}', './node_modules/tw-elements/dist/js/**/*.js',
     ],
 
     theme: {
@@ -33,9 +34,10 @@ module.exports = {
                     1000: '#143965',
                   },
                   'nos-pink' : {
-                    100: '#efa0c5',
-                    400: '#e0609b',
-                    900: '#b9266a',
+                    100 : '#efa0c5',
+                    400 : '#e0609b',
+                    900 : '#b9266a',
+                    1000: '#800b41',
                   },
                   'nos-yellow' : {
                     100: '#f5f1bf',
@@ -51,15 +53,23 @@ module.exports = {
                 '224px': '224px'
               },
               maxWidth: {
-                '1/2': '50%',
+                '1/2'  : '50%',
                 '90pct': '90%',
               },
               minHeight: {
                 'carousel': '654px',
-                '1/2': '50%',
+                '1/2'     : '50%',
+              },
+              transitionDuration: {
+                '0'   : '0ms',
+                '25'  : '0.25s',
+                '2000': '2000ms',
               }
         },
     },
 
-    plugins: [require('@tailwindcss/forms')],
+    plugins: [
+      require('@tailwindcss/forms'),
+      require('tw-elements/dist/plugin'),
+    ],
 };

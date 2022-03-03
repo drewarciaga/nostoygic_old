@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    
+
 export default {
 	props: ['bg', 'mask', 'maskImg', 'bgSize'],
     computed: {
