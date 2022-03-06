@@ -6,6 +6,7 @@ import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeNavLink from '@/Components/NavLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import BreezeSideMenu from '@/Components/SideMenu.vue';
+import BreezeMegaMenu from '@/Components/MegaMenu.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 
 const showingNavigationDropdown = ref(false);
@@ -25,6 +26,7 @@ const showingNavigationDropdown = ref(false);
                                     <BreezeApplicationLogo class="block h-9 w-auto" />
                                 </Link>
                             </div>
+                              <BreezeMegaMenu></BreezeMegaMenu>
 
                             <!-- Navigation Links -->
                             <!--<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -33,6 +35,7 @@ const showingNavigationDropdown = ref(false);
                                 </BreezeNavLink>
                             </div>-->
                         </div>
+                
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
                             <!-- Settings Dropdown -->
@@ -100,9 +103,9 @@ const showingNavigationDropdown = ref(false);
                 <div class="w-full min-h-full">
                     <!-- Remove class [ border-dashed border-2 border-gray-300 ] to remove dotted border -->
                             <!-- Page Heading -->
-                    <div class="mx-auto w-full min-h-screen">
+                    <div class="mx-auto w-full min-h-screen bg-forms">
                         <header class="bg-white shadow" v-if="$slots.header">
-                            <div class="mx-auto py-3 px-4 sm:px-6 lg:px-8">
+                            <div class="mx-auto p-3">
                                 <slot name="header" />
                             </div>
                         </header>

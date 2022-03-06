@@ -3,52 +3,29 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 
 </script>
 <template>
-    <div class="relative top-0 bg-gray-800 h-100vh">
+    <div class="relative top-0 bg-black h-100vh">
         <!-- Sidebar starts -->
         <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
-        <div class="w-56 absolute sm:relative bg-gray-800 shadow md:h-full flex-col justify-between hidden lg:flex min-h-screen">
+        <div class="w-56 absolute sm:relative bg-black shadow md:h-full flex-col justify-between hidden lg:flex min-h-screen">
             <div class="px-3">
                 <ul class="mt-12">
                     <Link :href="route('dashboard')" class="text-sm ml-2">
                         <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
                             <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-grid" width="18" height="18" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <rect x="4" y="4" width="6" height="6" rx="1"></rect>
-                                    <rect x="14" y="4" width="6" height="6" rx="1"></rect>
-                                    <rect x="4" y="14" width="6" height="6" rx="1"></rect>
-                                    <rect x="14" y="14" width="6" height="6" rx="1"></rect>
-                                </svg>
-                                    Dashboard
+                                <span class="mdi mdi-view-dashboard"> Dashboard</span>
                             </div>
                             <div class="py-1 px-3 bg-gray-700 rounded text-gray-500 flex items-center justify-center text-xs">5</div>
                         </li>
                     </Link>
-                    <Link :href="route('items')" class="text-sm ml-2">
+                    <Link :href="route('items.index')" class="text-sm ml-2">
                         <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-grid" width="18" height="18" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <rect x="4" y="4" width="6" height="6" rx="1"></rect>
-                                    <rect x="14" y="4" width="6" height="6" rx="1"></rect>
-                                    <rect x="4" y="14" width="6" height="6" rx="1"></rect>
-                                    <rect x="14" y="14" width="6" height="6" rx="1"></rect>
-                                </svg>
-                                    Items
-                            </div>
+                            <span class="mdi mdi-package-variant"> Items</span>
                             <div class="py-1 px-3 bg-gray-700 rounded text-gray-500 flex items-center justify-center text-xs">5</div>
                         </li>
                     </Link>
-                    <Link :href="route('items')" class="text-sm ml-2">
-                        <li class="flex w-full justify-between text-gray-600 hover:text-gray-500 cursor-pointer items-center mb-6">
-                            <div class="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-puzzle" width="18" height="18" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"></path>
-                                    <path d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1"></path>
-                                </svg>
-                                    Items
-                            </div>
-                            <div class="py-1 px-3 bg-gray-700 rounded text-gray-500 flex items-center justify-center text-xs">8</div>
+                    <Link :href="route('items.index')" class="text-sm ml-2">
+                        <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
+                            <span class="mdi mdi-card-bulleted-settings"> Admin Tools</span>
                         </li>
                     </Link>
                     
