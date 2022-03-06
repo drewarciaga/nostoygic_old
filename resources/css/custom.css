@@ -1,3 +1,5 @@
+
+
 /* CUSTOM CSS*/
 @font-face {
     src: url('/fonts/VarelaRound-Regular.ttf');
@@ -6,14 +8,14 @@
 
 .bg-nos-blue{
     background: rgb(8,12,13);
-    background: linear-gradient(180deg, rgba(8,12,13,1) 0%, rgba(20,57,102,1) 100%);
+    /*background: linear-gradient(180deg, rgba(8,12,13,1) 0%, rgba(20,57,102,1) 100%);*/
 }
 .bg-dark {
     background-color: #222629;
 }
 
 html {
- background-color: #143965;
+    background-color: rgb(8,12,13);
 }
 
 html, body, .main-content{

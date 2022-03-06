@@ -7,7 +7,7 @@ import BreezeImgCaption from '@/Components/ImgCaption.vue';
 import BreezeMaskedImage from '@/Components/MaskedImage.vue';
 import BreezeGallery from '@/Components/Gallery.vue';
 import BreezeButton from '@/Components/Button.vue';
-import BreezeButton2 from '@/Components/Button2.vue';
+import BreezeDataTable from '@/Components/DataTable.vue';
 import { isMobile } from 'mobile-device-detect';
 defineProps({
     canLogin: Boolean,
@@ -86,6 +86,7 @@ defineProps({
                 hashtag2="ironmacchinaph"
                 hashtag3="bmw"
                 hashtag4="r9t"
+                textColor="text-white"
                 >
             </BreezeCard>
         </div>
@@ -181,7 +182,7 @@ defineProps({
         </BreezeGallery>
 
         <div class="py-5 m-auto">
-            <BreezeButton :type="button">VIEW MORE</BreezeButton>
+            <BreezeButton :type="'button'">VIEW MORE</BreezeButton>
         </div>
     </div>
     <!-- END GALLERY ??? -->

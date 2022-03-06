@@ -1,5 +1,5 @@
 <template>
-	<div class="w-full bg-dark py-5 content-center m-auto carbon">
+	<div class="w-full bg-dark py-5 content-center m-auto carbon" :class="textColor">
 		<div class="max-w-sm rounded overflow-hidden m-auto scroll-fade">
 		  
 		  <div class="px-6 py-4">
@@ -24,7 +24,7 @@
 <script>
 	
 	export default {
-		props: [ 'bike', 'title', 'message', 'hashtag1', 'hashtag2', 'hashtag3', 'hashtag4', 'hashtag5', 'hashtag6'],
+		props: [ 'textColor', 'bike', 'title', 'message', 'hashtag1', 'hashtag2', 'hashtag3', 'hashtag4', 'hashtag5', 'hashtag6'],
 
 	};
 

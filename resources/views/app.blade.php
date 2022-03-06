@@ -9,8 +9,6 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <link rel="stylesheet" href="{{ mix('css/custom.css') }}">
-     
-
         <!-- Scripts -->
         @routes
         
@@ -26,6 +24,7 @@
         <script src="/js/parallax.min.js"></script>
         <script src="/js/jquery.lazyload.min.js"></script>
         <script src="/js/scrollfade.js"></script>
+
         <script>
             $("div.lazy").lazyload({ 
                 effect : "fadeIn"
