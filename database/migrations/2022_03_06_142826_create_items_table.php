@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('display_name')->nullable();
             $table->string('description')->nullable();
             $table->string('variant')->nullable();
-            $table->string('scale')->nullable();
-            $table->string('grade')->nullable();
+            $table->unsignedInteger('grade_id')->nullable();
+            $table->unsignedInteger('scale_id')->nullable();
             $table->unsignedInteger('type_id')->nullable();
             $table->unsignedInteger('brand_id')->nullable();
             $table->unsignedInteger('line_id')->nullable();

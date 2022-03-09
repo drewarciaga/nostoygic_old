@@ -6,7 +6,7 @@ import BreezeDropdownLink from '@/Components/DropdownLink.vue';
 import BreezeNavLink from '@/Components/NavLink.vue';
 import BreezeResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import BreezeSideMenu from '@/Components/SideMenu.vue';
-import BreezeMegaMenu from '@/Components/MegaMenu.vue';
+
 import { Link } from '@inertiajs/inertia-vue3';
 
 const showingNavigationDropdown = ref(false);
@@ -26,7 +26,6 @@ const showingNavigationDropdown = ref(false);
                                     <BreezeApplicationLogo class="block h-9 w-auto" />
                                 </Link>
                             </div>
-                              <BreezeMegaMenu></BreezeMegaMenu>
 
                             <!-- Navigation Links -->
                             <!--<div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">

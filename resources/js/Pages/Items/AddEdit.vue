@@ -9,6 +9,12 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
     <Head title="Items" />
 
     <BreezeAuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ $page.props.action }} Item
+            </h2>
+        </template>
+
         <div class="py-4 text-right">
             <Link :href="route('items.index')">
                 <BreezeButton :type="'button'">
@@ -30,18 +36,36 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                             <o-input v-model.trim.lazy="display_name"></o-input>
                         </o-field>
                     </div>
+
+                    <div class="my-2 px-2 w-full overflow-hidden sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3">
+                        <o-field label="Scale" :variant="errors.scale_list ? 'danger':''" :message="errors.scale_list?errors.scale_list.toString():''">
+                            <!--<model-list-select :list="scale_list"
+                                v-model="scale_id"
+                                option-value="value"
+                                option-text="text"
+                                placeholder="Select Scale"
+                                class="d-inline-block small"
+                            >
+                            </model-list-select>-->
+                      
+
+                        </o-field>
+                    </div>
+
+
+
+
+
+
                 </div>
 
                 <div class="row">
-                    <hr>
                     <div class="block text-right py-2">
                         <BreezeButton :type="'submit'" :color="'secondary'">
                             Submit
                         </BreezeButton>
                     </div>
                 </div>
-
-
             </form>
         </div>
     
@@ -49,13 +73,17 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
 </template>
 <script>
 
-
 export default {
+
+
     data() {
         return {
             errors: [],
             name: '',
-            display_name: ''
+            display_name: '',
+            scale_id: '',
+
+            scale_list: '',
         }
     },
 
@@ -79,6 +107,7 @@ export default {
         resetFields(){
             this.name = ''
             this.display_name = ''
+            this.scale_id = ''
         },
         success() {
             this.$moshaToast(usePage().props.value.action + ' Item Successful', {
