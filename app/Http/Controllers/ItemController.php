@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -37,7 +37,24 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'required_without'   => 'The :attribute field is required.',
+            'required'           => 'The :attribute field is required.',
+            'numeric'            => 'The :attribute field is invalid.',
+        ];
+
+        $input = $request->all();
+
+        $this->validate($request,[
+            'name'         => 'required|max:100',
+         ], $messages);
+ 
+         $item = Item::create([
+            'name' => $input['name'],
+            'display_name' => $input['display_name'],
+        ]);
+
+        return response()->json($item);
     }
 
     /**

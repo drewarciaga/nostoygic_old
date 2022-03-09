@@ -18,10 +18,10 @@ use App\Http\Controllers\ItemController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
         'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'phpVersion'     => PHP_VERSION,
     ]);
 });
 Route::group(['middleware' => ['auth', 'verified']], function () {
@@ -30,8 +30,9 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     })->name('dashboard');
 
     Route::resource('items', ItemController::class)->names([
-        'index' => 'items.index',
-        'create' => 'items.create'
+        'index'  => 'items.index',
+        'create' => 'items.create',
+        'store'  => 'items.store'
     ]);
 });
 

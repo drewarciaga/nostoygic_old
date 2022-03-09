@@ -6,6 +6,8 @@ import { InertiaProgress } from '@inertiajs/progress';
 import '@mdi/font/css/materialdesignicons.css'
 import 'tw-elements';
 import Oruga from '@oruga-ui/oruga-next'
+import moshaToast from 'mosha-vue-toastify'
+import 'mosha-vue-toastify/dist/style.css'
 
 /*import JQuery from 'jquery'
 window.$ = JQuery*/
@@ -19,6 +21,7 @@ createInertiaApp({
         return createApp({ render: () => h(app, props) })
             .use(plugin)
             .use(Oruga)
+            .use(moshaToast)
             .mixin({ methods: { route } })
             .mount(el);
     },

@@ -9,12 +9,6 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
     <Head title="Items" />
 
     <BreezeAuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Items
-            </h2>
-        </template>
-
         <div class="py-4 text-right lg:text-left">
             <Link :href="route('items.create')">
                 <BreezeButton :type="'button'">

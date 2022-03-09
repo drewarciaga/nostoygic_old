@@ -28,7 +28,7 @@ return new class extends Migration
             $table->unsignedInteger('series_id')->nullable();
             $table->unsignedInteger('group_id')->nullable();
             $table->unsignedInteger('wave_id')->nullable();
-            $table->unsignedInteger('item_category_id');
+            $table->unsignedInteger('item_category_id')->nullable();
             $table->string('bar_code')->nullable();
             $table->text('image_links')->nullable();
             $table->unsignedTinyInteger('active')->default(1);
