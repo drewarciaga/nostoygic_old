@@ -30,6 +30,8 @@
         "@mdi/js": "^6.5.95",
         "@oruga-ui/oruga-next": "^0.5.4",
         "@popperjs/core": "^2.11.2",
+        "@vue/composition-api": "^1.4.9",
+        "@vueform/multiselect": "^2.3.3",
         "jquery-parallax.js": "^1.5.0",
         "mobile-device-detect": "^0.4.3",
         "mosha-vue-toastify": "^1.0.23",

@@ -2,7 +2,6 @@
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
 import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
-
 </script>
 
 <template>
@@ -22,44 +21,34 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                 </BreezeButton>
             </Link>
         </div>
+        
         <div class="p-4">
             <form id="mainItemForm" method="post" v-on:submit.prevent="saveForm">
-                <div class="flex flex-wrap -mx-2 overflow-hidden">
-                    <div class="my-2 px-2 w-full overflow-hidden sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
+                <div class="flex flex-wrap -mx-2">
+                    <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
                         <o-field label="Name *"  :variant="errors.name ?'danger':''" :message="errors.name?errors.name.toString():''">
                             <o-input v-model.trim.lazy="name"></o-input>
                         </o-field>
                     </div>
 
-                    <div class="my-2 px-2 w-full overflow-hidden sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
+                    <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
                         <o-field label="Display Name" :variant="errors.display_name ? 'danger':''" :message="errors.display_name?errors.display_name.toString():''">
                             <o-input v-model.trim.lazy="display_name"></o-input>
                         </o-field>
                     </div>
-
-                    <div class="my-2 px-2 w-full overflow-hidden sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/3">
-                        <o-field label="Scale" :variant="errors.scale_list ? 'danger':''" :message="errors.scale_list?errors.scale_list.toString():''">
-                            <!--<model-list-select :list="scale_list"
+                    <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
+                        <o-field label="Display Name" :variant="errors.display_name ? 'danger':''" :message="errors.display_name?errors.display_name.toString():''">
+                            <SelectElement
                                 v-model="scale_id"
-                                option-value="value"
-                                option-text="text"
-                                placeholder="Select Scale"
-                                class="d-inline-block small"
-                            >
-                            </model-list-select>-->
-                      
-
+                                :native="false"
+                                :options="scale_list"
+                                :searchable="true"
+                            />
                         </o-field>
                     </div>
-
-
-
-
-
-
                 </div>
 
-                <div class="row">
+                <div class="">
                     <div class="block text-right py-2">
                         <BreezeButton :type="'submit'" :color="'secondary'">
                             Submit
@@ -72,18 +61,24 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
     </BreezeAuthenticatedLayout>
 </template>
 <script>
+import SelectElement from '@vueform/multiselect'
 
 export default {
 
-
+components: { SelectElement },
     data() {
         return {
             errors: [],
             name: '',
             display_name: '',
             scale_id: '',
-
-            scale_list: '',
+            scale_ids: [],
+            scale_list: [
+                {value: '1', label: 'Wolverine'},
+                {value: '2', label: 'Cyclops'},
+                {value: '3', label: 'Jean Grey'},
+                {value: '4', label: 'Professor X'},
+            ],
         }
     },
 
@@ -93,7 +88,8 @@ export default {
 
             axios.post('/items',{
                 name: this.name,
-                display_name: this.display_name
+                display_name: this.display_name,
+                scale_id: this.scale_id
             }).then(response => {
                 //console.log(response)
                 this.resetFields()

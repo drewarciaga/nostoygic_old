@@ -14,6 +14,10 @@
     background-color: #222629;
 }
 
+.o-field__label{
+    color: aquamarine;
+}
+
 html {
     background-color: rgb(8,12,13);
 }
