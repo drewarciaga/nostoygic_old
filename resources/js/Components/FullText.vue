@@ -1,8 +1,11 @@
+<script setup>
+import { isMobile } from 'mobile-device-detect';
+</script>
 <template>
     
 	<div class="flex flex-wrap bg-cover w-full h-full lazy" :data-original="bg" :class="bgColor">
 
-		<div class="m-4 md:m-8 lg:m-12 text-center relative scroll-fade" :class="textColor" >
+		<div class="m-4 md:m-8 lg:m-12 text-center relative" :class="[textColor,isMobile?'scroll-fade-m':'scroll-fade']" >
 
 			<div :class="paddingY">
 				<h6 class="mb-10 title text-2xl md:text-4xl lg:text-6xl">{{ caption }}</h6>

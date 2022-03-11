@@ -4,7 +4,7 @@
 
 		<div class="bg-white-400 h-full w-full">
 
-			<div class="m-10 text-center text-black-400 absolute scroll-fade" >
+			<div class="m-10 text-center text-black-400 absolute" :class="[isMobile?'scroll-fade-m':'scroll-fade']">
 
 				<h6 class="text-6xl mb-10">{{ caption }}</h6>
 
@@ -14,7 +14,7 @@
 
 			
 
-			<div class="h-full w-full flex scroll-fade" v-if="link">
+			<div class="h-full w-full flex" :class="[isMobile?'scroll-fade-m':'scroll-fade']" v-if="link">
 				<button class="m-auto text-center bg-transparent hover:bg-gray-700 text-white hover:text-gray py-2 px-4 border border-white-500 hover:border-transparent rounded ">
 	              VIEW MORE
 	            </button>

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Traits\UtilsTrait;
 
 class ItemController extends Controller
 {
+    use UtilsTrait;
     /**
      * Display a listing of the resource.
      *
@@ -50,7 +52,7 @@ class ItemController extends Controller
          ], $messages);
  
          $item = Item::create([
-            'name' => $input['name'],
+            'name' => $this->clearChars($input['name']), 
             'display_name' => $input['display_name'],
         ]);
 

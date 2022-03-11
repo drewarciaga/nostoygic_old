@@ -10,7 +10,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
     <BreezeAuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $page.props.action }} Item
+                {{ action }} Item
             </h2>
         </template>
 
@@ -23,7 +23,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
         </div>
         
         <div class="p-4">
-            <form id="mainItemForm" method="post" v-on:submit.prevent="saveForm">
+            <form id="mainItemForm" ref="mainItemForm" method="post" v-on:submit.prevent="saveForm">
                 <div class="flex flex-wrap -mx-2">
                     <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
                         <o-field label="Name *"  :variant="errors.name ?'danger':''" :message="errors.name?errors.name.toString():''">
@@ -36,10 +36,75 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                             <o-input v-model.trim.lazy="display_name"></o-input>
                         </o-field>
                     </div>
-                    <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
-                        <o-field label="Display Name" :variant="errors.display_name ? 'danger':''" :message="errors.display_name?errors.display_name.toString():''">
+                </div>
+                <div class="flex flex-wrap -mx-2">
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Type" :variant="errors.type_id ? 'danger':''" :message="errors.type_id?errors.type_id.toString():''">
+                            <SelectElement
+                                v-model="type_id"
+                                :native="false"
+                                :options="scale_list"
+                                :searchable="true"
+                            />
+                        </o-field>
+                    </div>
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Scale" :variant="errors.scale_id ? 'danger':''" :message="errors.scale_id?errors.scale_id.toString():''">
                             <SelectElement
                                 v-model="scale_id"
+                                :native="false"
+                                :options="scale_list"
+                                :searchable="true"
+                            />
+                        </o-field>
+                    </div>
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Grade" :variant="errors.grade_id ? 'danger':''" :message="errors.grade_id?errors.grade_id.toString():''">
+                            <SelectElement
+                                v-model="grade_id"
+                                :native="false"
+                                :options="scale_list"
+                                :searchable="true"
+                            />
+                        </o-field>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap -mx-2">
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Brand" :variant="errors.brand_id ? 'danger':''" :message="errors.brand_id?errors.brand_id.toString():''">
+                            <SelectElement
+                                v-model="brand_id"
+                                :native="false"
+                                :options="scale_list"
+                                :searchable="true"
+                            />
+                        </o-field>
+                    </div>
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Line" :variant="errors.line_id ? 'danger':''" :message="errors.line_id?errors.line_id.toString():''">
+                            <SelectElement
+                                v-model="line_id"
+                                :native="false"
+                                :options="scale_list"
+                                :searchable="true"
+                            />
+                        </o-field>
+                    </div>
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Series" :variant="errors.series_id ? 'danger':''" :message="errors.series_id?errors.series_id.toString():''">
+                            <SelectElement
+                                v-model="series_id"
+                                :native="false"
+                                :options="scale_list"
+                                :searchable="true"
+                            />
+                        </o-field>
+                    </div>
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Group" :variant="errors.group_id ? 'danger':''" :message="errors.group_id?errors.group_id.toString():''">
+                            <SelectElement
+                                v-model="group_id"
                                 :native="false"
                                 :options="scale_list"
                                 :searchable="true"
@@ -49,7 +114,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                 </div>
 
                 <div class="">
-                    <div class="block text-right py-2">
+                    <div class="block text-right py-4">
                         <BreezeButton :type="'submit'" :color="'secondary'">
                             Submit
                         </BreezeButton>
@@ -62,17 +127,34 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
 </template>
 <script>
 import SelectElement from '@vueform/multiselect'
+import Multiselect from '@vueform/multiselect'
 
 export default {
-
-components: { SelectElement },
+    components: { SelectElement, Multiselect },
+    props: {
+        action: String,
+    },
     data() {
         return {
             errors: [],
             name: '',
+            model: '',
             display_name: '',
+            description: '',
+            variant: '',
             scale_id: '',
-            scale_ids: [],
+            grade_id: '',
+            type_id: '',
+            brand_id: '',
+            line_id: '',
+            series_id: '',
+            group_id: '',
+            wave_id: '',
+            item_category_id: '',
+            bar_code: '',
+            image_links: '',
+            active: '',
+ 
             scale_list: [
                 {value: '1', label: 'Wolverine'},
                 {value: '2', label: 'Cyclops'},
@@ -87,9 +169,16 @@ components: { SelectElement },
             this.errors = []
 
             axios.post('/items',{
-                name: this.name,
-                display_name: this.display_name,
-                scale_id: this.scale_id
+                name:           this.name,
+                display_name:   this.display_name,
+                scale_id:       this.scale_id,
+                grade_id:       this.grade_id,
+                type_id:        this.type_id,
+                brand_id:       this.brand_id,
+                line_id:        this.line_id,
+                series_id:      this.series_id,
+                group_id:       this.group_id,
+                wave_id:        this.wave_id,
             }).then(response => {
                 //console.log(response)
                 this.resetFields()
@@ -101,12 +190,10 @@ components: { SelectElement },
             });
         },
         resetFields(){
-            this.name = ''
-            this.display_name = ''
-            this.scale_id = ''
+            this.$refs.mainItemForm.reset();
         },
         success() {
-            this.$moshaToast(usePage().props.value.action + ' Item Successful', {
+            this.$moshaToast(this.action + ' Item Successful', {
                 type: 'success',
                 position: 'top-right',
                 timeout: 2000,
@@ -116,11 +203,11 @@ components: { SelectElement },
         },
     },
 
-    setup() {
-        const pageeAction = usePage().props.value.action
+    /*setup() {
+        const pageeAction = this.action
 
         return { pageeAction };
-    },
+    },*/
 
 };
 

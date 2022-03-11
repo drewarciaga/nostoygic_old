@@ -15,7 +15,7 @@
 }
 
 .o-field__label{
-    color: aquamarine;
+    color: #cecece;
 }
 
 html {
@@ -81,17 +81,27 @@ html, body, .main-content{
 .o-car__indicator__item {
     display: block;
     outline: none;
-    border: 1px solid #b9266a !important;
+    border: 1px solid #800b41 !important;
     background: #ffffff;
 }
 .o-car__indicator__item--active, .o-car__indicator__item :hover {
-    background: #b9266a !important;
-    border: 1px solid #b9266a !important;
+    background: #800b41 !important;
+    border: 1px solid #800b41 !important;
 }
 .o-car__arrow__icon {
     cursor: pointer;
-    color: #b9266a !important;
+    color: #800b41 !important;
 }
+.o-pag__link--current {
+    pointer-events: none;
+    background-color: var(--oruga-pagination-link-current-background-color,#800b41);
+    border-color: var(--oruga-pagination-link-current-border-color,#800b41);
+    color: var(--oruga-pagination-link-current-color,#fff);
+}
+.o-pag__link{
+    color: #cecece;
+}
+
 /* end carousel*/
 
 /* start neon text*/
@@ -209,4 +219,8 @@ html, body, .main-content{
 }
 
 
-.scroll-fade { opacity:0; }
+.scroll-fade, .scroll-fade-m { opacity:0; }
+
+.multiselect-option.is-selected.is-pointed, .multiselect-option.is-selected{
+    background: #800b41 !important;
+}

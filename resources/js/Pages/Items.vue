@@ -2,6 +2,7 @@
 import BreezeAddEdit from '@/Pages/Items/AddEdit.vue';
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
+import BreezeDataTable from '@/Components/DataTable.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 </script>
 
@@ -22,7 +23,9 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
                 </BreezeButton>
             </Link>
         </div>
-        
+        <div class="py-4">
+            <BreezeDataTable></BreezeDataTable>
+        </div>
         <!--<div class="py-12">
             <div class="mx-auto">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
