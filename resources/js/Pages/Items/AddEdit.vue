@@ -111,6 +111,22 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                             />
                         </o-field>
                     </div>
+
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field class="file" label="Profile Image" :variant="errors.profile_image ? 'danger':''" :message="errors.profile_image?errors.profile_image.toString():''">
+                            <o-upload v-model="profile_image">
+                            <o-button tag="a" variant="primary">
+                                <o-icon icon="upload"></o-icon>
+                                <span>Upload</span>
+                            </o-button>
+                            </o-upload>
+                            <span class="file-name" v-if="profile_image">
+                            {{ profile_image.name }}
+                            </span>
+                        </o-field>
+                    </div>
+
+                    
                 </div>
 
                 <div class="">
@@ -154,13 +170,15 @@ export default {
             bar_code: '',
             image_links: '',
             active: '',
- 
+            profile_image: null,
+
             scale_list: [
                 {value: '1', label: 'Wolverine'},
                 {value: '2', label: 'Cyclops'},
                 {value: '3', label: 'Jean Grey'},
                 {value: '4', label: 'Professor X'},
             ],
+
         }
     },
 
@@ -168,21 +186,18 @@ export default {
         saveForm(){
             this.errors = []
 
-            axios.post('/items',{
-                name:           this.name,
-                display_name:   this.display_name,
-                scale_id:       this.scale_id,
-                grade_id:       this.grade_id,
-                type_id:        this.type_id,
-                brand_id:       this.brand_id,
-                line_id:        this.line_id,
-                series_id:      this.series_id,
-                group_id:       this.group_id,
-                wave_id:        this.wave_id,
-            }).then(response => {
+            let formData = new FormData();
+            formData.append('name', this.name);
+            if(this.profile_image !=null){
+                formData.append('profile_image', this.profile_image, this.profile_image.name);
+            }
+            
+
+            axios.post('/items',formData
+            ).then(response => {
                 //console.log(response)
                 this.resetFields()
-                this.success()
+                this.success(response.data.message)
             }).catch(error => {
                 if(error.response && error.response.status == 422){
                     this.errors = error.response.data.errors
@@ -200,6 +215,9 @@ export default {
                 hideProgressBar: 'true',
                 showIcon: 'true',
             })
+        },
+        onFileSelected(event){
+            this.profile_image = event.target.files[0]
         },
     },
 

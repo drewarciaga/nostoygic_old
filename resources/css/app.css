@@ -3,4 +3,4 @@
 @import 'tailwindcss/utilities';
 
 @import "./oruga.css";
-@import "../../node_modules/@vueform/multiselect/themes/default.css"
+@import "../../node_modules/@vueform/multiselect/themes/default.css";

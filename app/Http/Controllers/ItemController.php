@@ -5,7 +5,7 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Traits\UtilsTrait;
-
+use Validator;
 class ItemController extends Controller
 {
     use UtilsTrait;
@@ -39,24 +39,22 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
-            'required_without'   => 'The :attribute field is required.',
-            'required'           => 'The :attribute field is required.',
-            'numeric'            => 'The :attribute field is invalid.',
-        ];
-
+        \Log::info($request);
         $input = $request->all();
 
-        $this->validate($request,[
-            'name'         => 'required|max:100',
-         ], $messages);
- 
-         $item = Item::create([
-            'name' => $this->clearChars($input['name']), 
-            'display_name' => $input['display_name'],
-        ]);
+        $item = new Item();
+        $this->validate($request, $item->rules, $item->messages);
+
+        if ($request->hasFile('profile_image')) {
+            $item->setProfile($request);
+        }
+
+        $item->name                     = $input['name'];
+        $item->display_name             = !empty($input['display_name'])?$input['display_name']:"";
+        $item->save();
 
         return response()->json($item);
+        //return response()->json($item);
     }
 
     /**

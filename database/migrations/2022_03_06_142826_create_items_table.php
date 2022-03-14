@@ -30,6 +30,8 @@ return new class extends Migration
             $table->unsignedInteger('wave_id')->nullable();
             $table->unsignedInteger('item_category_id')->nullable();
             $table->string('bar_code')->nullable();
+            $table->string('profile_url')->nullable();
+            $table->string('thumbnail_url')->nullable();
             $table->text('image_links')->nullable();
             $table->unsignedTinyInteger('active')->default(1);
 

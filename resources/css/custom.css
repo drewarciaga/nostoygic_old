@@ -14,7 +14,7 @@
     background-color: #222629;
 }
 
-.o-field__label{
+.o-field__label, .file-name{
     color: #cecece;
 }
 

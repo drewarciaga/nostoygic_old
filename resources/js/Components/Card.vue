@@ -4,7 +4,7 @@
 		  
 		  <div class="px-6 py-4">
 		    <div class="text-6xl mb-2">{{ title }}</div>
-		    <p class="text-3xl text-base text-custom">
+		    <p class="text-base text-custom">
 		      {{ message }}
 		    </p>
 		  </div>
@@ -24,7 +24,7 @@
 <script>
 	
 	export default {
-		props: [ 'textColor', 'bike', 'title', 'message', 'hashtag1', 'hashtag2', 'hashtag3', 'hashtag4', 'hashtag5', 'hashtag6'],
+		props: [ 'textColor', 'title', 'message', 'hashtag1', 'hashtag2', 'hashtag3', 'hashtag4', 'hashtag5', 'hashtag6'],
 
 	};
 
