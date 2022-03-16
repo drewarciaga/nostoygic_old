@@ -8,6 +8,7 @@ import BreezeImgCaption from '@/Components/ImgCaption.vue';
 import BreezeMaskedImage from '@/Components/MaskedImage.vue';
 import BreezeGallery from '@/Components/Gallery.vue';
 import BreezeButton from '@/Components/Button.vue';
+import BreezeGlide from '@/Components/Glide.vue';
 import { isMobile } from 'mobile-device-detect';
 defineProps({
     canLogin: Boolean,
@@ -138,7 +139,16 @@ defineProps({
         bgColor="bg-dark"
     >
     </BreezeFullText>
-
+    <div class="flex flex-wrap bg-dark py-5">
+        <BreezeGlide
+            bg="/images/swiper/1.jpg"
+            bg2="/images/swiper/2.jpg"
+            bg3="/images/swiper/3.jpg"
+            bg4="/images/swiper/4.jpg"
+            bg5="/images/swiper/5.jpg"
+            bg6="/images/swiper/6.jpg"
+        ></BreezeGlide>
+    </div>
     <div class="hidden md:flex flex-wrap bg-dark" v-if="!isMobile">
         <div class="sm:w-full lg:w-1/2 h-screen my-8">
             <BreezeMaskedImage

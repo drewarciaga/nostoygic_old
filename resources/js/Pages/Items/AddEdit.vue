@@ -6,7 +6,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
 
 <template>
     <Head title="Items" />
-
+    <o-loading :full-page="true" :active.sync="isLoading" :can-cancel="false"></o-loading>
     <BreezeAuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -116,8 +116,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                         <o-field class="file" label="Profile Image" :variant="errors.profile_image ? 'danger':''" :message="errors.profile_image?errors.profile_image.toString():''">
                             <o-upload v-model="profile_image">
                             <o-button tag="a" variant="primary">
-                                <o-icon icon="upload"></o-icon>
-                                <span>Upload</span>
+                                <span class="mdi mdi-upload">Upload</span>
                             </o-button>
                             </o-upload>
                             <span class="file-name" v-if="profile_image">
@@ -153,6 +152,7 @@ export default {
     data() {
         return {
             errors: [],
+            isLoading: false,
             name: '',
             model: '',
             display_name: '',
@@ -185,6 +185,7 @@ export default {
     methods:{
         saveForm(){
             this.errors = []
+            this.isLoading = true
 
             let formData = new FormData();
             formData.append('name', this.name);
@@ -192,16 +193,17 @@ export default {
                 formData.append('profile_image', this.profile_image, this.profile_image.name);
             }
             
-
             axios.post('/items',formData
             ).then(response => {
                 //console.log(response)
                 this.resetFields()
                 this.success(response.data.message)
+                this.isLoading = false
             }).catch(error => {
                 if(error.response && error.response.status == 422){
                     this.errors = error.response.data.errors
                 }
+                this.isLoading = false
             });
         },
         resetFields(){

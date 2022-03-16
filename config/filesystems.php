@@ -32,7 +32,27 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root'   => public_path().'/user_content',
+        ],
+
+        'local2' => [
+            'driver' => 'local',
+            'root'   => public_path().'/assets/images/public',
+        ],
+
+        'local3' => [
+            'driver' => 'local',
+            'root'   => public_path().'/assets/images',
+        ],
+
+        'local4' => [
+            'driver' => 'local',
+            'root'   => public_path().'/assets',
+        ],
+
+        'local5' => [
+            'driver' => 'local',
+            'root'   => public_path(),
         ],
 
         'public' => [

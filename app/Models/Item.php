@@ -2,13 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Image;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class Item extends Model
+class Item extends MyBaseModel
 {
     /*protected $fillable = [
         'name',
@@ -53,36 +49,6 @@ class Item extends Model
         'numeric'            => 'The :attribute field is invalid.',
     ];
 
-    public function setProfile($request){
-        \Log::info('setProfile');
-        \Log::info($request);
-        $file      = $request->file('profile_image');
-        $filename  = Str::slug($this->name).'-profile_image-'.md5(time()).'.'.strtolower($file->getClientOriginalExtension());
-        $file_path = 'item_images/'. $this->getBrandNameAttribute(true) . '/' . $filename;
-
-       /* if( system_settings('s3_storage') ){
-            $local_storage = "s3";
-        }else{
-            $local_storage = "local";
-        }*/
-
-        $local_storage = "local";
-
-        Storage::disk($local_storage)->put($file_path, file_get_contents($file), 'public');
-        $url   = Storage::disk($local_storage)->url($file_path);
-        $image = Image::make( Storage::disk($local_storage)->get($file_path) )->resize(800, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                        $constraint->upsize();
-                    })->stream();
-        Storage::disk($local_storage)->put($file_path, $image, 'public');
-
-        if( $local_storage == "local" ){
-            $url = str_replace("/storage", "user_content", $url);
-        }
-
-        $this->profile_url = $url;
-    }
-
     public function getBrandNameAttribute($slug = false){
         $output = "";
         if(!empty($this->brand_id)){
@@ -95,5 +61,31 @@ class Item extends Model
             $output = Str::snake($output);
         }
         return $output;
+    }
+
+    public function uploadProfile($request){
+        $status = "success";
+        $folder = 'item_images/' . $this->getBrandNameAttribute(true);
+
+        $url = $this->setProfile($request, 'profile_image', $folder);
+        if(!empty($url)){
+            if($url == 'error'){
+                $status = "error";
+            }else{
+                $this->profile_url = $url;
+
+                if(!empty($this->profile_url)){
+                    $thumbUrl = $this->createThumbnail($request, 'profile_image', $folder);
+                    if($thumbUrl == 'error'){
+                        $status = "error";
+                    }else{
+                        $this->thumbnail_url = $thumbUrl;
+                    }
+                }
+            }
+            $this->update();
+        }
+
+        return $status;
     }
 }

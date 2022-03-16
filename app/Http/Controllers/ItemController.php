@@ -45,13 +45,17 @@ class ItemController extends Controller
         $item = new Item();
         $this->validate($request, $item->rules, $item->messages);
 
-        if ($request->hasFile('profile_image')) {
-            $item->setProfile($request);
-        }
+
 
         $item->name                     = $input['name'];
         $item->display_name             = !empty($input['display_name'])?$input['display_name']:"";
         $item->save();
+
+        
+
+        if ($item && $request->hasFile('profile_image')) {
+            $uploadProfileRes = $item->uploadProfile($request);
+        }
 
         return response()->json($item);
         //return response()->json($item);
