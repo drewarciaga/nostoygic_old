@@ -54,7 +54,7 @@ defineProps({
     <!-- START ABOUT -->
     <div class="parallax-window lazy" data-parallax="scroll" data-image-src="/images/banner.jpg">
         <BreezeFullText 
-            caption="Happy Hunting"
+            caption="Collector's Gallery"
             message="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
             message2="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
             textColor="text-white"
@@ -87,12 +87,12 @@ defineProps({
 
     <!-- START ABOUT -->
     <div class="parallax-window lazy" data-parallax="scroll" data-image-src="/images/banner2.jpg">
-                 <BreezeFullText 
-                caption="Happy Hunting"
-                message="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
-                message2="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
-                textColor="text-white"
-            >
+        <BreezeFullText 
+            caption="Happy Toy Hunting"
+            message="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
+            message2="Located on a vibrant pedestrianised market street, Caravan Exmouth Market is a bright and airy space with glazed frontage on two sides and an outside terrace on the market. Serving our signature well-travelled breakfast and all day food and drinks menus, along with our freshly roasted coffee from the Caravan roastery, our style is open, relaxed and friendly. Come down for a coffee with the morning paper, a cocktail and small plates in the evening and anything in between!"
+            textColor="text-white"
+        >
         </BreezeFullText>
     </div>
     <!-- END ABOUT -->
@@ -125,6 +125,7 @@ defineProps({
             caption="TOY PHOTOGRAPHY"
             textColor="text-white"
             paddingY="py-16"
+            neon="neonText3"
         >
         </BreezeFullText>
     </div>

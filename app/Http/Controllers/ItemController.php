@@ -5,7 +5,7 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Traits\UtilsTrait;
-use Validator;
+
 class ItemController extends Controller
 {
     use UtilsTrait;

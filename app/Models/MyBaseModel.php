@@ -35,9 +35,9 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             $url   = Storage::disk($local_storage)->url($file_path);
     
             $image = Image::make( Storage::disk($local_storage)->get($file_path) )->resize(800, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })->stream();
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })->stream();
             Storage::disk($local_storage)->put($file_path, $image, 'public');
     
             if( $local_storage == "local" ){
@@ -76,9 +76,9 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             $url   = Storage::disk($local_storage)->url($file_path);
     
             $image = Image::make( Storage::disk($local_storage)->get($file_path) )->resize(300, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                            $constraint->upsize();
-                        })->stream();
+                                $constraint->aspectRatio();
+                                $constraint->upsize();
+                            })->stream();
             Storage::disk($local_storage)->put($file_path, $image, 'public');
     
             if( $local_storage == "local" ){
@@ -88,7 +88,6 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             return "error";
         }
         
-
         return $url;
     }
 

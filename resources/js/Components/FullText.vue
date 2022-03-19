@@ -8,7 +8,7 @@ import { isMobile } from 'mobile-device-detect';
 		<div class="m-4 md:m-8 lg:m-12 text-center relative" :class="[textColor,isMobile?'scroll-fade-m':'scroll-fade']" >
 
 			<div :class="paddingY">
-				<h6 class="mb-10 title text-2xl md:text-4xl lg:text-6xl">{{ caption }}</h6>
+				<h6 class="mb-10 title text-2xl md:text-4xl lg:text-6xl" :class="neon">{{ caption }}</h6>
 
 				<p class="text-2xl mx-8 md:mx-12 lg:mx-20 text-custom">
 					
@@ -33,7 +33,7 @@ import { isMobile } from 'mobile-device-detect';
 <script>
     
 export default {
-	props: ['bg', 'caption', 'message', 'message2', 'textColor', 'paddingY', 'bgColor'],
+	props: ['bg', 'caption', 'message', 'message2', 'textColor', 'paddingY', 'bgColor', 'neon'],
 };
 
 </script>

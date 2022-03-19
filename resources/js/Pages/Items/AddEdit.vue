@@ -76,7 +76,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                             <SelectElement
                                 v-model="brand_id"
                                 :native="false"
-                                :options="scale_list"
+                                :options="brandList"
                                 :searchable="true"
                             />
                         </o-field>
@@ -179,9 +179,13 @@ export default {
                 {value: '4', label: 'Professor X'},
             ],
 
+            brandList: [],
+
         }
     },
-
+    mounted: function (){
+        this.getBrandList()
+    },
     methods:{
         saveForm(){
             this.errors = []
@@ -221,6 +225,13 @@ export default {
         onFileSelected(event){
             this.profile_image = event.target.files[0]
         },
+        getBrandList(){
+            axios.get('/getBrandList',{
+
+            }).then(response => {
+                this.brandList = response.data
+            });
+        }
     },
 
     /*setup() {
