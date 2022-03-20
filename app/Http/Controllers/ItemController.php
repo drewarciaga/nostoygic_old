@@ -45,9 +45,8 @@ class ItemController extends Controller
         $item = new Item();
         $this->validate($request, $item->rules, $item->messages);
 
-
-
         $item->name                     = $input['name'];
+        $item->brand_id                 = $input['brand_id'];
         $item->display_name             = !empty($input['display_name'])?$input['display_name']:"";
         $item->save();
 

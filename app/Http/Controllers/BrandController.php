@@ -8,11 +8,10 @@ class BrandController extends Controller
 {
     public function getBrandList(){
         $brandsList = array(
-            "0"=>"Bandai",
-            "1"=>"Good Smile",
-            "2"=>"Hasbro",
+            array( 'value' => 0, 'label' => 'Bandai' ),
+            array( 'value' => 1, 'label' => 'Good Smile' ),
+            array( 'value' => 2, 'label' => 'Hasbro' ),
         );
-
         return response()->json($brandsList);
     }
 }

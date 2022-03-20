@@ -1,7 +1,19 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
-import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
+import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';   
+import useBrand from '../../Composables/Brand/useBrand'
+import { ref, onMounted } from 'vue'
+
+const { brandList, getBrandList } = useBrand()
+const isLoading = ref(false)
+onMounted(async () => {
+    isLoading.value = true
+
+    await fetch('/getBrandList').then(response => response.json()).then(data => brandList.value = data);
+
+    isLoading.value = false
+});
 </script>
 
 <template>
@@ -78,6 +90,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                                 :native="false"
                                 :options="brandList"
                                 :searchable="true"
+                                ref="brandselector"
                             />
                         </o-field>
                     </div>
@@ -88,6 +101,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                                 :native="false"
                                 :options="scale_list"
                                 :searchable="true"
+                                ref="lineselector"
                             />
                         </o-field>
                     </div>
@@ -113,7 +127,7 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                     </div>
 
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
-                        <o-field class="file" label="Profile Image" :variant="errors.profile_image ? 'danger':''" :message="errors.profile_image?errors.profile_image.toString():''">
+                        <o-field class="file" label="Profile Image" ref="profileupload" :variant="errors.profile_image ? 'danger':''" :message="errors.profile_image?errors.profile_image.toString():''">
                             <o-upload v-model="profile_image">
                             <o-button tag="a" variant="primary">
                                 <span class="mdi mdi-upload">Upload</span>
@@ -137,13 +151,11 @@ import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';
                 </div>
             </form>
         </div>
-    
     </BreezeAuthenticatedLayout>
 </template>
 <script>
 import SelectElement from '@vueform/multiselect'
 import Multiselect from '@vueform/multiselect'
-
 export default {
     components: { SelectElement, Multiselect },
     props: {
@@ -152,7 +164,6 @@ export default {
     data() {
         return {
             errors: [],
-            isLoading: false,
             name: '',
             model: '',
             display_name: '',
@@ -179,12 +190,7 @@ export default {
                 {value: '4', label: 'Professor X'},
             ],
 
-            brandList: [],
-
         }
-    },
-    mounted: function (){
-        this.getBrandList()
     },
     methods:{
         saveForm(){
@@ -196,6 +202,7 @@ export default {
             if(this.profile_image !=null){
                 formData.append('profile_image', this.profile_image, this.profile_image.name);
             }
+            formData.append('brand_id', this.brand_id);
             
             axios.post('/items',formData
             ).then(response => {
@@ -211,7 +218,13 @@ export default {
             });
         },
         resetFields(){
+            this.$refs.brandselector.clear();
+            this.$refs.lineselector.clear();
+            this.profile_image = null
+
+            
             this.$refs.mainItemForm.reset();
+            
         },
         success() {
             this.$moshaToast(this.action + ' Item Successful', {
@@ -225,20 +238,8 @@ export default {
         onFileSelected(event){
             this.profile_image = event.target.files[0]
         },
-        getBrandList(){
-            axios.get('/getBrandList',{
-
-            }).then(response => {
-                this.brandList = response.data
-            });
-        }
     },
 
-    /*setup() {
-        const pageeAction = this.action
-
-        return { pageeAction };
-    },*/
 
 };
 
