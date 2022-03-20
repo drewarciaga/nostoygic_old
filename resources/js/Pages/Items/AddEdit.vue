@@ -2,18 +2,22 @@
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
 import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';   
-import useBrand from '../../Composables/Brand/useBrand'
+import { getBrandSelect } from '../../Composables/Brand/getBrandSelect.js'
 import { ref, onMounted } from 'vue'
 
-const { brandList, getBrandList } = useBrand()
+const brandList = ref([])
 const isLoading = ref(false)
 onMounted(async () => {
     isLoading.value = true
 
-    await fetch('/getBrandList').then(response => response.json()).then(data => brandList.value = data);
+    let res = await getBrandSelect()
+    brandList.value = res.brandList.value
+
 
     isLoading.value = false
 });
+
+
 </script>
 
 <template>
@@ -221,9 +225,10 @@ export default {
             this.$refs.brandselector.clear();
             this.$refs.lineselector.clear();
             this.profile_image = null
-
+            this.brand_id = ''
+            this.name = ''
             
-            this.$refs.mainItemForm.reset();
+            //this.$refs.mainItemForm.reset();
             
         },
         success() {

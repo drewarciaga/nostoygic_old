@@ -51,7 +51,7 @@ class Item extends MyBaseModel
 
     public function getBrandNameAttribute($slug = false){
         $output = "";
-        if(!empty($this->brand_id)){
+        if(!empty($this->brand)){
             $output = $this->brand->name;
         }else{
             $output ="No Brand";

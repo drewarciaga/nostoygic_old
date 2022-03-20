@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+    Route::get('/items/getAll', [ItemController::class, 'getAll'])->name('getAllItems');
     Route::resource('items', ItemController::class)->names([
         'index'  => 'items.index',
         'create' => 'items.create',

@@ -19,6 +19,13 @@ class ItemController extends Controller
         return Inertia::render('Items');
     }
 
+    public function getAll()
+    {
+        $items = Item::orderby('name')->get();
+
+    	return response()->json($items);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

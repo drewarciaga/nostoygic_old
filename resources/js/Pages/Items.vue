@@ -4,6 +4,8 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
 import BreezeDataTable from '@/Components/DataTable.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
+
+
 </script>
 
 <template>
