@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ItemController;
 use Illuminate\Foundation\Application;
@@ -40,6 +41,10 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         'index'  => 'items.index',
         'create' => 'items.create',
         'store'  => 'items.store'
+    ]);
+
+    Route::resource('admin', AdminController::class)->names([
+        'index'  => 'admin.index',
     ]);
 });
 

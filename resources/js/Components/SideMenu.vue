@@ -23,7 +23,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
                             <div class="py-1 px-3 bg-gray-700 rounded text-gray-500 flex items-center justify-center text-xs">5</div>
                         </li>
                     </Link>
-                    <Link :href="route('items.index')" class="text-sm ml-2">
+                    <Link :href="route('admin.index')" class="text-sm ml-2">
                         <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
                             <span class="mdi mdi-card-bulleted-settings"> Admin Tools</span>
                         </li>
@@ -115,7 +115,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
                             <div class="py-1 px-3 bg-gray-700 rounded text-gray-500 flex items-center justify-center text-xs">5</div>
                         </li>
                     </Link>
-                    <Link :href="route('items.index')" class="text-sm ml-2">
+                    <Link :href="route('admin.index')" class="text-sm ml-2">
                         <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
                             <span class="mdi mdi-card-bulleted-settings"> Admin Tools</span>
                         </li>
