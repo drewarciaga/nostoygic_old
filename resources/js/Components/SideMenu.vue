@@ -25,7 +25,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
                     </Link>
                     <Link :href="route('admin.index')" class="text-sm ml-2">
                         <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
-                            <span class="mdi mdi-card-bulleted-settings"> Admin Tools</span>
+                            <span class="mdi mdi-card-bulleted-settings"> Admin</span>
                         </li>
                     </Link>
                     
@@ -117,7 +117,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
                     </Link>
                     <Link :href="route('admin.index')" class="text-sm ml-2">
                         <li class="flex w-full justify-between text-gray-300 hover:text-gray-500 cursor-pointer items-center">
-                            <span class="mdi mdi-card-bulleted-settings"> Admin Tools</span>
+                            <span class="mdi mdi-card-bulleted-settings"> Admin</span>
                         </li>
                     </Link>
 
