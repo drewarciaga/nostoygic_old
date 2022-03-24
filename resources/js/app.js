@@ -8,7 +8,7 @@ import 'tw-elements';
 import Oruga from '@oruga-ui/oruga-next'
 import moshaToast from 'mosha-vue-toastify'
 import 'mosha-vue-toastify/dist/style.css'
-
+import VueGridLayout from 'vue-grid-layout'
 /*import JQuery from 'jquery'
 window.$ = JQuery*/
 
@@ -22,6 +22,7 @@ createInertiaApp({
             .use(plugin)
             .use(Oruga)
             .use(moshaToast)
+            .use(VueGridLayout)
             .mixin({ methods: { route } })
             .mount(el);
     },

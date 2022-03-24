@@ -36,6 +36,7 @@
         "mobile-device-detect": "^0.4.3",
         "mosha-vue-toastify": "^1.0.23",
         "swiper": "^8.0.7",
-        "tw-elements": "^1.0.0-alpha11"
+        "tw-elements": "^1.0.0-alpha11",
+        "vue-grid-layout": "^3.0.0-beta1"
     }
 }
