@@ -2,9 +2,62 @@
 import BreezeAddEdit from '@/Pages/Items/AddEdit.vue';
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
-import BreezeDataTable from '@/Components/DataTable.vue';
-import { Head, Link } from '@inertiajs/inertia-vue3';
 
+import { Head, Link } from '@inertiajs/inertia-vue3';
+import { ref, onMounted, defineAsyncComponent } from 'vue'
+
+const isLoading = ref(false)
+
+const BreezeDataTable = defineAsyncComponent(()=>
+    import('@/Components/DataTable.vue')
+)
+
+onMounted(async () => {
+    isLoading.value = true
+
+    await new Promise(r=>setTimeout(r,2000))
+    //get all items function here
+
+
+    isLoading.value = false
+});
+
+
+
+const columns = ref([
+    {
+        id:0,
+        field: 'id',
+        label: 'ID',
+        width: '1',
+        sortable: false
+    },
+    {
+        id:1,
+        field: 'name',
+        label: 'Name',
+        sortable: true
+    },
+    {
+        id:2,
+        field: 'last_name',
+        label: 'Last Name',
+        sortable: true
+    },
+    {
+        id:3,
+        field: 'date',
+        label: 'Date',
+        position: 'centered',
+        sortable: false
+    },
+    {
+        id:4,
+        field: 'gender',
+        label: 'Gender',
+        sortable: false
+    }
+]);
 
 </script>
 
@@ -26,16 +79,38 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
             </Link>
         </div>
         <div class="py-4">
-            <BreezeDataTable></BreezeDataTable>
+            <BreezeDataTable :columns="columns" :modelData="items" :isLoading="isLoading"></BreezeDataTable>
         </div>
-        <!--<div class="py-12">
-            <div class="mx-auto">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        You're logged in!
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </BreezeAuthenticatedLayout>
 </template>
+<script>
+export default {
+    mounted() {
+        this.getAllItems()
+    },
+    data(){
+        return {
+            loaded: false,
+            editBrandId: '',
+            errors: [],
+            loaded: false,
+            items: [],
+            itemsPerPageOptions: [5, 10 ,15],
+            itemsPerPage: 10,
+            search: '',
+        }
+    },
+    methods: {
+        getAllItems(){
+            this.loaded = false
+
+            axios.get('/items/getAll').then(response => {
+                console.log(response.data)
+                this.items = response.data
+         
+                this.loaded = true
+            })
+        },
+    }
+}
+</script>

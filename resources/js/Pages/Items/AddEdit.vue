@@ -3,10 +3,11 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
 import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';   
 import { getBrandSelect } from '../../Composables/Brand/getBrandSelect.js'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 
 const brandList = ref([])
 const isLoading = ref(false)
+
 onMounted(async () => {
     isLoading.value = true
 
@@ -17,12 +18,14 @@ onMounted(async () => {
     isLoading.value = false
 });
 
-
+const BreezeLoading = defineAsyncComponent(()=>
+    import('@/Components/Loading.vue')
+)
 </script>
 
 <template>
     <Head title="Items" />
-    <o-loading :full-page="true" :active.sync="isLoading" :can-cancel="false"></o-loading>
+    <BreezeLoading :isLoading="isLoading"></BreezeLoading>
     <BreezeAuthenticatedLayout>
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">

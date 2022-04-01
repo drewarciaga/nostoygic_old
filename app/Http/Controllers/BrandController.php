@@ -12,7 +12,7 @@ class BrandController extends Controller
             array( 'value' => 1, 'label' => 'Good Smile' ),
             array( 'value' => 2, 'label' => 'Hasbro' ),
         );
-        sleep(2);
+        //sleep(2);
         return response()->json($brandsList);
     }
 }

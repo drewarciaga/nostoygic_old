@@ -6,6 +6,7 @@ use App\Http\Controllers\ItemController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Session;
 
 
 /*
@@ -25,6 +26,7 @@ Route::get('/', function () {
         'canRegister'    => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion'     => PHP_VERSION,
+        'from_logout'    => Session::get('from_logout'),
     ]);
 });
 

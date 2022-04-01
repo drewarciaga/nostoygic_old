@@ -1,6 +1,7 @@
 <script setup>
+import { defineAsyncComponent } from 'vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import BreezeCarousel from '@/Components/Carousel.vue';
+
 import BreezeFullText from '@/Components/FullText.vue';
 import BreezeCard from '@/Components/Card.vue';
 import BreezeCard2 from '@/Components/Card2.vue';
@@ -15,7 +16,17 @@ defineProps({
     canRegister: Boolean,
     laravelVersion: String,
     phpVersion: String,
+    from_logout: Boolean,
 })
+
+/*const BreezeCarousel = defineAsyncComponent({
+  loader: () => import('./Components/Carousel.vue'),
+  loadingComponent: Loading
+})*/
+const BreezeCarousel = defineAsyncComponent(()=>
+    import('@/Components/Carousel.vue')
+)
+
 </script>
 
 <template>
@@ -256,3 +267,22 @@ defineProps({
         }
     }
 </style>
+<script>
+export default {
+    mounted() {
+
+        if(this.from_logout){ //refresh page if from logout
+            if (localStorage.getItem('reloaded')) {
+                localStorage.removeItem('reloaded');
+            } else {
+                localStorage.setItem('reloaded', '1');
+                location.reload();
+            }
+        }
+
+    },
+    unmounted() {
+        localStorage.removeItem('reloaded');
+    },
+}
+</script>
