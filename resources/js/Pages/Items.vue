@@ -6,7 +6,9 @@ import BreezeButton from '@/Components/Button.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { ref, onMounted, defineAsyncComponent } from 'vue'
 
-const isLoading = ref(false)
+const isLoading  = ref(false)
+const items      = ref([])
+const totalItems = ref(0)
 
 const BreezeDataTable = defineAsyncComponent(()=>
     import('@/Components/DataTable.vue')
@@ -15,14 +17,48 @@ const BreezeDataTable = defineAsyncComponent(()=>
 onMounted(async () => {
     isLoading.value = true
 
-    await new Promise(r=>setTimeout(r,2000))
+    //await new Promise(r=>setTimeout(r,2000))
     //get all items function here
 
-
+    await loadAsyncData(1,5,'name','asc','')
     isLoading.value = false
 });
 
+async function onPageChange(page, perPage, sortField, sortOrder, search){
+    isLoading.value = true
+    await loadAsyncData(page,perPage,sortField,sortOrder,search)
+    isLoading.value = false
+}
 
+async function onSort(page, perPage, sortField, sortOrder, search){
+    isLoading.value = true
+    await loadAsyncData(page,perPage,sortField,sortOrder,search)
+    isLoading.value = false
+}
+/*function onSort(perPage){
+    console.log('onSort');
+    console.log(perPage);
+}
+
+function onPageChange(perPage){
+    console.log('onPageChange');
+    console.log(perPage);
+}*/
+
+async function loadAsyncData(page, perPage, sortField, sortOrder, search){
+    await axios.get('/items/getAll',{
+        params: {
+            page:           page,
+            itemsPerPage:   perPage,
+            sortBy:         sortField,
+            sortDesc:       sortOrder,
+            search:         search,
+        }
+    }).then(response => {
+        items.value      = response.data.data
+        totalItems.value = response.data.total
+    })
+}
 
 const columns = ref([
     {
@@ -79,38 +115,17 @@ const columns = ref([
             </Link>
         </div>
         <div class="py-4">
-            <BreezeDataTable :columns="columns" :modelData="items" :isLoading="isLoading"></BreezeDataTable>
+            <BreezeDataTable
+                :columns="columns"
+                :modelData="items"
+                :isLoading="isLoading"
+                @onSort="onSort"
+                @onPageChange="onPageChange"
+                :total="totalItems"
+                :parentSortField="'name'"
+                :parentSortOrder="'ASC'"
+            >
+            </BreezeDataTable>
         </div>
     </BreezeAuthenticatedLayout>
 </template>
-<script>
-export default {
-    mounted() {
-        this.getAllItems()
-    },
-    data(){
-        return {
-            loaded: false,
-            editBrandId: '',
-            errors: [],
-            loaded: false,
-            items: [],
-            itemsPerPageOptions: [5, 10 ,15],
-            itemsPerPage: 10,
-            search: '',
-        }
-    },
-    methods: {
-        getAllItems(){
-            this.loaded = false
-
-            axios.get('/items/getAll').then(response => {
-                console.log(response.data)
-                this.items = response.data
-         
-                this.loaded = true
-            })
-        },
-    }
-}
-</script>

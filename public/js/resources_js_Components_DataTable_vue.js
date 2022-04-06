@@ -17,31 +17,61 @@ var __default__ = {
       isPaginated: true,
       isPaginationSimple: false,
       paginationPosition: 'bottom',
-      defaultSortDirection: 'asc',
       sortIcon: 'arrow-up',
       sortIconSize: 'small',
-      currentPage: 1,
+      page: 1,
       perPage: 5,
       isBordered: false,
       isStriped: true,
       isNarrowed: true,
       isHoverable: true,
       isFocusable: false,
-      hasMobileCards: true
+      hasMobileCards: true,
+      sortField: 'id',
+      sortOrder: 'desc',
+      defaultSortOrder: 'desc',
+      search: ""
     };
+  },
+  mounted: function mounted() {
+    this.sortField = this.parentSortField;
+    this.sortOrder = this.parentSortOrder;
+  },
+  methods: {
+    onPageChange: function onPageChange(page) {
+      this.page = page;
+      this.$emit('onPageChange', this.page, this.perPage, this.sortField, this.sortOrder, this.search);
+    },
+    onSort: function onSort(field, order) {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.$emit('onSort', this.page, this.perPage, this.sortField, this.sortOrder, this.search);
+    }
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/Object.assign(__default__, {
   props: {
     columns: {
-      type: []
+      "default": []
     },
     modelData: {
-      type: []
+      "default": []
     },
     isLoading: {
       type: Boolean,
       "default": false
+    },
+    total: {
+      type: Number,
+      "default": 0
+    },
+    parentSortField: {
+      type: String,
+      "default": 'id'
+    },
+    parentSortOrder: {
+      type: String,
+      "default": 'DESC'
     }
   },
   setup: function setup(__props, _ref) {
@@ -135,25 +165,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_o_table, {
     data: $props.modelData,
-    paginated: $data.isPaginated,
+    loading: $props.isLoading,
+    paginated: "",
+    "backend-pagination": "",
+    total: $props.total,
     "per-page": $data.perPage,
-    "current-page": $data.currentPage,
-    "pagination-simple": $data.isPaginationSimple,
-    "pagination-position": $data.paginationPosition,
-    "default-sort-direction": $data.defaultSortDirection,
+    onPageChange: $options.onPageChange,
+    "aria-next-label": "Next page",
+    "aria-previous-label": "Previous page",
+    "aria-page-label": "Page",
+    "aria-current-label": "Current page",
+    "backend-sorting": "",
+    "default-sort-direction": $data.defaultSortOrder,
+    "default-sort": [$data.sortField, $data.sortOrder],
+    onSort: $options.onSort,
     "sort-icon": $data.sortIcon,
     "sort-icon-size": $data.sortIconSize,
     bordered: $data.isBordered,
     striped: $data.isStriped,
     narrowed: $data.isNarrowed,
     hoverable: $data.isHoverable,
-    loading: $props.isLoading,
     focusable: $data.isFocusable,
-    "mobile-cards": $data.hasMobileCards,
-    "aria-next-label": "Next page",
-    "aria-previous-label": "Previous page",
-    "aria-page-label": "Page",
-    "aria-current-label": "Current page"
+    "mobile-cards": $data.hasMobileCards
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.columns, function (column) {
@@ -184,7 +217,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["data", "paginated", "per-page", "current-page", "pagination-simple", "pagination-position", "default-sort-direction", "sort-icon", "sort-icon-size", "bordered", "striped", "narrowed", "hoverable", "loading", "focusable", "mobile-cards"])]);
+  , ["data", "loading", "total", "per-page", "onPageChange", "default-sort-direction", "default-sort", "onSort", "sort-icon", "sort-icon-size", "bordered", "striped", "narrowed", "hoverable", "focusable", "mobile-cards"])]);
 }
 
 /***/ }),

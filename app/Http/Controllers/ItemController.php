@@ -19,11 +19,57 @@ class ItemController extends Controller
         return Inertia::render('Items');
     }
 
-    public function getAll()
+    public function getAll(Request $request)
     {
-        $items = Item::orderby('name')->get();
+        $page = 1;
+        $itemsPerPage = 5;
+        $offset = 0;
+        $total = 0;
+        $sortBy = 'name';
+        $sortDesc = 'ASC';
+        $search = "";
+\Log::info($request);
 
-    	return response()->json($items);
+        if(!empty($request->page)){
+            $page = $request->page;
+        }
+        if(!empty($request->itemsPerPage)){
+            $itemsPerPage = $request->itemsPerPage;
+        }
+        if(!empty($request->page) && !empty($request->itemsPerPage)){
+            if($request->itemsPerPage != -1){
+                $offset = ($page - 1) * $itemsPerPage;
+            }
+        }
+        if(!empty($request->search)){
+            $search = $request->search;
+        }
+        if(!empty($request->sortBy)){
+            $sortBy = $request->sortBy;
+        }
+        if(!empty($request->sortDesc)){
+            $sortDesc = $request->sortDesc;
+        }
+
+        $items = Item::select('items.*');
+
+        if(!empty($search)){
+            $items->where('items.name', 'LIKE', '%'.$search.'%');
+        }
+
+        $total    = $items->count();
+
+        if($itemsPerPage != -1){
+            $items = $items->offset($offset)->limit($itemsPerPage);
+        }
+
+        $items = $items->orderBy('items.'.$sortBy,$sortDesc)->get();
+
+    	return response()->json([
+            'status'    => 200,
+            'data'      => $items,
+            'total'     => $total,
+        ]);
     }
 
     /**
