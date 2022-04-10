@@ -2,7 +2,7 @@
 import BreezeAddEdit from '@/Pages/Items/AddEdit.vue';
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
-
+import BreezeMetric from '@/Components/Metric.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { ref, onMounted, defineAsyncComponent } from 'vue'
 
@@ -35,15 +35,6 @@ async function onSort(page, perPage, sortField, sortOrder, search){
     await loadAsyncData(page,perPage,sortField,sortOrder,search)
     isLoading.value = false
 }
-/*function onSort(perPage){
-    console.log('onSort');
-    console.log(perPage);
-}
-
-function onPageChange(perPage){
-    console.log('onPageChange');
-    console.log(perPage);
-}*/
 
 async function loadAsyncData(page, perPage, sortField, sortOrder, search){
     await axios.get('/items/getAll',{
@@ -66,7 +57,7 @@ const columns = ref([
         field: 'id',
         label: 'ID',
         width: '1',
-        sortable: false
+        sortable: true
     },
     {
         id:1,
@@ -74,25 +65,6 @@ const columns = ref([
         label: 'Name',
         sortable: true
     },
-    {
-        id:2,
-        field: 'last_name',
-        label: 'Last Name',
-        sortable: true
-    },
-    {
-        id:3,
-        field: 'date',
-        label: 'Date',
-        position: 'centered',
-        sortable: false
-    },
-    {
-        id:4,
-        field: 'gender',
-        label: 'Gender',
-        sortable: false
-    }
 ]);
 
 </script>
@@ -107,6 +79,8 @@ const columns = ref([
             </h2>
         </template>
 
+        <BreezeMetric></BreezeMetric>
+           
         <div class="py-4 text-right lg:text-left">
             <Link :href="route('items.create')">
                 <BreezeButton :type="'button'">

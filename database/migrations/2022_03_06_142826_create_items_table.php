@@ -34,9 +34,12 @@ return new class extends Migration
             $table->string('thumbnail_url')->nullable();
             $table->text('image_links')->nullable();
             $table->unsignedTinyInteger('active')->default(1);
+            $table->unsignedInteger('user_id');
 
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

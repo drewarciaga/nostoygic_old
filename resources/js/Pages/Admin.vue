@@ -1,7 +1,8 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-import BreezeGrid from '@/Components/Grid.vue';
+import BreezeAdminMenuGrid from '@/Components/AdminMenuGrid.vue';
 import { Head } from '@inertiajs/inertia-vue3';
+
 </script>
 
 <template>
@@ -17,7 +18,7 @@ import { Head } from '@inertiajs/inertia-vue3';
         <div class="py-12">
             <div class="mx-auto">
                 <div id="grid" class="row">
-                    <BreezeGrid></BreezeGrid>
+                    <BreezeAdminMenuGrid></BreezeAdminMenuGrid>
                 </div>
             </div>
         </div>

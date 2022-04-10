@@ -29,14 +29,12 @@ defineProps({
 <template>
   <section>
 	<o-field grouped group-multiline>
-
 		<o-select v-model="perPage" :disabled="!isPaginated">
 			<option value="5">5 per page</option>
 			<option value="10">10 per page</option>
 			<option value="15">15 per page</option>
 			<option value="20">20 per page</option>
 		</o-select>
-
 	</o-field>
 	<br>
 	<o-table
@@ -128,6 +126,12 @@ defineProps({
 
 				this.$emit('onSort', this.page, this.perPage, this.sortField, this.sortOrder, this.search)
 			},
+		},
+		watch: {
+        	perPage: function(val){
+				this.perPage = val
+				this.$emit('onPageChange', this.page, this.perPage, this.sortField, this.sortOrder, this.search)
+			}
 		}
 
 	}

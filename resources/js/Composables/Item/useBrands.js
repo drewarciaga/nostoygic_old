@@ -1,5 +1,3 @@
-
-
 import { ref } from 'vue'
 
 export async function getBrandSelect(user_id) {

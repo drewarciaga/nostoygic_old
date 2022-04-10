@@ -47,6 +47,12 @@ var __default__ = {
       this.sortOrder = order;
       this.$emit('onSort', this.page, this.perPage, this.sortField, this.sortOrder, this.search);
     }
+  },
+  watch: {
+    perPage: function perPage(val) {
+      this.perPage = val;
+      this.$emit('onPageChange', this.page, this.perPage, this.sortField, this.sortOrder, this.search);
+    }
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/*#__PURE__*/Object.assign(__default__, {

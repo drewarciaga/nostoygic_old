@@ -2,7 +2,7 @@
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
 import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';   
-import { getBrandSelect } from '../../Composables/Brand/getBrandSelect.js'
+import { getBrandSelect } from '../../Composables/Item/useBrands.js'
 import { ref, onMounted, defineAsyncComponent } from 'vue'
 
 const brandList = ref([])
@@ -13,7 +13,6 @@ onMounted(async () => {
 
     let res = await getBrandSelect()
     brandList.value = res.brandList.value
-
 
     isLoading.value = false
 });

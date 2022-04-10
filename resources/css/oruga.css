@@ -314,7 +314,7 @@
       }
       .o-btn--primary {
        border-color:transparent;
-       background-color:var(--oruga-variant-primary,#b9266a);
+       background-color:var(--oruga-variant-primary,#800b41);
        color:var(--oruga-variant-invert-primary,#fff)
       }
       .o-btn--primary:hover {

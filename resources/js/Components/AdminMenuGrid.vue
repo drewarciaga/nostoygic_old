@@ -1,6 +1,5 @@
-
 <template>
-    <div>
+    <div ref="adminMenu">
         <grid-layout :layout.sync="layout"
                      :responsive-layouts="layouts"
                      :col-num="4"
@@ -13,6 +12,7 @@
                      :responsive="responsive"
                      @breakpoint-changed="breakpointChangedEvent"
                      :verticalCompact="true"
+                     :breakpoints="breakpoints"
         >
             <grid-item v-for="item in layout" :key="item.i"
                        :x="item.x"
@@ -27,15 +27,15 @@
                        drag-ignore-from=".no-drag"
             >
        
-                <div class="flex justify-center">
+                <div class="block justify-center">
                     <div class="block rounded-lg shadow-lg bg-white max-w-sm text-center">
                         <div class="flex py-6 px-6">
                             <span class="mdi mdi-drag-horizontal-variant text-black vue-draggable-handle px-6 mx-4" style="font-size:25pt"></span>
                         </div>
                         <span class="mdi text-nos-600 m-auto absolute top-2" :class="item.icon" style="font-size:35px; margin-left:-18px;"></span>
                         <div class="p-6">
-                            <h5 class="text-gray-900 text-xl font-medium mb-2" style="height:28px; width:200px">{{item.title?item.title:""}}</h5>
-                            <p class="text-gray-700 text-sm mb-4" style="height:70px; width:200px">
+                            <h5 class="text-gray-900 text-xl font-medium mb-2 m-auto" style="height:28px; width:200px">{{item.title?item.title:""}}</h5>
+                            <p class="text-gray-700 text-sm mb-4 m-auto" style="height:70px; width:200px">
                                 {{item.desc?item.desc:""}}
                             </p>
                             <Link :href="route('items.create')">
@@ -58,45 +58,76 @@
 import BreezeButton from '@/Components/Button.vue';
 import { Link } from '@inertiajs/inertia-vue3';
 import { GridLayout, GridItem } from "vue-grid-layout"
-let testLayouts = {
-    lg: [
-        {"x":0,"y":0,"w":1,"h":5,"i":"0", "title":"Users", "desc":"Create and Update Users", "icon":"mdi-account"},
-        {"x":2,"y":0,"w":1,"h":5,"i":"1", "title":"Settings", "desc":"General app settings", "icon":"mdi-cogs"},
-        {"x":4,"y":0,"w":1,"h":5,"i":"2", "title":"Brands"},
-        {"x":6,"y":0,"w":1,"h":5,"i":"3", "title":"Groups"},
-        {"x":8,"y":0,"w":1,"h":5,"i":"4", "title":"Series"},
-        {"x":8,"y":0,"w":1,"h":5,"i":"5", "title":"Line"},
-    ],
-};
+
 export default {
+
     components: {
         GridLayout,
         GridItem,
         BreezeButton, Link
 
     },
+    mounted: function (){
+        let gridWidth = this.$refs.adminMenu.clientWidth
+        let newBreakpoint = 'xl'
+        if(gridWidth > 1400){
+            newBreakpoint = 'lg'
+        }else if(gridWidth > 996){
+            newBreakpoint = 'md'
+        }else if(gridWidth > 768){
+            newBreakpoint = 'sm'
+        }else if(gridWidth > 480){
+            newBreakpoint = 'xs'
+        }else if(gridWidth > 0){
+            newBreakpoint = 'xxs'
+        }
+        
+        this.getAdminMenuItems(newBreakpoint)
+    },
     data() {
         return {
             cols: {
-                xl:10,
+                xl:6,
                 lg:6,
                 md:4,
                 sm:3,
                 xs:1,
                 xxs:1
             },
-            layouts: testLayouts,
-            layout: testLayouts["lg"],
             draggable: true,
             resizable: false,
             responsive: true,
+            adminMenuItems: [],
+            isLoading: false,
+            breakpoints: {
+                xl: 1600,
+                lg: 1400,
+                md: 996,
+                sm: 768,
+                xs: 480,
+                xxs: 0
+            },
+            layouts : {},
+            layout : []
         }
     },
     methods: {
         breakpointChangedEvent: function(newBreakpoint, newLayout){
-            console.log("BREAKPOINT CHANGED breakpoint=", newBreakpoint, ", layout: ", newLayout );
+            //console.log("BREAKPOINT CHANGED breakpoint=", newBreakpoint, ", layout: ", newLayout );
+            this.layout = newLayout
         },
-    }
+        getAdminMenuItems(newBreakpoint){
+            axios.get('/admin/getAdminMenuItems',{
+                params: {
+                    breakpoint: newBreakpoint,
+                }
+                }).then(response => {
+                this.layouts = response.data.layouts
+                this.layout = this.layouts[newBreakpoint]
+            })
+        }
+    },
+    
 }
 </script>
 

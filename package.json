@@ -28,7 +28,7 @@
     "dependencies": {
         "@mdi/font": "^6.5.95",
         "@mdi/js": "^6.5.95",
-        "@oruga-ui/oruga-next": "^0.5.4",
+        "@oruga-ui/oruga-next": "^0.5.5",
         "@popperjs/core": "^2.11.2",
         "@vue/composition-api": "^1.4.9",
         "@vueform/multiselect": "^2.3.3",

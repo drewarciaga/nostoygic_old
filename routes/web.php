@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         'store'  => 'items.store'
     ]);
 
+    Route::get('/admin/getAdminMenuItems', [AdminController::class, 'getAdminMenuItems'])->name('getAdminMenuItems');
     Route::resource('admin', AdminController::class)->names([
         'index'  => 'admin.index',
     ]);
