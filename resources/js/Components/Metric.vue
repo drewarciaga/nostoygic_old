@@ -1,6 +1,6 @@
 <template>
 <div class="flex flex-wrap overflow-hidden sm:-mx-2 md:-mx-2 lg:-mx-3 xl:-mx-2">
-    <div class="w-full overflow-hidden sm:my-2 sm:px-2 sm:w-1/3 md:my-2 md:px-2 md:w-1/3 lg:my-3 lg:px-3 lg:w-1/3 xl:my-2 xl:px-2 xl:w-1/3"
+    <div class="w-full overflow-hidden sm:my-2 sm:px-2 sm:w-1/3 md:my-2 md:px-2 md:w-1/3 lg:my-3 lg:px-3 lg:w-1/4 xl:my-2 xl:px-2 xl:w-1/4"
         v-for="metric in metrics" :key="metric.id"
     >
         <div class="bg-gray-900 border border-gray-800 rounded shadow p-2">

@@ -6,7 +6,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
     <div class="relative top-0 bg-black h-100vh">
         <!-- Sidebar starts -->
         <!-- Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] -->
-        <div class="w-56 absolute sm:relative bg-black shadow md:h-full flex-col justify-between hidden lg:flex min-h-screen">
+        <div class="w-56 absolute sm:relative bg-gray-900 shadow md:h-full flex-col justify-between hidden lg:flex min-h-screen">
             <div class="px-3">
                 <ul class="mt-12">
                     <Link :href="route('dashboard')" class="text-sm ml-2">
@@ -92,7 +92,7 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
                     <line x1="18" y1="9" x2="18" y2="20" />
                 </svg>
             </div>
-            <div id="closeSideBar" class="hidden h-10 w-10 bg-gray-800 absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer text-white" @click="sidebarHandler(false)">
+            <div id="closeSideBar" class="hidden h-10 w-10 bg-gray-900 absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer text-white" @click="sidebarHandler(false)">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" />
                     <line x1="18" y1="6" x2="6" y2="18" />

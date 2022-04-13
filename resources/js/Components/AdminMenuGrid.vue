@@ -38,9 +38,10 @@
                             <p class="text-gray-700 text-sm mb-4 m-auto" style="height:70px; width:200px">
                                 {{item.desc?item.desc:""}}
                             </p>
-                            <Link :href="route('items.create')">
+
+                            <Link :href="item.link ? route(item.link) : ''">
                                 <BreezeButton :type="'button'">
-                                    <span>Add Item</span> 
+                                    <span>View</span> 
                                 </BreezeButton>
                             </Link>
                         </div>
@@ -69,7 +70,7 @@ export default {
     },
     mounted: function (){
         let gridWidth = this.$refs.adminMenu.clientWidth
-        let newBreakpoint = 'xl'
+        let newBreakpoint = ''
         if(gridWidth > 1400){
             newBreakpoint = 'lg'
         }else if(gridWidth > 996){
@@ -78,7 +79,7 @@ export default {
             newBreakpoint = 'sm'
         }else if(gridWidth > 480){
             newBreakpoint = 'xs'
-        }else if(gridWidth > 0){
+        }else{
             newBreakpoint = 'xxs'
         }
         
@@ -87,7 +88,6 @@ export default {
     data() {
         return {
             cols: {
-                xl:6,
                 lg:6,
                 md:4,
                 sm:3,
@@ -100,7 +100,6 @@ export default {
             adminMenuItems: [],
             isLoading: false,
             breakpoints: {
-                xl: 1600,
                 lg: 1400,
                 md: 996,
                 sm: 768,
@@ -113,7 +112,7 @@ export default {
     },
     methods: {
         breakpointChangedEvent: function(newBreakpoint, newLayout){
-            //console.log("BREAKPOINT CHANGED breakpoint=", newBreakpoint, ", layout: ", newLayout );
+            console.log("BREAKPOINT CHANGED breakpoint=", newBreakpoint, ", layout: ", newLayout );
             this.layout = newLayout
         },
         getAdminMenuItems(newBreakpoint){
@@ -123,6 +122,7 @@ export default {
                 }
                 }).then(response => {
                 this.layouts = response.data.layouts
+                console.log(newBreakpoint);
                 this.layout = this.layouts[newBreakpoint]
             })
         }

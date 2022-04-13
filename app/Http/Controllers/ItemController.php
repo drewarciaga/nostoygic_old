@@ -5,6 +5,7 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Traits\UtilsTrait;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
@@ -14,13 +15,15 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return Inertia::render('Items');
+    public function index(){
+        return Inertia::render('Items/Index');
     }
 
-    public function getAll(Request $request)
-    {
+    public function itemSettings(){
+        return Inertia::render('Items/Settings');
+    }
+
+    public function getAll(Request $request){
         $page = 1;
         $itemsPerPage = 5;
         $offset = 0;
@@ -28,7 +31,6 @@ class ItemController extends Controller
         $sortBy = 'name';
         $sortDesc = 'ASC';
         $search = "";
-\Log::info($request);
 
         if(!empty($request->page)){
             $page = $request->page;
@@ -51,7 +53,7 @@ class ItemController extends Controller
             $sortDesc = $request->sortDesc;
         }
 
-        $items = Item::select('items.*');
+        $items = Item::checkUser()->select('items.*');
 
         if(!empty($search)){
             $items->where('items.name', 'LIKE', '%'.$search.'%');
@@ -77,8 +79,7 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         return Inertia::render('Items/AddEdit', [
             'action' => 'Add',
         ]);
@@ -90,20 +91,18 @@ class ItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        \Log::info($request);
+    public function store(Request $request){
         $input = $request->all();
 
         $item = new Item();
         $this->validate($request, $item->rules, $item->messages);
 
-        $item->name                     = $input['name'];
+        $item->name                     = $this->clearChars($input['name']);
         $item->brand_id                 = $input['brand_id'];
-        $item->display_name             = !empty($input['display_name'])?$input['display_name']:"";
-        $item->save();
-
+        $item->display_name             = !empty($input['display_name'])?$this->clearChars($input['display_name']):"";
+        $item->user_id                  = Auth::user()->id;
         
+        $item->save();
 
         if ($item && $request->hasFile('profile_image')) {
             $uploadProfileRes = $item->uploadProfile($request);
@@ -119,8 +118,7 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id){
         //
     }
 
@@ -130,8 +128,7 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id){
         //
     }
 
@@ -142,8 +139,7 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         //
     }
 
@@ -153,8 +149,7 @@ class ItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id){
         //
     }
 }

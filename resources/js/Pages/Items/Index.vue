@@ -17,26 +17,24 @@ const BreezeDataTable = defineAsyncComponent(()=>
 onMounted(async () => {
     isLoading.value = true
 
-    //await new Promise(r=>setTimeout(r,2000))
-    //get all items function here
-
-    await loadAsyncData(1,5,'name','asc','')
+    await getAllItems(1,5,'name','asc','')
+    
     isLoading.value = false
 });
 
 async function onPageChange(page, perPage, sortField, sortOrder, search){
     isLoading.value = true
-    await loadAsyncData(page,perPage,sortField,sortOrder,search)
+    await getAllItems(page,perPage,sortField,sortOrder,search)
     isLoading.value = false
 }
 
 async function onSort(page, perPage, sortField, sortOrder, search){
     isLoading.value = true
-    await loadAsyncData(page,perPage,sortField,sortOrder,search)
+    await getAllItems(page,perPage,sortField,sortOrder,search)
     isLoading.value = false
 }
 
-async function loadAsyncData(page, perPage, sortField, sortOrder, search){
+async function getAllItems(page, perPage, sortField, sortOrder, search){
     await axios.get('/items/getAll',{
         params: {
             page:           page,
@@ -63,6 +61,12 @@ const columns = ref([
         id:1,
         field: 'name',
         label: 'Name',
+        sortable: true
+    },
+    {
+        id:2,
+        field: 'id',
+        label: 'Action',
         sortable: true
     },
 ]);

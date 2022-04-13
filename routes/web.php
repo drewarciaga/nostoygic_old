@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ItemBrandController;
 use App\Http\Controllers\ItemController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -31,7 +31,7 @@ Route::get('/', function () {
 });
 
 //for dropdown lists
-Route::get('getBrandList', [BrandController::class, 'getBrandList']);
+Route::get('getBrandList', [ItemBrandController::class, 'getBrandList']);
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', function () {
@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     })->name('dashboard');
 
     Route::get('/items/getAll', [ItemController::class, 'getAll'])->name('getAllItems');
+    Route::get('/items/itemSettings', [ItemController::class, 'itemSettings'])->name('itemSettings');
+    
     Route::resource('items', ItemController::class)->names([
         'index'  => 'items.index',
         'create' => 'items.create',
@@ -48,6 +50,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/admin/getAdminMenuItems', [AdminController::class, 'getAdminMenuItems'])->name('getAdminMenuItems');
     Route::resource('admin', AdminController::class)->names([
         'index'  => 'admin.index',
+    ]);
+
+    Route::get('/brands/getAll', [ItemBrandController::class, 'getAll'])->name('getAllBrands');
+    Route::resource('brands', ItemBrandController::class)->names([
+        'store'  => 'brands.store'
     ]);
 });
 

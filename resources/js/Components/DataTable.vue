@@ -23,8 +23,6 @@ defineProps({
 		default: 'DESC',
 	}
 });
-
-
 </script>
 <template>
   <section>
@@ -50,13 +48,11 @@ defineProps({
 		aria-page-label="Page"
 		aria-current-label="Current page"
 
-
 		backend-sorting
 		:default-sort-direction="defaultSortOrder"
 		:default-sort="[sortField, sortOrder]"
 		@sort="onSort"
 	
-
 		:sort-icon="sortIcon"
 		:sort-icon-size="sortIconSize"
 
@@ -71,13 +67,17 @@ defineProps({
 
 	>
 		<template v-for="column in columns" :key="column.id">
-			<o-table-column :field="column.field" :label="column.label" :width="column.width?column.width:'40'" :sortable="column.sortable" v-slot="props">
+			<o-table-column v-if="column.label == 'Action'" :field="column.field" :label="column.label" :width="column.width?column.width:'40'" :sortable="column.sortable" v-slot="props">
+				<o-button class="btn-view"><span class="mdi mdi-eye"></span></o-button>
+				<o-button class="btn-edit"><span class="mdi mdi-note-edit"></span></o-button>
+				<o-button class="btn-delete"><span class="mdi mdi-trash-can"></span></o-button>
+			
+			</o-table-column>
+
+			<o-table-column v-else :field="column.field" :label="column.label" :width="column.width?column.width:'40'" :sortable="column.sortable" v-slot="props">
 				{{ props.row[column.field] }}
 			</o-table-column>
 		</template>
-     
-     
-  
     </o-table>
   </section>
 </template>
@@ -136,3 +136,29 @@ defineProps({
 
 	}
 </script>
+<style scoped>
+.btn-view{
+    background: none;
+    border: none;
+    color: #ffb300;
+    font-size: 20px;
+    height: auto;
+    line-height: .7;
+}
+.btn-edit{
+    background: none;
+    border: none;
+    color: #1474ce;
+    font-size: 20px;
+    height: auto;
+    line-height: .7;
+}
+.btn-delete{
+    background: none;
+    border: none;
+    color: #c91818;
+    font-size: 20px;
+    height: auto;
+    line-height: .7;
+}
+</style>

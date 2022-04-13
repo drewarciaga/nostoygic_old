@@ -3,30 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class Item extends MyBaseModel
+class ItemBrand extends MyBaseModel
 {
+    public $timestamps = false;
     /*protected $fillable = [
         'name',
-        'model',
-        'display_name',
-        'description',
-        'variant',
-        'scale_id',
-        'grade_id',
-        'type_id',
-        'brand_id',
-        'line_id',
-        'series_id',
-        'group_id',
-        'wave_id',
-        'item_category_id',
-        'bar_code',
-        'profile_url',
-        'thumbnail_url',
-        'image_links',
-        'active',
+
     ];*/
 
     /**
@@ -54,33 +39,19 @@ class Item extends MyBaseModel
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
-    public function getBrandNameAttribute($slug = false){
-        $output = "";
-        if(!empty($this->brand)){
-            $output = $this->brand->name;
-        }else{
-            $output ="No Brand";
-        }
-
-        if($slug){
-            $output = Str::snake($output);
-        }
-        return $output;
-    }
-
-    public function uploadProfile($request){
+    public function uploadLogo($request){
         $status = "success";
         $folder = 'item_images/' . $this->user_id;
 
-        $url = $this->setProfile($request, 'profile_image', $folder);
+        $url = $this->setProfile($request, 'brand_logo', $folder);
         if(!empty($url)){
             if($url == 'error'){
                 $status = "error";
             }else{
-                $this->profile_url = $url;
+                $this->image_url = $url;
 
-                if(!empty($this->profile_url)){
-                    $thumbUrl = $this->createThumbnail($request, 'profile_image', $folder);
+                if(!empty($this->image_url)){
+                    $thumbUrl = $this->createThumbnail($request, 'brand_logo', $folder);
                     if($thumbUrl == 'error'){
                         $status = "error";
                     }else{

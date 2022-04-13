@@ -16,11 +16,13 @@ return new class extends Migration
         Schema::create('item_series', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('desc')->nullable();
+            $table->string('description')->nullable();
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('sortOrder')->default(0);
             $table->string('image_url')->nullable();
+            $table->string('thumbnail_url')->nullable();
             $table->string('color')->nullable();
+            $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

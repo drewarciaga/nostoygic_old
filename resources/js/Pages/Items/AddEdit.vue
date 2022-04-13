@@ -144,8 +144,13 @@ const BreezeLoading = defineAsyncComponent(()=>
                             </span>
                         </o-field>
                     </div>
-
-                    
+                </div>
+                <div class="flex flex-wrap -mx-2">
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2">
+                        <o-field label="Description" :variant="errors.description ? 'danger':''" :message="errors.description?errors.description.toString():''">
+                            <o-input maxlength="500" type="textarea" v-model.trim.lazy="description"></o-input>
+                        </o-field>
+                    </div>
                 </div>
 
                 <div class="">
@@ -229,6 +234,7 @@ export default {
             this.profile_image = null
             this.brand_id = ''
             this.name = ''
+            this.description = ''
             
             //this.$refs.mainItemForm.reset();
             
