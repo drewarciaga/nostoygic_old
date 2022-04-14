@@ -70,9 +70,9 @@ class Item extends MyBaseModel
 
     public function uploadProfile($request){
         $status = "success";
-        $folder = 'item_images/' . $this->user_id;
+        $folder = 'item_images';
 
-        $url = $this->setProfile($request, 'profile_image', $folder);
+        $url = $this->setProfile($request, 'profile_image', $folder, 800);
         if(!empty($url)){
             if($url == 'error'){
                 $status = "error";
@@ -80,7 +80,7 @@ class Item extends MyBaseModel
                 $this->profile_url = $url;
 
                 if(!empty($this->profile_url)){
-                    $thumbUrl = $this->createThumbnail($request, 'profile_image', $folder);
+                    $thumbUrl = $this->createThumbnail($request, 'profile_image', $folder, 300);
                     if($thumbUrl == 'error'){
                         $status = "error";
                     }else{
@@ -101,5 +101,10 @@ class Item extends MyBaseModel
             $q->where('users.id', Auth::user()->id);
 
         });
+    }
+
+    public function scopeActive($query)
+    {
+        $query->where('active', 1);
     }
 }

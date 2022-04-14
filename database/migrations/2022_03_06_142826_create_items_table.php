@@ -35,6 +35,7 @@ return new class extends Migration
             $table->text('image_links')->nullable();
             $table->unsignedTinyInteger('active')->default(1);
             $table->unsignedInteger('user_id');
+            $table->text('tags')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

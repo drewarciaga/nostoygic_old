@@ -1,21 +1,41 @@
 <script setup>
-//import BreezeAddEdit from '@/Pages/Brands/AddEdit.vue';
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
+import BreezeDataTable2 from '@/Components/DataTable2.vue';
+import BreezeLoading from '@/Components/Loading.vue';
 import BreezeMetric from '@/Components/Metric.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import { ref, onMounted, defineAsyncComponent } from 'vue'
+import { ref, reactive, onMounted, defineAsyncComponent } from 'vue'
+import { createToast } from 'mosha-vue-toastify';
 
-const isLoading  = ref(false)
+const BreezeColorPicker = defineAsyncComponent(()=>
+    import('@/Components/ColorPicker.vue')
+)
+
+const action = ref('')
+const errors = ref([])
+const isLoading = ref(false)
+const toast = (message,type) => {
+    createToast(message, {
+        type: type,
+        position: 'top-right',
+        timeout: 2000,
+        hideProgressBar: 'true',
+        showIcon: 'true',
+    })
+}
+
 const brands      = ref([])
 const totalBrands = ref(0)
 
-const BreezeDataTable2 = defineAsyncComponent(()=>
-    import('@/Components/DataTable2.vue')
-)
-const BreezeLoading = defineAsyncComponent(()=>
-    import('@/Components/Loading.vue')
-)
+const brand = reactive({
+    name: '',
+    brand_logo: null,
+    description: '',
+    tags: [],
+    color: '',
+    active: '1',
+})
 
 onMounted(async () => {
     isLoading.value = true
@@ -24,6 +44,10 @@ onMounted(async () => {
 
     isLoading.value = false
 });
+
+function changeAction(selectedAction){
+    action.value = selectedAction
+}
 
 async function getAllBrands(){
     await axios.get('/brands/getAll').then(response => {
@@ -54,6 +78,45 @@ const columns = ref([
     },
 ]);
 
+async function saveForm(){
+    errors.value = []
+    isLoading.value = true
+
+    let formData = new FormData();
+    formData.append('name', brand.name);
+    formData.append('description', brand.description);
+
+    if(brand.brand_logo !=null){
+        formData.append('brand_logo', brand.brand_logo, brand.brand_logo.name);
+    }
+
+    axios.post('/brands',formData
+    ).then(response => {
+        //console.log(response)
+        resetFields()
+        toast('Add Brand Successful!', 'success')
+        $("#brandAddEditModal").modal('hide');
+        getAllBrands()
+        isLoading.value = false
+
+    }).catch(error => {
+        if(error.response && error.response.status == 422){
+            errors.value = error.response.data.errors
+        }
+        isLoading.value = false
+    });
+}
+
+function resetFields(){
+    brand.name = ''
+    brand.description = ''
+    brand.brand_logo = null
+    brand.active = '1'
+}
+
+function onFileSelected(event){
+    brand.brand_logo = event.target.files[0]
+}
 </script>
 
 <template>
@@ -62,7 +125,7 @@ const columns = ref([
         
     <div class="py-4 text-right lg:text-left">
 
-        <BreezeButton :type="'button'" data-bs-toggle="modal" data-bs-target="#brandAddEditModal" @click="this.action = 'Add'">
+        <BreezeButton :type="'button'" data-bs-toggle="modal" data-bs-target="#brandAddEditModal" @click="changeAction('Add')">
             <span class="mdi mdi-plus-circle"> Add Brand</span> 
         </BreezeButton>
 
@@ -83,42 +146,52 @@ const columns = ref([
             <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-dark-blue bg-clip-padding rounded-md outline-none text-current ">
                 <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
                     <h5 class="text-xl font-medium leading-normal text-white" id="brandAddEditModalLabel">
-                    {{ this.action }} Brand
+                     {{ action }} Brand
                     </h5>
                     <button type="button"
                     class="btn-close-modal"
                     data-bs-dismiss="modal"><span class="mdi mdi-close-circle"></span></button>
                 </div>
                 <div class="modal-body relative p-4">
-                    <form id="mainItemForm" ref="mainItemForm" method="post" v-on:submit.prevent="saveForm">
+                    <form id="mainBrandForm" ref="mainBrandForm" method="post" v-on:submit.prevent="saveForm">
                         <div class="flex flex-wrap -mx-2">
                             <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
                                 <o-field label="Name *"  :variant="errors.name ?'danger':''" :message="errors.name?errors.name.toString():''">
-                                    <o-input v-model.trim.lazy="name"></o-input>
+                                    <o-input v-model.trim.lazy="brand.name"></o-input>
                                 </o-field>
-                            </div>
-                        </div>
-                        <div class="flex flex-wrap -mx-2">
-                            <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
+                    
                                 <o-field label="Description" :variant="errors.description ? 'danger':''" :message="errors.description?errors.description.toString():''">
-                                    <o-input maxlength="500" type="textarea" v-model.trim.lazy="description"></o-input>
+                                    <o-input maxlength="500" type="textarea" v-model.trim.lazy="brand.description"></o-input>
                                 </o-field>
                             </div>
-                        </div>
 
-                        <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2">
-                            <o-field class="file" label="Brand logo" ref="logoUpload" :variant="errors.brand_logo ? 'danger':''" :message="errors.brand_logo?errors.brand_logo.toString():''">
-                                <o-upload v-model="brand_logo">
-                                <o-button tag="a" variant="primary">
-                                    <span class="mdi mdi-upload">Upload</span>
-                                </o-button>
-                                </o-upload>
-                                <span class="file-name" v-if="brand_logo">
-                                {{ brand_logo.name }}
-                                </span>
-                            </o-field>
-                        </div>
+                            <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
 
+                                <o-field class="file" label="Brand logo" ref="logoUpload" :variant="errors.brand_logo ? 'danger':''" :message="errors.brand_logo?errors.brand_logo.toString():''">
+                                    <o-upload v-model="brand.brand_logo" accept="image/*">
+                                        <o-button tag="a" variant="primary">
+                                            <span class="mdi mdi-upload">Upload</span>
+                                        </o-button>
+                                    </o-upload>
+                                    <span class="file-name" v-if="brand.brand_logo">
+                                    {{ brand.brand_logo.name }}
+                                    </span>
+                                </o-field>
+                
+                                <o-field label="Color" >
+                                    <BreezeColorPicker></BreezeColorPicker>
+                                </o-field>
+
+                                <o-field class="py-4">
+                                    <o-switch v-model="brand.active" true-value="1" false-value="0">
+                                        Active
+                                    </o-switch>
+                                </o-field>
+                             
+                            </div>
+                        </div>
+                        
+                        
                         <div class="">
                             <div class="block text-right py-4">
                                 <BreezeButton :type="'submit'" :color="'secondary'">
@@ -132,70 +205,3 @@ const columns = ref([
         </div>
     </div>
 </template>
-<script>
-
-export default {
-    data() {
-        return {
-            errors: [],
-            name: '',
-            description: '',
-            action: '',
-            brand_logo: null,
-        }
-    },
-    methods:{
-        saveForm(){
-            this.errors = []
-            this.isLoading = true
-
-            let formData = new FormData();
-            formData.append('name', this.name);
-            formData.append('description', this.description);
-            if(this.brand_logo !=null){
-                formData.append('brand_logo', this.brand_logo, this.brand_logo.name);
-            }
-            //formData.append('brand_id', this.brand_id);
-            
-            axios.post('/brands',formData
-            ).then(response => {
-                //console.log(response)
-                this.resetFields()
-                this.success(response.data.message)
-                $("#brandAddEditModal").modal('hide');
-                this.getAllBrands()
-                this.isLoading = false
-
-            }).catch(error => {
-                if(error.response && error.response.status == 422){
-                    this.errors = error.response.data.errors
-                }
-                this.isLoading = false
-            });
-        },
-        resetFields(){
-            this.brand_logo = null
-            this.name = ''
-            this.description =  ''
-            
-            //this.$refs.mainItemForm.reset();
-            
-        },
-        success() {
-            this.$moshaToast(this.action + ' Brand Successful', {
-                type: 'success',
-                position: 'top-right',
-                timeout: 2000,
-                hideProgressBar: 'true',
-                showIcon: 'true',
-            })
-        },
-        onFileSelected(event){
-            this.brand_logo = event.target.files[0]
-        },
-    },
-
-
-};
-
-</script>

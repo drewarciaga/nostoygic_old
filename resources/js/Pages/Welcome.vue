@@ -1,5 +1,5 @@
 <script setup>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, onMounted } from 'vue'
 import { Head, Link } from '@inertiajs/inertia-vue3';
 
 import BreezeFullText from '@/Components/FullText.vue';
@@ -26,6 +26,16 @@ defineProps({
 const BreezeCarousel = defineAsyncComponent(()=>
     import('@/Components/Carousel.vue')
 )
+
+onMounted(async () => {
+    $("div.lazy").lazyload({ 
+        effect : "fadeIn"
+    });
+    $("img.lazy").lazyload({ 
+        effect : "fadeIn"
+    });
+});
+
 
 </script>
 
@@ -269,7 +279,7 @@ const BreezeCarousel = defineAsyncComponent(()=>
 </style>
 <script>
 export default {
-    mounted() {
+    /*mounted() {
 
         if(this.from_logout){ //refresh page if from logout
             if (localStorage.getItem('reloaded')) {
@@ -280,7 +290,7 @@ export default {
             }
         }
 
-    },
+    },*/
     unmounted() {
         localStorage.removeItem('reloaded');
     },

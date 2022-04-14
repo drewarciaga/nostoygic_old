@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('image_url')->nullable();
             $table->string('thumbnail_url')->nullable();
             $table->string('color')->nullable();
+            $table->text('tags')->nullable();
+            $table->unsignedTinyInteger('active')->default(1);
             $table->softDeletes();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

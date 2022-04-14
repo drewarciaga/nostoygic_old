@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MyBaseModel extends \Illuminate\Database\Eloquent\Model
 {
-    public function setProfile($request, $type, $folder){
+    public function setProfile($request, $type, $folder, $size){
         $url = null;
 
         try{
@@ -34,7 +34,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             Storage::disk($local_storage)->put($file_path, file_get_contents($file), 'public');
             $url   = Storage::disk($local_storage)->url($file_path);
     
-            $image = Image::make( Storage::disk($local_storage)->get($file_path) )->resize(800, null, function ($constraint) {
+            $image = Image::make( Storage::disk($local_storage)->get($file_path) )->resize($size, null, function ($constraint) {
                                 $constraint->aspectRatio();
                                 $constraint->upsize();
                             })->stream();
@@ -50,7 +50,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
         return $url;
     }
 
-    public function createThumbnail($request, $type, $folder){
+    public function createThumbnail($request, $type, $folder, $size){
         $url = null;
 
         try{
@@ -75,7 +75,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             Storage::disk($local_storage)->put($file_path, file_get_contents($file), 'public');
             $url   = Storage::disk($local_storage)->url($file_path);
     
-            $image = Image::make( Storage::disk($local_storage)->get($file_path) )->resize(300, null, function ($constraint) {
+            $image = Image::make( Storage::disk($local_storage)->get($file_path) )->resize($size, null, function ($constraint) {
                                 $constraint->aspectRatio();
                                 $constraint->upsize();
                             })->stream();

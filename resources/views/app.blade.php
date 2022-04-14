@@ -23,16 +23,16 @@
         <script src="/js/jquery.min.js"></script>
         <script src="{{ mix('js/app.js') }}"></script>
         <script src="/js/parallax.min.js"></script>
-        <script src="/js/jquery.lazyload.min.js"></script>
+      <!--  <script src="/js/jquery.lazyload.min.js"></script> -->
         <script src="/js/scrollfade.js"></script>
 
-        <script>
+       <!-- <script>
             $("div.lazy").lazyload({ 
                 effect : "fadeIn"
             });
             $("img.lazy").lazyload({ 
                 effect : "fadeIn"
             });
-        </script>
+        </script>-->
     </body>
 </html>

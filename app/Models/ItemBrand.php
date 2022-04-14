@@ -41,9 +41,9 @@ class ItemBrand extends MyBaseModel
 
     public function uploadLogo($request){
         $status = "success";
-        $folder = 'item_images/' . $this->user_id;
+        $folder = 'item_images/brands';
 
-        $url = $this->setProfile($request, 'brand_logo', $folder);
+        $url = $this->setProfile($request, 'brand_logo', $folder, 800);
         if(!empty($url)){
             if($url == 'error'){
                 $status = "error";
@@ -51,7 +51,7 @@ class ItemBrand extends MyBaseModel
                 $this->image_url = $url;
 
                 if(!empty($this->image_url)){
-                    $thumbUrl = $this->createThumbnail($request, 'brand_logo', $folder);
+                    $thumbUrl = $this->createThumbnail($request, 'brand_logo', $folder, 300);
                     if($thumbUrl == 'error'){
                         $status = "error";
                     }else{
@@ -72,5 +72,10 @@ class ItemBrand extends MyBaseModel
             $q->where('users.id', Auth::user()->id);
 
         });
+    }
+
+    public function scopeActive($query)
+    {
+        $query->where('active', 1);
     }
 }

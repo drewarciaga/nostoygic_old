@@ -98,7 +98,7 @@ class ItemController extends Controller
         $this->validate($request, $item->rules, $item->messages);
 
         $item->name                     = $this->clearChars($input['name']);
-        $item->brand_id                 = $input['brand_id'];
+        $item->brand_id                 = !empty($input['brand_id'])?$input['brand_id']:null;
         $item->display_name             = !empty($input['display_name'])?$this->clearChars($input['display_name']):"";
         $item->user_id                  = Auth::user()->id;
         

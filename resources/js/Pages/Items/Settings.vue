@@ -3,12 +3,13 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 
 import BreezeButton from '@/Components/Button.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 
-const BreezeBrandIndex = defineAsyncComponent(()=>
+/*const BreezeBrandIndex = defineAsyncComponent(()=>
     import('@/Pages/Items/BrandIndex.vue')
-)
-
+)*/
+import BreezeBrandIndex from '@/Pages/Items/BrandIndex.vue';
+const activeTab = ref('types')
 </script>
 
 <template>
@@ -40,7 +41,10 @@ const BreezeBrandIndex = defineAsyncComponent(()=>
                     There is no music in the nightingale.
                 </o-tab-item>
                 <o-tab-item label="Brands" :value="'brands'">
-                    <BreezeBrandIndex v-if="activeTab=='brands'"></BreezeBrandIndex>
+                    <span  v-if="activeTab=='brands'">
+                        <BreezeBrandIndex></BreezeBrandIndex>
+                    </span>
+                   
                 </o-tab-item>
 
             </o-tabs>
@@ -49,12 +53,3 @@ const BreezeBrandIndex = defineAsyncComponent(()=>
 
     </BreezeAuthenticatedLayout>
 </template>
-<script>
-  export default {
-    data() {
-      return {
-        activeTab: 'types',
-      }
-    }
-  }
-</script>

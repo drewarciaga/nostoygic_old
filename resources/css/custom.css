@@ -61,7 +61,7 @@
     color: white;
 }
 
-.o-field__label, .file-name{
+.o-field__label, .file-name, .o-switch__label{
     color: #cecece;
 }
 

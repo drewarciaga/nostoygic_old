@@ -2,6 +2,7 @@
 import BreezeAddEdit from '@/Pages/Items/AddEdit.vue';
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
+import BreezeDataTable from '@/Components/DataTable.vue';
 import BreezeMetric from '@/Components/Metric.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { ref, onMounted, defineAsyncComponent } from 'vue'
@@ -9,10 +10,6 @@ import { ref, onMounted, defineAsyncComponent } from 'vue'
 const isLoading  = ref(false)
 const items      = ref([])
 const totalItems = ref(0)
-
-const BreezeDataTable = defineAsyncComponent(()=>
-    import('@/Components/DataTable.vue')
-)
 
 onMounted(async () => {
     isLoading.value = true

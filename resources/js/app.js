@@ -9,6 +9,7 @@ import Oruga from '@oruga-ui/oruga-next'
 import moshaToast from 'mosha-vue-toastify'
 import 'mosha-vue-toastify/dist/style.css'
 import VueGridLayout from 'vue-grid-layout'
+import '/js/jquery.lazyload.min.js'
 /*import JQuery from 'jquery'
 window.$ = JQuery*/
 

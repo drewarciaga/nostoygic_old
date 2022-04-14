@@ -13,12 +13,8 @@ class ItemBrandController extends Controller
     use UtilsTrait;
 
     public function getBrandList(){
-        $brandsList = array(
-            array( 'value' => 0, 'label' => 'Bandai' ),
-            array( 'value' => 1, 'label' => 'Good Smile' ),
-            array( 'value' => 2, 'label' => 'Hasbro' ),
-        );
-        //sleep(2);
+        $brandsList = ItemBrand::checkUser()->active()->select('id as value', 'name as label')->orderBy('name')->get();
+        
         return response()->json($brandsList);
     }
 
@@ -51,7 +47,7 @@ class ItemBrandController extends Controller
         /*if ($item && $request->hasFile('profile_image')) {
             $uploadProfileRes = $item->uploadProfile($request);
         }*/
-sleep(5);
+
         return response()->json($brand);
         //return response()->json($item);
     }
