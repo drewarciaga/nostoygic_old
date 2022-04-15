@@ -7,6 +7,12 @@ import BreezeMetric from '@/Components/Metric.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { ref, onMounted, defineAsyncComponent } from 'vue'
 
+const columns = ref([
+    { id:0, field: 'id',   label: 'ID',     sortable: true, width: '1', },
+    { id:1, field: 'name', label: 'Name',   sortable: true },
+    { id:2, field: 'id',   label: 'Action', sortable: false },
+]);
+
 const isLoading  = ref(false)
 const items      = ref([])
 const totalItems = ref(0)
@@ -45,29 +51,6 @@ async function getAllItems(page, perPage, sortField, sortOrder, search){
         totalItems.value = response.data.total
     })
 }
-
-const columns = ref([
-    {
-        id:0,
-        field: 'id',
-        label: 'ID',
-        width: '1',
-        sortable: true
-    },
-    {
-        id:1,
-        field: 'name',
-        label: 'Name',
-        sortable: true
-    },
-    {
-        id:2,
-        field: 'id',
-        label: 'Action',
-        sortable: true
-    },
-]);
-
 </script>
 
 <template>

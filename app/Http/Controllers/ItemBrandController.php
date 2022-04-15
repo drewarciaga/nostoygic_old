@@ -36,7 +36,10 @@ class ItemBrandController extends Controller
         $this->validate($request, $brand->rules, $brand->messages);
 
         $brand->name                     = $this->clearChars($input['name']);
-        $brand->description              = $this->clearChars($input['description']);
+        $brand->description              = !empty($input['description'])?$this->clearChars($input['description']):null;
+        $brand->color                    = !empty($input['color'])?$input['color']:null;
+        $brand->tags                     = !empty($input['tags'])?$input['tags']:null;
+        $brand->active                   = !empty($input['active']) ? 1 : 0;
         $brand->user_id                  = Auth::user()->id;
 
         $brand->save();

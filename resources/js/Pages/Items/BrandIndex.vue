@@ -12,9 +12,12 @@ const BreezeColorPicker = defineAsyncComponent(()=>
     import('@/Components/ColorPicker.vue')
 )
 
-const action = ref('')
-const errors = ref([])
-const isLoading = ref(false)
+const columns = ref([
+    { id:0, field: 'id',   label: 'ID',     sortable: true, width: '1', },
+    { id:1, field: 'name', label: 'Name',   sortable: true },
+    { id:2, field: 'id',   label: 'Action', sortable: false },
+]);
+
 const toast = (message,type) => {
     createToast(message, {
         type: type,
@@ -24,6 +27,10 @@ const toast = (message,type) => {
         showIcon: 'true',
     })
 }
+
+const action = ref('')
+const errors = ref([])
+const isLoading = ref(false)
 
 const brands      = ref([])
 const totalBrands = ref(0)
@@ -56,28 +63,6 @@ async function getAllBrands(){
     })
 }
 
-const columns = ref([
-    {
-        id:0,
-        field: 'id',
-        label: 'ID',
-        width: '1',
-        sortable: true
-    },
-    {
-        id:1,
-        field: 'name',
-        label: 'Name',
-        sortable: true
-    },
-    {
-        id:2,
-        field: 'id',
-        label: 'Action',
-        sortable: false
-    },
-]);
-
 async function saveForm(){
     errors.value = []
     isLoading.value = true
@@ -89,6 +74,10 @@ async function saveForm(){
     if(brand.brand_logo !=null){
         formData.append('brand_logo', brand.brand_logo, brand.brand_logo.name);
     }
+
+    formData.append('color', brand.color);
+    formData.append('active', brand.active);
+    formData.append('tags', brand.tags);
 
     axios.post('/brands',formData
     ).then(response => {
@@ -179,7 +168,7 @@ function onFileSelected(event){
                                 </o-field>
                 
                                 <o-field label="Color" >
-                                    <BreezeColorPicker></BreezeColorPicker>
+                                    <BreezeColorPicker v-model="brand.color"></BreezeColorPicker>
                                 </o-field>
 
                                 <o-field class="py-4">
@@ -188,6 +177,13 @@ function onFileSelected(event){
                                     </o-switch>
                                 </o-field>
                              
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap -mx-2">
+                            <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
+                                <o-field label="Add some items">
+                                    <o-inputitems v-model="brand.tags" icon="tag" placeholder="Add an item" aria-close-label="Delete this item"> </o-inputitems>
+                                </o-field>
                             </div>
                         </div>
                         

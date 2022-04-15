@@ -3194,12 +3194,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,vue__WEBPACK_IMPORTED_MODULE_2__.defineComponent)({
+  props: ['modelValue'],
   components: {
     ColorPicker: vue3_colorpicker__WEBPACK_IMPORTED_MODULE_0__.ColorPicker
   },
-  setup: function setup() {
+  setup: function setup(props, context) {
     var pureColor = (0,vue__WEBPACK_IMPORTED_MODULE_2__.ref)("red");
     var gradientColor = (0,vue__WEBPACK_IMPORTED_MODULE_2__.ref)("linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%)");
+    (0,vue__WEBPACK_IMPORTED_MODULE_2__.watch)(pureColor, function (newValue, oldValue) {
+      context.emit('update:modelValue', newValue);
+    });
     return {
       pureColor: pureColor,
       gradientColor: gradientColor
@@ -3226,6 +3230,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_color_picker = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("color-picker", true);
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_color_picker, {
+    format: "hex",
     pureColor: _ctx.pureColor,
     "onUpdate:pureColor": _cache[0] || (_cache[0] = function ($event) {
       return _ctx.pureColor = $event;
