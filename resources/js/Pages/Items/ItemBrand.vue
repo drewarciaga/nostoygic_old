@@ -1,110 +1,66 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
+import BreezCard3 from '@/Components/Card3.vue';
 import BreezeDataTable2 from '@/Components/DataTable2.vue';
 import BreezeLoading from '@/Components/Loading.vue';
 import BreezeMetric from '@/Components/Metric.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { ref, reactive, onMounted, defineAsyncComponent } from 'vue'
-import { createToast } from 'mosha-vue-toastify';
-
 const BreezeColorPicker = defineAsyncComponent(()=>
     import('@/Components/ColorPicker.vue')
 )
 
-const columns = ref([
-    { id:0, field: 'id',   label: 'ID',     sortable: true, width: '1', },
-    { id:1, field: 'name', label: 'Name',   sortable: true },
-    { id:2, field: 'id',   label: 'Action', sortable: false },
-]);
+const BreezeViewModel = defineAsyncComponent(()=>
+    import('@/Components/ViewModel.vue')
+)
+import useBrand from '../../Composables/Item/useBrand.js'
+import useToast from '../../Composables/useToast.js'
 
-const toast = (message,type) => {
-    createToast(message, {
-        type: type,
-        position: 'top-right',
-        timeout: 2000,
-        hideProgressBar: 'true',
-        showIcon: 'true',
-    })
-}
+const { toast } = useToast()
+const { brand, brands, totalBrands, columns, errors,
+        getBrand, getAllBrands, storeBrand, resetFields
+      } = useBrand()
 
-const action = ref('')
-const errors = ref([])
-const isLoading = ref(false)
-
-const brands      = ref([])
-const totalBrands = ref(0)
-
-const brand = reactive({
-    name: '',
-    brand_logo: null,
-    description: '',
-    tags: [],
-    color: '',
-    active: '1',
-})
+const action        = ref('')
+const isLoading     = ref(false)
+const isLoadingView = ref(false)
+const viewModelRef  = ref()
 
 onMounted(async () => {
     isLoading.value = true
-
     await getAllBrands()
-
     isLoading.value = false
 });
 
 function changeAction(selectedAction){
     action.value = selectedAction
+    resetFields()
 }
 
-async function getAllBrands(){
-    await axios.get('/brands/getAll').then(response => {
-        brands.value      = response.data.data
-        totalBrands.value = response.data.total
-    })
+async function viewModel(id){
+    action.value = 'View'
+    isLoadingView.value = true
+    await getBrand(id)
+    viewModelRef.value.showViewModel()
+    isLoadingView.value = false
 }
 
-async function saveForm(){
-    errors.value = []
+async function saveForm(id){
     isLoading.value = true
-
-    let formData = new FormData();
-    formData.append('name', brand.name);
-    formData.append('description', brand.description);
-
-    if(brand.brand_logo !=null){
-        formData.append('brand_logo', brand.brand_logo, brand.brand_logo.name);
-    }
-
-    formData.append('color', brand.color);
-    formData.append('active', brand.active);
-    formData.append('tags', brand.tags);
-
-    axios.post('/brands',formData
-    ).then(response => {
-        //console.log(response)
-        resetFields()
+    await storeBrand()
+    
+    if(errors.value.length == 0){
+        await getAllBrands()
         toast('Add Brand Successful!', 'success')
         $("#brandAddEditModal").modal('hide');
-        getAllBrands()
-        isLoading.value = false
+    }
 
-    }).catch(error => {
-        if(error.response && error.response.status == 422){
-            errors.value = error.response.data.errors
-        }
-        isLoading.value = false
-    });
-}
-
-function resetFields(){
-    brand.name = ''
-    brand.description = ''
-    brand.brand_logo = null
-    brand.active = '1'
+    isLoading.value = false
 }
 
 function onFileSelected(event){
-    brand.brand_logo = event.target.files[0]
+    brand.image_url = event.target.files[0]
 }
 </script>
 
@@ -125,6 +81,7 @@ function onFileSelected(event){
             :modelData="brands"
             :isLoading="isLoading"
             :total="totalBrands"
+            @viewModel="viewModel"
         >
         </BreezeDataTable2>
     </div>
@@ -150,20 +107,20 @@ function onFileSelected(event){
                                 </o-field>
                     
                                 <o-field label="Description" :variant="errors.description ? 'danger':''" :message="errors.description?errors.description.toString():''">
-                                    <o-input maxlength="500" type="textarea" v-model.trim.lazy="brand.description"></o-input>
+                                    <o-input maxlength="1000" type="textarea" v-model.trim.lazy="brand.description"></o-input>
                                 </o-field>
                             </div>
 
                             <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
 
-                                <o-field class="file" label="Brand logo" ref="logoUpload" :variant="errors.brand_logo ? 'danger':''" :message="errors.brand_logo?errors.brand_logo.toString():''">
-                                    <o-upload v-model="brand.brand_logo" accept="image/*">
+                                <o-field class="file" label="Brand logo" ref="logoUpload" :variant="errors.image_url ? 'danger':''" :message="errors.image_url?errors.image_url.toString():''">
+                                    <o-upload v-model="brand.image_url" accept="image/*">
                                         <o-button tag="a" variant="primary">
                                             <span class="mdi mdi-upload">Upload</span>
                                         </o-button>
                                     </o-upload>
-                                    <span class="file-name" v-if="brand.brand_logo">
-                                    {{ brand.brand_logo.name }}
+                                    <span class="file-name" v-if="brand.image_url">
+                                    {{ brand.image_url.name }}
                                     </span>
                                 </o-field>
                 
@@ -200,4 +157,7 @@ function onFileSelected(event){
             </div>
         </div>
     </div>
+
+    <BreezeViewModel :model="'Brand'" :isLoading="isLoadingView" :modelData="brand" ref="viewModelRef"></BreezeViewModel>
+
 </template>

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('model')->nullable();
             $table->string('display_name')->nullable();
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('variant')->nullable();
             $table->unsignedInteger('grade_id')->nullable();
             $table->unsignedInteger('scale_id')->nullable();

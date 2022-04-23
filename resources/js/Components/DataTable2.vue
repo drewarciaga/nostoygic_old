@@ -45,7 +45,7 @@ defineProps({
         >
             <template v-for="column in columns" :key="column.id">
                 <o-table-column v-if="column.label == 'Action'" :field="column.field" :label="column.label" :width="column.width?column.width:'40'" :sortable="column.sortable" v-slot="props">
-                    <o-button class="btn-view"><span class="mdi mdi-eye"></span></o-button>
+                    <o-button class="btn-view"><span class="mdi mdi-eye" @click="$emit('viewModel', props.row[column.field])"></span></o-button>
                     <o-button class="btn-edit"><span class="mdi mdi-note-edit"></span></o-button>
                     <o-button class="btn-delete"><span class="mdi mdi-trash-can"></span></o-button>
              

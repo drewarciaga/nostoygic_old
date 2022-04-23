@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('item_lines', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('sortOrder')->default(0);
             $table->string('image_url')->nullable();

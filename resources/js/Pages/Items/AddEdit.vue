@@ -3,99 +3,41 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
 import BreezeLoading from '@/Components/Loading.vue';
 import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';   
-import { getItemSettingsLists } from '../../Composables/Item/useItemSettings.js'
 import { ref, reactive, onMounted } from 'vue'
 import { createToast } from 'mosha-vue-toastify';
 import SelectElement from '@vueform/multiselect'
 import Multiselect from '@vueform/multiselect'
+import useItem from '../../Composables/Item/useItem.js'
+import useBrand from '../../Composables/Item/useBrand.js'
+import useToast from '../../Composables/useToast.js'
+
+const { toast } = useToast()
+const isLoading = ref(false)
+
+const { item, errors,
+        storeItem, resetFields
+      } = useItem()
+
+const { brand_list, getBrandList } = useBrand()
 
 const props = defineProps({
   action: String
 })
 
-const errors = ref([])
-const isLoading = ref(false)
-const toast = (message,type) => {
-    createToast(message, {
-        type: type,
-        position: 'top-right',
-        timeout: 2000,
-        hideProgressBar: 'true',
-        showIcon: 'true',
-    })
-}
-
-const item = reactive({
-    name: '',
-    profile_image: null,
-    model: '',
-    display_name: '',
-    description: '',
-    variant: '',
-    type_id: '',
-    brand_id: '',
-    line_id: '',
-    series_id: '',
-    scale_id: '',
-    grade_id: '',
-    wave_id: '',
-    group_id: '',
-    item_category_id: '',
-    bar_code: '',
-    image_links: '',
-    active: '',
-})
-
-const type_list    = ref([])
-const brand_list   = ref([])
-const line_list    = ref([])
-const series_list  = ref([])
-const scale_list   = ref([])
-const grade_list   = ref([])
-const wave_list    = ref([])
-const group_list   = ref([])
-
 onMounted(async () => {
     isLoading.value = true
-
-    let res = await getItemSettingsLists()
-
-    type_list.value  = res.data.type_list
-    brand_list.value = res.data.brand_list
-
+    await getBrandList()
     isLoading.value = false
 });
 
-async function saveForm(){
-    errors.value = []
+async function saveForm(id){
     isLoading.value = true
-
-    let formData = new FormData();
-    formData.append('name', item.name);
-    formData.append('brand_id', item.brand_id);
-    if(item.profile_image !=null){
-        formData.append('profile_image', item.profile_image, item.profile_image.name);
-    }
-    
-            
-    await axios.post('/items',formData
-    ).then(response => {
-        //console.log(response)
-        resetFields()
+    await storeItem()
+    if(errors.value.length == 0){
         toast('Add Item Successful!', 'success')
-        isLoading.value = false
-    }).catch(error => {
-        if(error.response && error.response.status == 422){
-            errors.value = error.response.data.errors
-        }
-        isLoading.value = false
-    });    
-}
+    }
 
-function resetFields(){
-    item.name = ''
-    item.brand_id = ''
-    item.profile_image = null
+    isLoading.value = false
 }
 
 function onFileSelected(event){
@@ -229,7 +171,7 @@ function onFileSelected(event){
                 <div class="flex flex-wrap -mx-2">
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2">
                         <o-field label="Description" :variant="errors.description ? 'danger':''" :message="errors.description?errors.description.toString():''">
-                            <o-input maxlength="500" type="textarea" v-model.trim.lazy="item.description"></o-input>
+                            <o-input maxlength="1000" type="textarea" v-model.trim.lazy="item.description"></o-input>
                         </o-field>
                     </div>
                 </div>

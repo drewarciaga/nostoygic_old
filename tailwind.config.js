@@ -32,45 +32,45 @@ module.exports = {
                     800: '#215772',
                     900: '#113f56',
                     1000: '#143965',
-                  },
-                  'nos-pink' : {
+                },
+                'nos-pink' : {
                     100 : '#efa0c5',
                     400 : '#e0609b',
                     900 : '#b9266a',
                     1000: '#800b41',
-                  },
-                  'nos-yellow' : {
+                },
+                'nos-yellow' : {
                     100: '#f5f1bf',
                     400: '#f3ee9d',
                     900: '#fff780',
-                  },
-                  'nos-turtoise' : {
+                },
+                'nos-turtoise' : {
                     100:  '#a2e6f2',
                     400:  '#7ae2f5',
                     900:  '#14bbd9',
                     1000: '#008299',
-                  }
-              },
-              spacing: {
+                }
+            },
+            spacing: {
                 '60pct': '60%',
                 '70pct': '70%',
                 '80pct': '80%',
                 '90pct': '90%',
                 '224px': '224px'
-              },
-              maxWidth: {
+            },
+            maxWidth: {
                 '1/2'  : '50%',
                 '90pct': '90%',
-              },
-              minHeight: {
+            },
+            minHeight: {
                 'carousel': '654px',
                 '1/2'     : '50%',
-              },
-              transitionDuration: {
+            },
+            transitionDuration: {
                 '0'   : '0ms',
                 '25'  : '0.25s',
                 '2000': '2000ms',
-              }
+            }
         },
     },
 

@@ -41,7 +41,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             Storage::disk($local_storage)->put($file_path, $image, 'public');
     
             if( $local_storage == "local" ){
-                $url = str_replace("/storage", "user_content", $url);
+                $url = str_replace("/storage", "/user_content", $url);
             }
         }catch(\Exception $e){
             return "error";
@@ -82,7 +82,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             Storage::disk($local_storage)->put($file_path, $image, 'public');
     
             if( $local_storage == "local" ){
-                $url = str_replace("/storage", "user_content", $url);
+                $url = str_replace("/storage", "/user_content", $url);
             }
         }catch(\Exception $e){
             return "error";

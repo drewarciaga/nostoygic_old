@@ -6,16 +6,13 @@ import BreezeDataTable from '@/Components/DataTable.vue';
 import BreezeMetric from '@/Components/Metric.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { ref, onMounted, defineAsyncComponent } from 'vue'
+import useItem from '../../Composables/Item/useItem.js'
 
-const columns = ref([
-    { id:0, field: 'id',   label: 'ID',     sortable: true, width: '1', },
-    { id:1, field: 'name', label: 'Name',   sortable: true },
-    { id:2, field: 'id',   label: 'Action', sortable: false },
-]);
+const { items, totalItems, columns, errors,
+        getAllItems
+      } = useItem()
 
 const isLoading  = ref(false)
-const items      = ref([])
-const totalItems = ref(0)
 
 onMounted(async () => {
     isLoading.value = true
@@ -35,21 +32,6 @@ async function onSort(page, perPage, sortField, sortOrder, search){
     isLoading.value = true
     await getAllItems(page,perPage,sortField,sortOrder,search)
     isLoading.value = false
-}
-
-async function getAllItems(page, perPage, sortField, sortOrder, search){
-    await axios.get('/items/getAll',{
-        params: {
-            page:           page,
-            itemsPerPage:   perPage,
-            sortBy:         sortField,
-            sortDesc:       sortOrder,
-            search:         search,
-        }
-    }).then(response => {
-        items.value      = response.data.data
-        totalItems.value = response.data.total
-    })
 }
 </script>
 

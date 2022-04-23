@@ -29,6 +29,24 @@ class ItemBrandController extends Controller
         ]);
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id){
+    	$brand = ItemBrand::find($id);
+
+    	return response()->json($brand);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request){
         $input = $request->all();
 
@@ -44,13 +62,12 @@ class ItemBrandController extends Controller
 
         $brand->save();
 
-        if ($brand && $request->hasFile('brand_logo')) {
+        if ($brand && $request->hasFile('image_url')) {
             $uploadProfileRes = $brand->uploadLogo($request);
         }
         /*if ($item && $request->hasFile('profile_image')) {
             $uploadProfileRes = $item->uploadProfile($request);
         }*/
-
         return response()->json($brand);
         //return response()->json($item);
     }

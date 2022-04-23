@@ -35,8 +35,6 @@ onMounted(async () => {
         effect : "fadeIn"
     });
 });
-
-
 </script>
 
 <template>

@@ -5,10 +5,10 @@ import BreezeButton from '@/Components/Button.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import { defineAsyncComponent, ref } from 'vue'
 
-/*const BreezeBrandIndex = defineAsyncComponent(()=>
-    import('@/Pages/Items/BrandIndex.vue')
-)*/
-import BreezeBrandIndex from '@/Pages/Items/BrandIndex.vue';
+const BreezeItemBrand = defineAsyncComponent(()=>
+    import('@/Pages/Items/ItemBrand.vue')
+)
+
 const activeTab = ref('types')
 </script>
 
@@ -42,7 +42,7 @@ const activeTab = ref('types')
                 </o-tab-item>
                 <o-tab-item label="Brands" :value="'brands'">
                     <span  v-if="activeTab=='brands'">
-                        <BreezeBrandIndex></BreezeBrandIndex>
+                        <BreezeItemBrand></BreezeItemBrand>
                     </span>
                    
                 </o-tab-item>

@@ -43,6 +43,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     
     Route::resource('items', ItemController::class)->names([
         'index'  => 'items.index',
+        'show'   => 'items.show',
         'create' => 'items.create',
         'store'  => 'items.store'
     ]);
@@ -54,6 +55,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/brands/getAll', [ItemBrandController::class, 'getAll'])->name('getAllBrands');
     Route::resource('brands', ItemBrandController::class)->names([
+        'show'   => 'brands.show',
         'store'  => 'brands.store'
     ]);
 });

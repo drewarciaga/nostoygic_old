@@ -35,8 +35,8 @@ class Item extends MyBaseModel
      * @var array $rules
      */
     public $rules = [
-        'name'               => 'required|max:100',
-        'description'        => 'max:500',
+        'name'               => 'required|max:200',
+        'description'        => 'max:1000',
     ];
 
     /**

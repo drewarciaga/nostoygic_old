@@ -20,8 +20,8 @@ class ItemBrand extends MyBaseModel
      * @var array $rules
      */
     public $rules = [
-        'name'               => 'required|max:100',
-        'description'        => 'max:500',
+        'name'               => 'required|max:200',
+        'description'        => 'max:1000',
     ];
 
     /**
@@ -43,7 +43,7 @@ class ItemBrand extends MyBaseModel
         $status = "success";
         $folder = 'item_images/brands';
 
-        $url = $this->setProfile($request, 'brand_logo', $folder, 800);
+        $url = $this->setProfile($request, 'image_url', $folder, 800);
         if(!empty($url)){
             if($url == 'error'){
                 $status = "error";
@@ -51,7 +51,7 @@ class ItemBrand extends MyBaseModel
                 $this->image_url = $url;
 
                 if(!empty($this->image_url)){
-                    $thumbUrl = $this->createThumbnail($request, 'brand_logo', $folder, 300);
+                    $thumbUrl = $this->createThumbnail($request, 'image_url', $folder, 300);
                     if($thumbUrl == 'error'){
                         $status = "error";
                     }else{
