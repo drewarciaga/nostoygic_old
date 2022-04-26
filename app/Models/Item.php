@@ -27,6 +27,12 @@ class Item extends MyBaseModel
         'thumbnail_url',
         'image_links',
         'active',
+
+        release_date - month year
+        product_type: ABS, PVC, Diecast (one to many)
+        product_size: Approx. 360mm, *dimensions
+        product_weight
+        'remarks'
     ];*/
 
     /**
@@ -37,6 +43,7 @@ class Item extends MyBaseModel
     public $rules = [
         'name'               => 'required|max:200',
         'description'        => 'max:1000',
+        'profile_image'      => 'image|mimes:jpeg,bmp,png|max:2000'
     ];
 
     /**
@@ -45,9 +52,11 @@ class Item extends MyBaseModel
      * @var array $messages
      */
     public $messages = [
-        'required_without'   => 'The :attribute field is required.',
-        'required'           => 'The :attribute field is required.',
-        'numeric'            => 'The :attribute field is invalid.',
+        'required_without'       => 'The :attribute field is required.',
+        'required'               => 'The :attribute field is required.',
+        'numeric'                => 'The :attribute field is invalid.',
+        'profile_image.image'    => 'The :attribute should be an image.',
+        'profile_image.uploaded' => 'The :attribute cannot exceed 2MB.',
     ];
 
     public function user(){
@@ -72,7 +81,7 @@ class Item extends MyBaseModel
         $status = "success";
         $folder = 'item_images';
 
-        $url = $this->setProfile($request, 'profile_image', $folder, 800);
+        $url = $this->uploadImage($request, 'profile_image', $folder, 800);
         if(!empty($url)){
             if($url == 'error'){
                 $status = "error";

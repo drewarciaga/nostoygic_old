@@ -3204,6 +3204,15 @@ __webpack_require__.r(__webpack_exports__);
     (0,vue__WEBPACK_IMPORTED_MODULE_2__.watch)(pureColor, function (newValue, oldValue) {
       context.emit('update:modelValue', newValue);
     });
+    (0,vue__WEBPACK_IMPORTED_MODULE_2__.watch)(function () {
+      return props.modelValue;
+    }, function (newValue, oldValue) {
+      if (newValue != null && newValue != '') {
+        pureColor.value = newValue;
+      } else {
+        pureColor.value = "red";
+      }
+    });
     return {
       pureColor: pureColor,
       gradientColor: gradientColor

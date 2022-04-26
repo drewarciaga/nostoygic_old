@@ -59,18 +59,38 @@ export default function useitem(){
             item_list.value = response.data
         });
     }*/
-
-    async function storeItem(){
-        errors.value = []
-    
+    function setFormData(){
         let formData = new FormData();
         formData.append('name', item.name);
         formData.append('brand_id', item.brand_id);
         if(item.profile_image !=null){
             formData.append('profile_image', item.profile_image, item.profile_image.name);
         }
+
+        return formData;
+    }
+
+    async function storeItem(){
+        errors.value = []
+    
+        let formData = setFormData();
               
         await axios.post('/items',formData
+        ).then(response => {
+            resetFields()
+        }).catch(error => {
+            if(error.response && error.response.status == 422){
+                errors.value = error.response.data.errors
+            }
+        });  
+    }
+
+    async function updateItem(id){
+        errors.value = []
+    
+        let formData = setFormData();
+              
+        await axios.put('/items/'+id,formData
         ).then(response => {
             resetFields()
         }).catch(error => {
@@ -89,6 +109,7 @@ export default function useitem(){
         errors,
         resetFields,
         storeItem,
+        updateItem,
         getAllItems,
         //getItemList,
 

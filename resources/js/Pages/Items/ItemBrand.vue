@@ -19,7 +19,7 @@ import useToast from '../../Composables/useToast.js'
 
 const { toast } = useToast()
 const { brand, brands, totalBrands, columns, errors,
-        getBrand, getAllBrands, storeBrand, resetFields
+        getBrand, getAllBrands, storeBrand, updateBrand, resetFields
       } = useBrand()
 
 const action        = ref('')
@@ -35,24 +35,46 @@ onMounted(async () => {
 
 function changeAction(selectedAction){
     action.value = selectedAction
+    errors.value = []
     resetFields()
 }
 
 async function viewModel(id){
-    action.value = 'View'
+    changeAction('View')
     isLoadingView.value = true
     await getBrand(id)
     viewModelRef.value.showViewModel()
     isLoadingView.value = false
 }
 
-async function saveForm(id){
-    isLoading.value = true
-    await storeBrand()
+async function editModel(id){
+    changeAction('Edit')
+    isLoadingView.value = true
+    await getBrand(id)
+    $("#brandAddEditModal").modal('show');
+
+    isLoadingView.value = false
+}
+
+async function deleteModel(id){
+    changeAction('Delete')
+    isLoadingView.value = true
     
+    isLoadingView.value = false
+}
+
+async function saveForm(){
+    isLoading.value = true
+
+    if(action.value == 'Add'){
+        await storeBrand()
+    }else if(action.value == 'Edit'){
+        await updateBrand(brand.id)
+    }
+
     if(errors.value.length == 0){
         await getAllBrands()
-        toast('Add Brand Successful!', 'success')
+        toast(action.value + ' Brand Successful!', 'success')
         $("#brandAddEditModal").modal('hide');
     }
 
@@ -82,6 +104,8 @@ function onFileSelected(event){
             :isLoading="isLoading"
             :total="totalBrands"
             @viewModel="viewModel"
+            @editModel="editModel"
+            @deleteModel="deleteModel"
         >
         </BreezeDataTable2>
     </div>

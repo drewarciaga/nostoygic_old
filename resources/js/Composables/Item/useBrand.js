@@ -7,8 +7,12 @@ export default function useBrand(){
     const errors        = ref([])
 
     const brand = reactive({
+        id: '',
         name: '',
         image_url: null,
+        image_url_img: null,
+        thumbnail_url: null,
+        thumbnail_url_img: null,
         description: '',
         tags: [],
         color: '',
@@ -21,9 +25,13 @@ export default function useBrand(){
     ]);
 
     function resetFields(){
+        brand.id = ''
         brand.name = ''
         brand.description = ''
         brand.image_url = null
+        brand.thumbnail_url = null
+        brand.main_img = null
+        brand.main_thumb_img = null
         brand.active = '1'
         brand.tags = []
         brand.color = ''
@@ -32,9 +40,14 @@ export default function useBrand(){
     async function getBrand(brand_id){
         await axios.get('/brands/' + brand_id).then(response => {
             if(response.data){
+                brand.id                = response.data.id
                 brand.name              = response.data.name
                 brand.description       = response.data.description
-                brand.image_url         = response.data.image_url
+                brand.main_img          = response.data.image_url
+                brand.main_thumb_img    = response.data.thumbnail_url
+                brand.active            = response.data.active.toString()
+                brand.tags              = response.data.tags
+                brand.color             = response.data.color
             }
         })
     }
@@ -52,9 +65,7 @@ export default function useBrand(){
         });
     }
 
-    async function storeBrand(){
-        errors.value = []
-    
+    function setFormData(){
         let formData = new FormData();
         formData.append('name', brand.name);
         formData.append('description', brand.description);
@@ -66,8 +77,31 @@ export default function useBrand(){
         formData.append('color', brand.color);
         formData.append('active', brand.active);
         formData.append('tags', brand.tags);
-    
+
+        return formData;
+    }
+
+    async function storeBrand(){
+        errors.value = []
+
+        let formData = setFormData();
+
         await axios.post('/brands',formData
+        ).then(response => {
+            resetFields()
+        }).catch(error => {
+            if(error.response && error.response.status == 422){
+                errors.value = error.response.data.errors
+            }
+        });
+    }
+
+    async function updateBrand(brand_id){
+        errors.value = []
+
+        let formData = setFormData();
+        formData.append('_method', 'PUT')
+        await axios.post('/brands/'+brand_id,formData
         ).then(response => {
             resetFields()
         }).catch(error => {
@@ -86,6 +120,7 @@ export default function useBrand(){
         errors,
         resetFields,
         storeBrand,
+        updateBrand,
         getBrand,
         getAllBrands,
         getBrandList,

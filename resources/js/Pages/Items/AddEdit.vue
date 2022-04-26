@@ -15,7 +15,7 @@ const { toast } = useToast()
 const isLoading = ref(false)
 
 const { item, errors,
-        storeItem, resetFields
+        storeItem, updateItem, resetFields
       } = useItem()
 
 const { brand_list, getBrandList } = useBrand()
@@ -32,9 +32,14 @@ onMounted(async () => {
 
 async function saveForm(id){
     isLoading.value = true
-    await storeItem()
+    if(action.value == 'Add'){
+        await storeItem()
+    }else if(action.value == 'Edit'){
+        await updateItem(id)
+    }
+    
     if(errors.value.length == 0){
-        toast('Add Item Successful!', 'success')
+        toast(action.value + ' Item Successful!', 'success')
     }
 
     isLoading.value = false

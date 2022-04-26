@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Image;
+use Illuminate\Support\Facades\Storage;
 
 class ItemBrand extends MyBaseModel
 {
@@ -22,6 +24,7 @@ class ItemBrand extends MyBaseModel
     public $rules = [
         'name'               => 'required|max:200',
         'description'        => 'max:1000',
+        'image_url'          => 'image|mimes:jpeg,bmp,png|max:2000'
     ];
 
     /**
@@ -33,6 +36,8 @@ class ItemBrand extends MyBaseModel
         'required_without'   => 'The :attribute field is required.',
         'required'           => 'The :attribute field is required.',
         'numeric'            => 'The :attribute field is invalid.',
+        'image_url.image'    => 'The :attribute should be an image.',
+        'image_url.uploaded' => 'The :attribute cannot exceed 2MB.',
     ];
 
     public function user(){
@@ -43,7 +48,10 @@ class ItemBrand extends MyBaseModel
         $status = "success";
         $folder = 'item_images/brands';
 
-        $url = $this->setProfile($request, 'image_url', $folder, 800);
+        //delete existing image first
+        $this->deleteImage(public_path().$this->image_url, public_path().$this->thumbnail_url);
+
+        $url = $this->uploadImage($request, 'image_url', $folder, 800);
         if(!empty($url)){
             if($url == 'error'){
                 $status = "error";

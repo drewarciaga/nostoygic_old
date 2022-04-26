@@ -42,10 +42,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/items/itemSettings', [ItemController::class, 'itemSettings'])->name('itemSettings');
     
     Route::resource('items', ItemController::class)->names([
-        'index'  => 'items.index',
-        'show'   => 'items.show',
-        'create' => 'items.create',
-        'store'  => 'items.store'
+        'index'   => 'items.index',
+
     ]);
 
     Route::get('/admin/getAdminMenuItems', [AdminController::class, 'getAdminMenuItems'])->name('getAdminMenuItems');
@@ -55,8 +53,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('/brands/getAll', [ItemBrandController::class, 'getAll'])->name('getAllBrands');
     Route::resource('brands', ItemBrandController::class)->names([
-        'show'   => 'brands.show',
-        'store'  => 'brands.store'
+        'index'   => 'brands.index',
     ]);
 });
 

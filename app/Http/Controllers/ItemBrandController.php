@@ -38,6 +38,11 @@ class ItemBrandController extends Controller
     public function show($id){
     	$brand = ItemBrand::find($id);
 
+        if(!empty($brand->tags)){
+            $brand->tags = explode(',', $brand->tags);
+        }
+        
+
     	return response()->json($brand);
     }
 
@@ -47,14 +52,14 @@ class ItemBrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){
+    public function store(Request $request){\Log::info('store');
         $input = $request->all();
 
         $brand = new ItemBrand();
         $this->validate($request, $brand->rules, $brand->messages);
 
         $brand->name                     = $this->clearChars($input['name']);
-        $brand->description              = !empty($input['description'])?$this->clearChars($input['description']):null;
+        $brand->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
         $brand->color                    = !empty($input['color'])?$input['color']:null;
         $brand->tags                     = !empty($input['tags'])?$input['tags']:null;
         $brand->active                   = !empty($input['active']) ? 1 : 0;
@@ -70,5 +75,36 @@ class ItemBrandController extends Controller
         }*/
         return response()->json($brand);
         //return response()->json($item);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id){
+        $input = $request->all();
+
+        $brand = ItemBrand::findOrFail($id);
+        $this->validate($request, $brand->rules, $brand->messages);
+
+        $brand->name                     = $this->clearChars($input['name']);
+        $brand->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
+        $brand->color                    = !empty($input['color'])?$input['color']:null;
+        $brand->tags                     = !empty($input['tags'])?$input['tags']:null;
+        $brand->active                   = !empty($input['active']) ? 1 : 0;
+        $brand->user_id                  = Auth::user()->id;
+
+        $brand->update();
+
+        if ($brand && $request->hasFile('image_url')) {
+            $uploadProfileRes = $brand->uploadLogo($request);
+        }
+        /*if ($item && $request->hasFile('profile_image')) {
+            $uploadProfileRes = $item->uploadProfile($request);
+        }*/
+        return response()->json($brand);
     }
 }

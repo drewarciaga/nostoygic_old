@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MyBaseModel extends \Illuminate\Database\Eloquent\Model
 {
-    public function setProfile($request, $type, $folder, $size){
+    public function uploadImage($request, $type, $folder, $size){
         $url = null;
 
         try{
@@ -91,7 +91,19 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
         return $url;
     }
 
-
+    public function deleteImage($image_path = null, $thumnail_path = null){
+        if(!empty($image_path)){
+            if(Storage::exists($image_path )){
+                unlink($image_path);
+            }
+            
+        }
+        if(!empty($thumnail_path)){
+            if(Storage::exists($thumnail_path )){
+                unlink($thumnail_path);
+            }
+        }
+    }
 
 
 }

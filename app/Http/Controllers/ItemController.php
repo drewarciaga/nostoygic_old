@@ -129,7 +129,9 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id){
-        //
+        return Inertia::render('Items/AddEdit', [
+            'action' => 'Edit',
+        ]);
     }
 
     /**

@@ -40,7 +40,7 @@ defineExpose({
                 </div>
                 <section v-if="!isLoading">
                     <div class="modal-body relative p-4">
-                        <BreezCard3 :mainImg="modelData.image_url" :name="modelData.name" :description="modelData.description"></BreezCard3>
+                        <BreezCard3 :mainImg="modelData.main_img" :name="modelData.name" :description="modelData.description"></BreezCard3>
                     </div>
                 </section>
                 <section v-else>
