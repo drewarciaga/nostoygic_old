@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Traits\UtilsTrait;
+use App\Models\Item;
 use App\Models\ItemBrand;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,7 +53,7 @@ class ItemBrandController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request){\Log::info('store');
+    public function store(Request $request){
         $input = $request->all();
 
         $brand = new ItemBrand();
@@ -106,5 +107,32 @@ class ItemBrandController extends Controller
             $uploadProfileRes = $item->uploadProfile($request);
         }*/
         return response()->json($brand);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id){
+        $data['error'] = "";
+        $itemBrand = ItemBrand::find($id);
+        if(empty($itemBrand)){
+            $data['error'] .= "Cannot find Brand";
+            return json_encode($data);
+        }
+
+        $items_count = Item::where('brand_id', $itemBrand->id)->count();
+
+        if($items_count > 0){
+            $data['error'] .= "Cannot delete, This Brand is used in items";
+            return json_encode($data);
+        }else{
+            $itemBrand->deleteImage(public_path().$itemBrand->image_url, public_path().$itemBrand->thumbnail_url);
+            $itemBrand->forceDelete();
+        }
+
+        return response()->json('Delete Item Brand Successful!');
     }
 }

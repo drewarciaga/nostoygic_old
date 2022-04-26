@@ -21,8 +21,13 @@ function showViewModel(){
     $("#viewModel").modal('show');
 }
 
+function hideViewModel(){
+    $("#viewModel").modal('hide');
+}
+
 defineExpose({
     showViewModel,
+    hideViewModel
 });
 
 </script>

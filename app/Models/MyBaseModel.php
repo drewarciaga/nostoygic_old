@@ -93,13 +93,15 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
 
     public function deleteImage($image_path = null, $thumnail_path = null){
         if(!empty($image_path)){
-            if(Storage::exists($image_path )){
+            $image_path = str_replace("\\","/",$image_path);
+            if(Storage::exists($image_path)){ //storage exists not working
                 unlink($image_path);
             }
             
         }
         if(!empty($thumnail_path)){
-            if(Storage::exists($thumnail_path )){
+            $thumnail_path = str_replace("\\","/",$thumnail_path);
+            if(Storage::exists($thumnail_path)){
                 unlink($thumnail_path);
             }
         }

@@ -1,7 +1,6 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
-import BreezCard3 from '@/Components/Card3.vue';
 import BreezeDataTable2 from '@/Components/DataTable2.vue';
 import BreezeLoading from '@/Components/Loading.vue';
 import BreezeMetric from '@/Components/Metric.vue';
@@ -14,18 +13,25 @@ const BreezeColorPicker = defineAsyncComponent(()=>
 const BreezeViewModel = defineAsyncComponent(()=>
     import('@/Components/ViewModel.vue')
 )
+
+const BreezeConfirmDialog = defineAsyncComponent(()=>
+    import('@/Components/ConfirmDialog.vue')
+)
+
 import useBrand from '../../Composables/Item/useBrand.js'
 import useToast from '../../Composables/useToast.js'
 
 const { toast } = useToast()
 const { brand, brands, totalBrands, columns, errors,
-        getBrand, getAllBrands, storeBrand, updateBrand, resetFields
+        getBrand, getAllBrands, storeBrand, updateBrand, deleteBrand, resetFields
       } = useBrand()
 
-const action        = ref('')
-const isLoading     = ref(false)
-const isLoadingView = ref(false)
-const viewModelRef  = ref()
+const action         = ref('')
+const isLoading      = ref(false)
+const isLoadingView  = ref(false)
+const viewModelRef   = ref()
+const deletemodelRef = ref()
+const model_id       = ref()
 
 onMounted(async () => {
     isLoading.value = true
@@ -56,10 +62,28 @@ async function editModel(id){
     isLoadingView.value = false
 }
 
-async function deleteModel(id){
+async function showDeleteModel(id){
+    model_id.value = id
+    deletemodelRef.value.showConfirmDialog()
+}
+
+async function closeConfirmDialog(){
+    model_id.value = ''
+    deletemodelRef.value.hideConfirmDialog()
+}
+
+async function deleteModel(){
     changeAction('Delete')
     isLoadingView.value = true
-    
+    await deleteBrand(model_id.value)
+    model_id.value = ''
+    deletemodelRef.value.hideConfirmDialog()
+    if(errors.value.length > 0){
+        toast(action.value + ' Brand Failed! : ' + errors.value, 'danger', 5000 )
+    }else{
+        toast(action.value + ' Brand Successful!', 'success')
+        await getAllBrands()
+    }
     isLoadingView.value = false
 }
 
@@ -73,8 +97,8 @@ async function saveForm(){
     }
 
     if(errors.value.length == 0){
-        await getAllBrands()
         toast(action.value + ' Brand Successful!', 'success')
+        await getAllBrands()
         $("#brandAddEditModal").modal('hide');
     }
 
@@ -105,7 +129,7 @@ function onFileSelected(event){
             :total="totalBrands"
             @viewModel="viewModel"
             @editModel="editModel"
-            @deleteModel="deleteModel"
+            @deleteModel="showDeleteModel"
         >
         </BreezeDataTable2>
     </div>
@@ -183,5 +207,12 @@ function onFileSelected(event){
     </div>
 
     <BreezeViewModel :model="'Brand'" :isLoading="isLoadingView" :modelData="brand" ref="viewModelRef"></BreezeViewModel>
-
+    <BreezeConfirmDialog title="Delete Brand" content="Are you sure you want to delete Brand?" ref="deletemodelRef">
+        <BreezeButton :type="'button'" @click="closeConfirmDialog" class="mx-1">
+            Cancel
+        </BreezeButton>
+        <BreezeButton :type="'button'" @click="deleteModel" class="mx-1" color="danger">
+            Delete
+        </BreezeButton>
+    </BreezeConfirmDialog>
 </template>

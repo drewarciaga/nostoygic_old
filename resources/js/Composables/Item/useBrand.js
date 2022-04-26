@@ -110,6 +110,19 @@ export default function useBrand(){
             }
         });
     }
+
+    async function deleteBrand(brand_id){
+        errors.value = []
+
+        await axios.delete('/brands/'+brand_id).then(response => {
+            if(response.data.error != null){
+                errors.value = response.data.error
+            }
+        }).catch(error => {
+            console.log('test')
+            errors.value = error
+        })
+    }
     
     return {
         brand,
@@ -121,6 +134,7 @@ export default function useBrand(){
         resetFields,
         storeBrand,
         updateBrand,
+        deleteBrand,
         getBrand,
         getAllBrands,
         getBrandList,
