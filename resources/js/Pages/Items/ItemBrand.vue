@@ -1,6 +1,7 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
+import BreezeCheckbox from '@/Components/Checkbox.vue';
 import BreezeDataTable2 from '@/Components/DataTable2.vue';
 import BreezeLoading from '@/Components/Loading.vue';
 import BreezeMetric from '@/Components/Metric.vue';
@@ -168,10 +169,14 @@ function onFileSelected(event){
                                         </o-button>
                                     </o-upload>
                                     <span class="file-name" v-if="brand.image_url">
-                                    {{ brand.image_url.name }}
+                                        {{ brand.image_url.name }}
                                     </span>
                                 </o-field>
-                
+
+                                <o-field label="Delete Brand Logo?" v-if="brand.main_img != null">
+                                    <BreezeCheckbox v-model:checked="brand.delete_brand_logo" color="secondary" />
+                                </o-field>
+
                                 <o-field label="Color" >
                                     <BreezeColorPicker v-model="brand.color"></BreezeColorPicker>
                                 </o-field>
@@ -191,7 +196,6 @@ function onFileSelected(event){
                                 </o-field>
                             </div>
                         </div>
-                        
                         
                         <div class="">
                             <div class="block text-right py-4">

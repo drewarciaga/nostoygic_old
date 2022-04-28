@@ -99,10 +99,18 @@ class ItemBrandController extends Controller
         $brand->user_id                  = Auth::user()->id;
 
         $brand->update();
-
-        if ($brand && $request->hasFile('image_url')) {
-            $uploadProfileRes = $brand->uploadLogo($request);
+      
+        if(!empty($request->delete_brand_logo)){
+            $brand->deleteImage($brand->image_url, $brand->thumbnail_url);
+            $brand->image_url = null;
+            $brand->thumbnail_url = null;
+            $brand->update();
+        }else{
+            if ($brand && $request->hasFile('image_url')) {
+                $uploadProfileRes = $brand->uploadLogo($request);
+            }
         }
+
         /*if ($item && $request->hasFile('profile_image')) {
             $uploadProfileRes = $item->uploadProfile($request);
         }*/
@@ -117,20 +125,20 @@ class ItemBrandController extends Controller
      */
     public function destroy($id){
         $data['error'] = "";
-        $itemBrand = ItemBrand::find($id);
-        if(empty($itemBrand)){
+        $brand = ItemBrand::find($id);
+        if(empty($brand)){
             $data['error'] .= "Cannot find Brand";
             return json_encode($data);
         }
 
-        $items_count = Item::where('brand_id', $itemBrand->id)->count();
+        $items_count = Item::where('brand_id', $brand->id)->count();
 
         if($items_count > 0){
             $data['error'] .= "Cannot delete, This Brand is used in items";
             return json_encode($data);
         }else{
-            $itemBrand->deleteImage(public_path().$itemBrand->image_url, public_path().$itemBrand->thumbnail_url);
-            $itemBrand->forceDelete();
+            $brand->deleteImage($brand->image_url, $brand->thumbnail_url);
+            $brand->forceDelete();
         }
 
         return response()->json('Delete Item Brand Successful!');

@@ -18,7 +18,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             $user_id = Auth::user()->id;
             $file      = $request->file($type);
             //$filename  = Str::slug($this->name).'-profile_image-'.md5(time()).'.'.strtolower($file->getClientOriginalExtension());
-            $filename  = Str::slug($this->name) . '-' . $type . '-' . $this->id . '.' . strtolower($file->getClientOriginalExtension());
+            $filename  = Str::slug($this->name) . '-' . $type . '-' . $this->id . date('jnGi') . '.' . strtolower($file->getClientOriginalExtension());
             $file_path = $user_id . '/' . $folder.'/' . $filename;
     
             if (Storage::disk('local5')->exists($file_path)) {
@@ -60,7 +60,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             $file      = $request->file($type);
     
             //$filename  = Str::slug($this->name).'-profile_image-thumb-'.md5(time()).'.'.strtolower($file->getClientOriginalExtension());
-            $filename  = Str::slug($this->name) . '-' . $type . '-thumb-' . $this->id . '.' . strtolower($file->getClientOriginalExtension());
+            $filename  = Str::slug($this->name) . '-' . $type . '-thumb-' . $this->id . date('jnGi') . '.' . strtolower($file->getClientOriginalExtension());
             $file_path = $user_id . '/' . $folder . '/thumbnails/' . $filename;
     
             if (Storage::disk('local5')->exists($file_path)) {
@@ -92,17 +92,28 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
     }
 
     public function deleteImage($image_path = null, $thumnail_path = null){
+        $local_storage = "local";
+
         if(!empty($image_path)){
             $image_path = str_replace("\\","/",$image_path);
-            if(Storage::exists($image_path)){ //storage exists not working
-                unlink($image_path);
+ 
+            if(Storage::disk($local_storage)->exists($image_path)){
+                Storage::disk($local_storage)->delete($image_path);
+            }
+
+            if(Storage::disk('local5')->exists($image_path)){
+                Storage::disk('local5')->delete($image_path);
             }
             
         }
         if(!empty($thumnail_path)){
             $thumnail_path = str_replace("\\","/",$thumnail_path);
-            if(Storage::exists($thumnail_path)){
-                unlink($thumnail_path);
+            if(Storage::disk($local_storage)->exists('/'.$thumnail_path)){
+                Storage::disk($local_storage)->delete($thumnail_path);
+            }
+
+            if(Storage::disk('local5')->exists('/'.$thumnail_path)){
+                Storage::disk('local5')->delete($thumnail_path);
             }
         }
     }

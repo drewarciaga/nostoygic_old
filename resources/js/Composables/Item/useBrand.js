@@ -17,6 +17,7 @@ export default function useBrand(){
         tags: [],
         color: '',
         active: '1',
+        delete_brand_logo: false
     })
 
     const columns = ref([
@@ -35,6 +36,7 @@ export default function useBrand(){
         brand.active = '1'
         brand.tags = []
         brand.color = ''
+        brand.delete_brand_logo = false
     }
 
     async function getBrand(brand_id){
@@ -74,9 +76,19 @@ export default function useBrand(){
             formData.append('image_url', brand.image_url, brand.image_url.name);
         }
     
-        formData.append('color', brand.color);
+        
+        if(brand.color != null && brand.color != ''){
+            formData.append('color', brand.color);
+        }
         formData.append('active', brand.active);
-        formData.append('tags', brand.tags);
+        if(brand.tags != null && brand.tags != ''){
+            formData.append('tags', brand.tags);
+        }
+        
+        if(brand.delete_brand_logo == true){
+            formData.append('delete_brand_logo', brand.delete_brand_logo);
+        }
+        
 
         return formData;
     }

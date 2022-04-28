@@ -49,7 +49,7 @@ class ItemBrand extends MyBaseModel
         $folder = 'item_images/brands';
 
         //delete existing image first
-        $this->deleteImage(public_path().$this->image_url, public_path().$this->thumbnail_url);
+        $this->deleteImage($this->image_url, $this->thumbnail_url);
 
         $url = $this->uploadImage($request, 'image_url', $folder, 800);
         if(!empty($url)){
