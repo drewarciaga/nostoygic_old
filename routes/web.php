@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     ]);
 
     Route::get('/admin/getAdminMenuItems', [AdminController::class, 'getAdminMenuItems'])->name('getAdminMenuItems');
+    Route::post('/admin/updateAdminMenuGrid', [AdminController::class, 'updateAdminMenuGrid'])->name('updateAdminMenuGrid');
     Route::resource('admin', AdminController::class)->names([
         'index'  => 'admin.index',
     ]);

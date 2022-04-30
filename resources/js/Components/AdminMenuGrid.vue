@@ -25,6 +25,7 @@
                        class="GradientBorder"
                        drag-allow-from=".vue-draggable-handle"
                        drag-ignore-from=".no-drag"
+                       @moved="movedEvent"
             >
        
                 <div class="block justify-center">
@@ -107,13 +108,15 @@ export default {
                 xxs: 0
             },
             layouts : {},
-            layout : []
+            layout : [],
+            currentBreakPoint: ''
         }
     },
     methods: {
         breakpointChangedEvent: function(newBreakpoint, newLayout){
             console.log("BREAKPOINT CHANGED breakpoint=", newBreakpoint, ", layout: ", newLayout );
             this.layout = newLayout
+            this.currentBreakPoint = newBreakpoint
         },
         getAdminMenuItems(newBreakpoint){
             axios.get('/admin/getAdminMenuItems',{
@@ -122,10 +125,23 @@ export default {
                 }
                 }).then(response => {
                 this.layouts = response.data.layouts
-                console.log(newBreakpoint);
+                
                 this.layout = this.layouts[newBreakpoint]
             })
-        }
+        },
+        movedEvent: function(i, newX, newY){
+            this.layouts[this.currentBreakPoint] = this.layouts[this.currentBreakPoint]
+
+            axios.post('/admin/updateAdminMenuGrid',{
+                layouts: this.layouts,
+            }).then(response => {
+
+
+            }).catch(error => {
+                console.log(error);
+            });
+        },
+        
     },
     
 }
