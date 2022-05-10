@@ -9,6 +9,14 @@ import SelectElement from '@vueform/multiselect'
 import Multiselect from '@vueform/multiselect'
 import useItem from '../../Composables/Item/useItem.js'
 import useBrand from '../../Composables/Item/useBrand.js'
+import useGrade from '../../Composables/Item/useGrade.js'
+import useGroup from '../../Composables/Item/useGroup.js'
+import useLine from '../../Composables/Item/useLine.js'
+import useScale from '../../Composables/Item/useScale.js'
+import useSeries from '../../Composables/Item/useSeries.js'
+import useType from '../../Composables/Item/useType.js'
+import useWave from '../../Composables/Item/useWave.js'
+
 import useToast from '../../Composables/useToast.js'
 
 const { toast } = useToast()
@@ -18,28 +26,44 @@ const { item, errors,
         storeItem, updateItem, resetFields
       } = useItem()
 
-const { brand_list, getBrandList } = useBrand()
+const { brand_list, getBrandList }   = useBrand()
+const { grade_list, getGradeList }   = useGrade()
+const { group_list, getGroupList }   = useGroup()
+const { line_list, getLineList }     = useLine()
+const { scale_list, getScaleList }   = useScale()
+const { series_list, getSeriesList } = useSeries()
+const { type_list, getTypeList }     = useType()
+const { wave_list, getWaveList }     = useWave()
 
 const props = defineProps({
-  action: String
+    action: {
+        default: 'Add'
+    },
 })
 
 onMounted(async () => {
     isLoading.value = true
     await getBrandList()
+    await getGradeList()
+    await getGroupList()
+    await getLineList()
+    await getScaleList()
+    await getSeriesList()
+    await getTypeList()
+    await getWaveList()
     isLoading.value = false
 });
 
 async function saveForm(id){
     isLoading.value = true
-    if(action.value == 'Add'){
+    if(props.action == 'Add'){
         await storeItem()
-    }else if(action.value == 'Edit'){
+    }else if(props.action == 'Edit'){
         await updateItem(id)
     }
     
     if(errors.value.length == 0){
-        toast(action.value + ' Item Successful!', 'success')
+        toast(props.action + ' Item Successful!', 'success')
     }
 
     isLoading.value = false
@@ -95,6 +119,17 @@ function onFileSelected(event){
                         </o-field>
                     </div>
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Brand" :variant="errors.brand_id ? 'danger':''" :message="errors.brand_id?errors.brand_id.toString():''">
+                            <SelectElement
+                                v-model="item.brand_id"
+                                :native="false"
+                                :options="brand_list"
+                                :searchable="true"
+                                ref="brandselector"
+                            />
+                        </o-field>
+                    </div>
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
                         <o-field label="Scale" :variant="errors.scale_id ? 'danger':''" :message="errors.scale_id?errors.scale_id.toString():''">
                             <SelectElement
                                 v-model="item.scale_id"
@@ -109,7 +144,7 @@ function onFileSelected(event){
                             <SelectElement
                                 v-model="item.grade_id"
                                 :native="false"
-                                :options="scale_list"
+                                :options="grade_list"
                                 :searchable="true"
                             />
                         </o-field>
@@ -118,22 +153,11 @@ function onFileSelected(event){
 
                 <div class="flex flex-wrap -mx-2">
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
-                        <o-field label="Brand" :variant="errors.brand_id ? 'danger':''" :message="errors.brand_id?errors.brand_id.toString():''">
-                            <SelectElement
-                                v-model="item.brand_id"
-                                :native="false"
-                                :options="brand_list"
-                                :searchable="true"
-                                ref="brandselector"
-                            />
-                        </o-field>
-                    </div>
-                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
                         <o-field label="Line" :variant="errors.line_id ? 'danger':''" :message="errors.line_id?errors.line_id.toString():''">
                             <SelectElement
                                 v-model="item.line_id"
                                 :native="false"
-                                :options="scale_list"
+                                :options="line_list"
                                 :searchable="true"
                                 ref="lineselector"
                             />
@@ -144,7 +168,7 @@ function onFileSelected(event){
                             <SelectElement
                                 v-model="item.series_id"
                                 :native="false"
-                                :options="scale_list"
+                                :options="series_list"
                                 :searchable="true"
                             />
                         </o-field>
@@ -154,12 +178,33 @@ function onFileSelected(event){
                             <SelectElement
                                 v-model="item.group_id"
                                 :native="false"
-                                :options="scale_list"
+                                :options="group_list"
                                 :searchable="true"
                             />
                         </o-field>
                     </div>
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Wave" :variant="errors.wave_id ? 'danger':''" :message="errors.wave_id?errors.wave_id.toString():''">
+                            <SelectElement
+                                v-model="item.wave_id"
+                                :native="false"
+                                :options="wave_list"
+                                :searchable="true"
+                                ref="waveselector"
+                            />
+                        </o-field>
+                    </div>
+                </div>
 
+                <div class="flex flex-wrap -mx-2">
+                    <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
+                        <o-field label="Description" :variant="errors.description ? 'danger':''" :message="errors.description?errors.description.toString():''">
+                            <o-input maxlength="2000" type="textarea" v-model.trim.lazy="item.description"></o-input>
+                        </o-field>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap -mx-2">
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
                         <o-field class="file" label="Profile Image" ref="profileupload" :variant="errors.profile_image ? 'danger':''" :message="errors.profile_image?errors.profile_image.toString():''">
                             <o-upload v-model="item.profile_image">
@@ -172,11 +217,44 @@ function onFileSelected(event){
                             </span>
                         </o-field>
                     </div>
+
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                            <o-field label="Release Date">
+                                <o-datepicker ref="release_datepicker" expanded placeholder="Select a date" type="month"> </o-datepicker>
+                            <o-button @click="$refs.release_datepicker.toggle()" icon-left="calendar" type="primary" />
+                        </o-field>
+                    </div>
                 </div>
+
+                <div class="flex flex-wrap -mx-2">
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Item Size"  :variant="errors.item_size ?'danger':''" :message="errors.item_size?errors.item_size.toString():''">
+                            <o-input v-model.trim.lazy="item.item_size"></o-input>
+                        </o-field>
+                    </div>
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                        <o-field label="Item Weight"  :variant="errors.item_weight ?'danger':''" :message="errors.item_weight?errors.item_weight.toString():''">
+                            <o-input v-model.trim.lazy="item.item_weight"></o-input>
+                        </o-field>
+                    </div>
+                    <div class="my-2 px-2 w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2">
+                        <o-field label="Item Material" :variant="errors.item_material_ids ? 'danger':''" :message="errors.item_material_ids?errors.item_material_ids.toString():''">
+                            <Multiselect
+                                v-model="item.item_material_ids"
+                                mode="tags"
+                                :close-on-select="false"
+                                :searchable="true"
+                                :create-option="true"
+                                :options="type_list"
+                            />
+                        </o-field>
+                    </div>
+                </div>
+
                 <div class="flex flex-wrap -mx-2">
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2">
-                        <o-field label="Description" :variant="errors.description ? 'danger':''" :message="errors.description?errors.description.toString():''">
-                            <o-input maxlength="1000" type="textarea" v-model.trim.lazy="item.description"></o-input>
+                        <o-field label="Remarks" :variant="errors.remarks ? 'danger':''" :message="errors.remarks?errors.remarks.toString():''">
+                            <o-input maxlength="2000" type="textarea" v-model.trim.lazy="item.remarks"></o-input>
                         </o-field>
                     </div>
                 </div>

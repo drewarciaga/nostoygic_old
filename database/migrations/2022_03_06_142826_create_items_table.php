@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('display_name')->nullable();
             $table->text('description')->nullable();
             $table->string('variant')->nullable();
+            $table->date('release_date')->nullable();
             $table->unsignedInteger('grade_id')->nullable();
             $table->unsignedInteger('scale_id')->nullable();
             $table->unsignedInteger('type_id')->nullable();
@@ -36,6 +37,10 @@ return new class extends Migration
             $table->unsignedTinyInteger('active')->default(1);
             $table->unsignedInteger('user_id');
             $table->text('tags')->nullable();
+            $table->string('item_material_ids')->nullable();
+            $table->string('item_size')->nullable();
+            $table->string('item_weight')->nullable();
+            $table->string('remarks')->nullable();
 
             $table->softDeletes();
             $table->timestamps();

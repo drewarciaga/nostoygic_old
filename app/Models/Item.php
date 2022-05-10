@@ -29,9 +29,9 @@ class Item extends MyBaseModel
         'active',
 
         release_date - month year
-        product_type: ABS, PVC, Diecast (one to many)
-        product_size: Approx. 360mm, *dimensions
-        product_weight
+        item_material_ids: ABS, PVC, Diecast (one to many)
+        item_size: Approx. 360mm, *dimensions
+        item_weight
         'remarks'
     ];*/
 
@@ -41,9 +41,11 @@ class Item extends MyBaseModel
      * @var array $rules
      */
     public $rules = [
-        'name'               => 'required|max:200',
-        'description'        => 'max:1000',
-        'profile_image'      => 'image|mimes:jpeg,bmp,png|max:2000'
+        'name'               => 'required|max:200|unique:items,name',
+        'description'        => 'max:2000',
+        'profile_image'      => 'image|mimes:jpeg,bmp,png|max:2000',
+        'remarks'            => 'max:200',
+        'bar_code'           => 'max:200',
     ];
 
     /**

@@ -105,16 +105,24 @@ html, body, .main-content{
 }
 .o-tabs__nav-item-toggle{
     color: white !important;
+    border: 1px solid #425d6b !important;
 }
+
 .o-tabs__nav-item-toggle--active{
     background: #800b41 !important;
     border: 1px solid #800b41 !important;
 }
+
 .o-tabs__content{
-    background-color: #1f2d35 !important;
+    background-color: #425d6b !important;
 }
-
-
+.o-field--addons .o-btn{
+    background-color: #800b41 !important;
+    border: 1px solid #800b41 !important;
+}
+.multiselect-tag{
+    background-color: #800b41 !important;
+}
 /* start carousel*/
 .o-car, .o-car__items{
     height: 100%;

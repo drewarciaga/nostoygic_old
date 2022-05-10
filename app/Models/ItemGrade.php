@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Image;
 use Illuminate\Support\Facades\Storage;
 
-class ItemBrand extends MyBaseModel
+class ItemGrade extends MyBaseModel
 {
     public $timestamps = false;
     /*protected $fillable = [
@@ -46,7 +46,7 @@ class ItemBrand extends MyBaseModel
 
     public function uploadLogo($request){
         $status = "success";
-        $folder = 'item_images/brands';
+        $folder = 'item_images/grades';
 
         //delete existing image first
         $this->deleteImage($this->image_url, $this->thumbnail_url);

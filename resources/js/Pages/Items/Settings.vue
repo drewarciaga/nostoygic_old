@@ -6,9 +6,29 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 import { defineAsyncComponent, ref } from 'vue'
 
 const BreezeItemBrand = defineAsyncComponent(()=>
-    import('@/Pages/Items/ItemBrand.vue')
+    import('@/SubPages/Items/ItemBrand.vue')
 )
-
+const BreezeItemGrade = defineAsyncComponent(()=>
+    import('@/SubPages/Items/ItemGrade.vue')
+)
+const BreezeItemGroup = defineAsyncComponent(()=>
+    import('@/SubPages/Items/ItemGroup.vue')
+)
+const BreezeItemLine = defineAsyncComponent(()=>
+    import('@/SubPages/Items/ItemLine.vue')
+)
+const BreezeItemScale = defineAsyncComponent(()=>
+    import('@/SubPages/Items/ItemScale.vue')
+)
+const BreezeItemSeries = defineAsyncComponent(()=>
+    import('@/SubPages/Items/ItemSeries.vue')
+)
+const BreezeItemType = defineAsyncComponent(()=>
+    import('@/SubPages/Items/ItemType.vue')
+)
+const BreezeItemWave = defineAsyncComponent(()=>
+    import('@/SubPages/Items/ItemWave.vue')
+)
 const activeTab = ref('types')
 </script>
 
@@ -33,20 +53,45 @@ const activeTab = ref('types')
         <section class="p-2">
             <o-tabs type="toggle" v-model="activeTab">
                 <o-tab-item label="Types" :value="'types'">
-                    aaasdadssdWhat light is light, if Silvia be not seen? <br />
-                    What joy is joy, if Silvia be not by— <br />
-                    Unless it be to think that she is by <br />
-                    And feed upon the shadow of perfection? <br />
-                    Except I be by Silvia in the night, <br />
-                    There is no music in the nightingale.
+                    <span  v-if="activeTab=='types'">
+                        <BreezeItemType></BreezeItemType>
+                    </span>
                 </o-tab-item>
                 <o-tab-item label="Brands" :value="'brands'">
                     <span  v-if="activeTab=='brands'">
                         <BreezeItemBrand></BreezeItemBrand>
                     </span>
-                   
                 </o-tab-item>
-
+                <o-tab-item label="Lines" :value="'lines'">
+                    <span  v-if="activeTab=='lines'">
+                        <BreezeItemLine></BreezeItemLine>
+                    </span>
+                </o-tab-item>
+                <o-tab-item label="Scales" :value="'scales'">
+                    <span  v-if="activeTab=='scales'">
+                        <BreezeItemScale></BreezeItemScale>
+                    </span>
+                </o-tab-item>
+                <o-tab-item label="Series" :value="'series'">
+                    <span  v-if="activeTab=='series'">
+                        <BreezeItemSeries></BreezeItemSeries>
+                    </span>
+                </o-tab-item>
+                <o-tab-item label="Groups" :value="'groups'">
+                    <span  v-if="activeTab=='groups'">
+                        <BreezeItemGroup></BreezeItemGroup>
+                    </span>
+                </o-tab-item>
+                <o-tab-item label="Grades" :value="'grades'">
+                    <span  v-if="activeTab=='grades'">
+                        <BreezeItemGrade></BreezeItemGrade>
+                    </span>
+                </o-tab-item>
+                <o-tab-item label="Waves" :value="'waves'">
+                    <span  v-if="activeTab=='waves'">
+                        <BreezeItemWave></BreezeItemWave>
+                    </span>
+                </o-tab-item>
             </o-tabs>
         </section>
            
