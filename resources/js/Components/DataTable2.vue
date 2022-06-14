@@ -37,6 +37,7 @@ defineProps({
             :default-sort-direction="defaultSortDirection"
             :sort-icon="sortIcon"
             :sort-icon-size="sortIconSize"
+            :loading="isLoading"
             default-sort="user.first_name"
             aria-next-label="Next page"
             aria-previous-label="Previous page"

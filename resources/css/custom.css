@@ -107,6 +107,9 @@ html, body, .main-content{
     color: white !important;
     border: 1px solid #425d6b !important;
 }
+.o-tabs__nav-item-toggle:hover{
+    background: #b9266a !important;
+}
 
 .o-tabs__nav-item-toggle--active{
     background: #800b41 !important;
@@ -129,6 +132,9 @@ html, body, .main-content{
 }
 .o-car__scene{
     height: 90%;
+}
+.o-input__counter{
+    color:white !important;
 }
 @media screen and (max-width: 767px){
     .o-car__scene{
@@ -423,3 +429,8 @@ html, body, .main-content{
     }
   
   }
+
+.file-name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

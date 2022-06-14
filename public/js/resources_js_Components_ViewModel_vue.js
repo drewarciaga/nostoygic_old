@@ -30,8 +30,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Components_Card3_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Components/Card3.vue */ "./resources/js/Components/Card3.vue");
 /* harmony import */ var _Components_Loading_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/Components/Loading.vue */ "./resources/js/Components/Loading.vue");
 /* harmony import */ var _Components_SkeletonCard3_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/Components/SkeletonCard3.vue */ "./resources/js/Components/SkeletonCard3.vue");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-
 
 
 
@@ -69,9 +67,7 @@ __webpack_require__.r(__webpack_exports__);
       hideViewModel: hideViewModel,
       BreezCard3: _Components_Card3_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
       BreezeLoading: _Components_Loading_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-      BreezeSkeletonCard3: _Components_SkeletonCard3_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-      onMounted: vue__WEBPACK_IMPORTED_MODULE_3__.onMounted,
-      watch: vue__WEBPACK_IMPORTED_MODULE_3__.watch
+      BreezeSkeletonCard3: _Components_SkeletonCard3_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
     };
     Object.defineProperty(__returned__, '__isScriptSetup', {
       enumerable: false,

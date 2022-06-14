@@ -14,13 +14,20 @@ class ItemGroupController extends Controller
     use UtilsTrait;
 
     public function getGroupList(){
-        $groupsList = ItemGroup::checkUser()->active()->select('id as value', 'name as label')->orderBy('name')->get();
+        $groupsList = ItemGroup::active()->select('id as value', 'name as label')->orderBy('name')->get();
         
         return response()->json($groupsList);
     }
 
     public function getAll(Request $request){
-        $groups = ItemGroup::checkUser()->get();
+        $search = "";
+        if(!empty($request->search)){
+            $search = $request->search;
+        }
+
+        $groups = ItemGroup::when(!empty($search), function ($query) use ($search){
+                                return $query->where('name', 'like', '%'.$search.'%');
+                            })->get();
         $total = sizeof($groups);
 
         return response()->json([
@@ -43,7 +50,6 @@ class ItemGroupController extends Controller
             $group->tags = explode(',', $group->tags);
         }
         
-
     	return response()->json($group);
     }
 
@@ -60,10 +66,10 @@ class ItemGroupController extends Controller
         $this->validate($request, $group->rules, $group->messages);
 
         $group->name                     = $this->clearChars($input['name']);
-        $group->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $group->color                    = !empty($input['color'])?$input['color']:null;
-        $group->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $group->active                   = !empty($input['active']) ? 1 : 0;
+        $group->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $group->color                    = isset($input['color'])?$input['color']:null;
+        $group->tags                     = isset($input['tags'])?$input['tags']:null;
+        $group->active                   = isset($input['active']) ? 1 : 0;
         $group->user_id                  = Auth::user()->id;
 
         $group->save();
@@ -71,9 +77,7 @@ class ItemGroupController extends Controller
         if ($group && $request->hasFile('image_url')) {
             $uploadProfileRes = $group->uploadLogo($request);
         }
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
+
         return response()->json($group);
         //return response()->json($item);
     }
@@ -92,10 +96,10 @@ class ItemGroupController extends Controller
         $this->validate($request, $group->rules, $group->messages);
 
         $group->name                     = $this->clearChars($input['name']);
-        $group->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $group->color                    = !empty($input['color'])?$input['color']:null;
-        $group->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $group->active                   = !empty($input['active']) ? 1 : 0;
+        $group->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $group->color                    = isset($input['color'])?$input['color']:null;
+        $group->tags                     = isset($input['tags'])?$input['tags']:null;
+        $group->active                   = isset($input['active']) ? 1 : 0;
         $group->user_id                  = Auth::user()->id;
 
         $group->update();
@@ -111,9 +115,6 @@ class ItemGroupController extends Controller
             }
         }
 
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
         return response()->json($group);
     }
 

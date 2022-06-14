@@ -10,9 +10,7 @@ export default function useBrand(){
         id: '',
         name: '',
         image_url: null,
-        image_url_img: null,
         thumbnail_url: null,
-        thumbnail_url_img: null,
         description: '',
         tags: [],
         color: '',
@@ -54,8 +52,12 @@ export default function useBrand(){
         })
     }
 
-    async function getAllBrands(){
-        await axios.get('/brands/getAll').then(response => {
+    async function getAllBrands(searchInput){
+        await axios.get('/brands/getAll',{
+            params: {
+                search: searchInput
+            }
+        }).then(response => {
             brands.value      = response.data.data
             totalBrands.value = response.data.total
         })
@@ -70,17 +72,23 @@ export default function useBrand(){
     function setFormData(){
         let formData = new FormData();
         formData.append('name', brand.name);
-        formData.append('description', brand.description);
+
+        if(brand.description !=null){
+            formData.append('description', brand.description);
+        }
     
         if(brand.image_url !=null){
             formData.append('image_url', brand.image_url, brand.image_url.name);
         }
     
-        
         if(brand.color != null && brand.color != ''){
             formData.append('color', brand.color);
         }
-        formData.append('active', brand.active);
+
+        if(brand.active !=null){
+            formData.append('active', brand.active);
+        }
+
         if(brand.tags != null && brand.tags != ''){
             formData.append('tags', brand.tags);
         }
@@ -89,7 +97,6 @@ export default function useBrand(){
             formData.append('delete_brand_logo', brand.delete_brand_logo);
         }
         
-
         return formData;
     }
 
@@ -131,7 +138,6 @@ export default function useBrand(){
                 errors.value = response.data.error
             }
         }).catch(error => {
-            console.log('test')
             errors.value = error
         })
     }

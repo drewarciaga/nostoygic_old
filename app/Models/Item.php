@@ -4,15 +4,19 @@ namespace App\Models;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Item extends MyBaseModel
 {
+    use SoftDeletes;
+    
     /*protected $fillable = [
         'name',
         'model',
         'display_name',
         'description',
         'variant',
+        'parent_variant_id',
         'scale_id',
         'grade_id',
         'type_id',
@@ -21,7 +25,6 @@ class Item extends MyBaseModel
         'series_id',
         'group_id',
         'wave_id',
-        'item_category_id',
         'bar_code',
         'profile_url',
         'thumbnail_url',
@@ -40,10 +43,10 @@ class Item extends MyBaseModel
      *
      * @var array $rules
      */
+    
     public $rules = [
-        'name'               => 'required|max:200|unique:items,name',
         'description'        => 'max:2000',
-        'profile_image'      => 'image|mimes:jpeg,bmp,png|max:2000',
+        'profile_url'        =>  'image|mimes:jpeg,bmp,png,webp|max:2000',
         'remarks'            => 'max:200',
         'bar_code'           => 'max:200',
     ];
@@ -57,8 +60,8 @@ class Item extends MyBaseModel
         'required_without'       => 'The :attribute field is required.',
         'required'               => 'The :attribute field is required.',
         'numeric'                => 'The :attribute field is invalid.',
-        'profile_image.image'    => 'The :attribute should be an image.',
-        'profile_image.uploaded' => 'The :attribute cannot exceed 2MB.',
+        'profile_url.image'      => 'The :attribute should be an image.',
+        'profile_url.uploaded'   => 'The :attribute cannot exceed 2MB.',
     ];
 
     public function user(){
@@ -83,7 +86,7 @@ class Item extends MyBaseModel
         $status = "success";
         $folder = 'item_images';
 
-        $url = $this->uploadImage($request, 'profile_image', $folder, 800);
+        $url = $this->uploadImage($request, 'profile_url', $folder, 800, 'profile_img');
         if(!empty($url)){
             if($url == 'error'){
                 $status = "error";
@@ -91,7 +94,7 @@ class Item extends MyBaseModel
                 $this->profile_url = $url;
 
                 if(!empty($this->profile_url)){
-                    $thumbUrl = $this->createThumbnail($request, 'profile_image', $folder, 300);
+                    $thumbUrl = $this->createThumbnail($request, 'profile_url', $folder, 300, 'profile_img');
                     if($thumbUrl == 'error'){
                         $status = "error";
                     }else{

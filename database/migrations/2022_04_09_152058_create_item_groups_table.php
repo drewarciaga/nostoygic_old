@@ -18,13 +18,14 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('sortOrder')->default(0);
+            $table->unsignedInteger('sort_order')->default(0);
             $table->string('image_url')->nullable();
             $table->string('thumbnail_url')->nullable();
             $table->string('color')->nullable();
             $table->text('tags')->nullable();
             $table->unsignedTinyInteger('active')->default(1);
             $table->softDeletes();
+            $table->string('item_series_ids')->nullable();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

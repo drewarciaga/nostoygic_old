@@ -10,9 +10,9 @@ export default function useSeries(){
         id: '',
         name: '',
         image_url: null,
-        image_url_img: null,
+
         thumbnail_url: null,
-        thumbnail_url_img: null,
+
         description: '',
         tags: [],
         color: '',
@@ -54,8 +54,12 @@ export default function useSeries(){
         })
     }
 
-    async function getAllSeries(){
-        await axios.get('/series/getAll').then(response => {
+    async function getAllSeries(searchInput){
+        await axios.get('/series/getAll',{
+            params: {
+                search: searchInput
+            }
+        }).then(response => {
             series_array.value = response.data.data
             totalSeries.value  = response.data.total
         })
@@ -70,25 +74,30 @@ export default function useSeries(){
     function setFormData(){
         let formData = new FormData();
         formData.append('name', series.name);
-        formData.append('description', series.description);
+
+        if(series.description !=null){
+            formData.append('description', series.description);
+        }
     
         if(series.image_url !=null){
             formData.append('image_url', series.image_url, series.image_url.name);
         }
     
-        
         if(series.color != null && series.color != ''){
             formData.append('color', series.color);
         }
-        formData.append('active', series.active);
+
+        if(series.active !=null){
+            formData.append('active', series.active);
+        }
+
         if(series.tags != null && series.tags != ''){
             formData.append('tags', series.tags);
         }
         
         if(series.delete_series_logo == true){
             formData.append('delete_series_logo', series.delete_series_logo);
-        }
-        
+        } 
 
         return formData;
     }
@@ -131,7 +140,6 @@ export default function useSeries(){
                 errors.value = response.data.error
             }
         }).catch(error => {
-            console.log('test')
             errors.value = error
         })
     }

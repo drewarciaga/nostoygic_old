@@ -14,13 +14,20 @@ class ItemSeriesController extends Controller
     use UtilsTrait;
 
     public function getSeriesList(){
-        $seriesList = ItemSeries::checkUser()->active()->select('id as value', 'name as label')->orderBy('name')->get();
+        $seriesList = ItemSeries::active()->select('id as value', 'name as label')->orderBy('name')->get();
         
         return response()->json($seriesList);
     }
 
     public function getAll(Request $request){
-        $series = ItemSeries::checkUser()->get();
+        $search = "";
+        if(!empty($request->search)){
+            $search = $request->search;
+        }
+
+        $series = ItemSeries::when(!empty($search), function ($query) use ($search){
+                                return $query->where('name', 'like', '%'.$search.'%');
+                            })->get();
         $total = sizeof($series);
 
         return response()->json([
@@ -43,7 +50,6 @@ class ItemSeriesController extends Controller
             $series->tags = explode(',', $series->tags);
         }
         
-
     	return response()->json($series);
     }
 
@@ -60,10 +66,10 @@ class ItemSeriesController extends Controller
         $this->validate($request, $series->rules, $series->messages);
 
         $series->name                     = $this->clearChars($input['name']);
-        $series->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $series->color                    = !empty($input['color'])?$input['color']:null;
-        $series->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $series->active                   = !empty($input['active']) ? 1 : 0;
+        $series->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $series->color                    = isset($input['color'])?$input['color']:null;
+        $series->tags                     = isset($input['tags'])?$input['tags']:null;
+        $series->active                   = isset($input['active']) ? 1 : 0;
         $series->user_id                  = Auth::user()->id;
 
         $series->save();
@@ -71,9 +77,7 @@ class ItemSeriesController extends Controller
         if ($series && $request->hasFile('image_url')) {
             $uploadProfileRes = $series->uploadLogo($request);
         }
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
+
         return response()->json($series);
         //return response()->json($item);
     }
@@ -92,10 +96,10 @@ class ItemSeriesController extends Controller
         $this->validate($request, $series->rules, $series->messages);
 
         $series->name                     = $this->clearChars($input['name']);
-        $series->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $series->color                    = !empty($input['color'])?$input['color']:null;
-        $series->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $series->active                   = !empty($input['active']) ? 1 : 0;
+        $series->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $series->color                    = isset($input['color'])?$input['color']:null;
+        $series->tags                     = isset($input['tags'])?$input['tags']:null;
+        $series->active                   = isset($input['active']) ? 1 : 0;
         $series->user_id                  = Auth::user()->id;
 
         $series->update();
@@ -111,9 +115,6 @@ class ItemSeriesController extends Controller
             }
         }
 
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
         return response()->json($series);
     }
 

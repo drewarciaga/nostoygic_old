@@ -24,7 +24,7 @@ class ItemBrand extends MyBaseModel
     public $rules = [
         'name'               => 'required|max:200',
         'description'        => 'max:2000',
-        'image_url'          => 'image|mimes:jpeg,bmp,png|max:2000'
+        'image_url'          => 'image|mimes:jpeg,bmp,png,webp|max:2000'
     ];
 
     /**
@@ -51,7 +51,7 @@ class ItemBrand extends MyBaseModel
         //delete existing image first
         $this->deleteImage($this->image_url, $this->thumbnail_url);
 
-        $url = $this->uploadImage($request, 'image_url', $folder, 800);
+        $url = $this->uploadImage($request, 'image_url', $folder, 800, 'brand_img');
         if(!empty($url)){
             if($url == 'error'){
                 $status = "error";
@@ -59,7 +59,7 @@ class ItemBrand extends MyBaseModel
                 $this->image_url = $url;
 
                 if(!empty($this->image_url)){
-                    $thumbUrl = $this->createThumbnail($request, 'image_url', $folder, 300);
+                    $thumbUrl = $this->createThumbnail($request, 'image_url', $folder, 300, 'brand_img');
                     if($thumbUrl == 'error'){
                         $status = "error";
                     }else{

@@ -1,12 +1,13 @@
 <script setup>
-import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
 import BreezeCheckbox from '@/Components/Checkbox.vue';
 import BreezeDataTable2 from '@/Components/DataTable2.vue';
 import BreezeLoading from '@/Components/Loading.vue';
-import BreezeMetric from '@/Components/Metric.vue';
-import { Head, Link } from '@inertiajs/inertia-vue3';
-import { ref, reactive, onMounted, defineAsyncComponent } from 'vue'
+import BreezeSearch from '@/Components/Search.vue';
+import { ref, onMounted, defineAsyncComponent } from 'vue'
+import useBrand from '../../Composables/Item/useBrand.js'
+import useToast from '../../Composables/useToast.js'
+
 const BreezeColorPicker = defineAsyncComponent(()=>
     import('@/Components/ColorPicker.vue')
 )
@@ -18,9 +19,6 @@ const BreezeViewModel = defineAsyncComponent(()=>
 const BreezeConfirmDialog = defineAsyncComponent(()=>
     import('@/Components/ConfirmDialog.vue')
 )
-
-import useBrand from '../../Composables/Item/useBrand.js'
-import useToast from '../../Composables/useToast.js'
 
 const { toast } = useToast()
 const { brand, brands, totalBrands, columns, errors,
@@ -109,18 +107,33 @@ async function saveForm(){
 function onFileSelected(event){
     brand.image_url = event.target.files[0]
 }
+
+async function searchTable(search_input){
+    if(search_input.value.toString().trim != ''){
+        await getAllBrands(search_input.value)
+    }else{
+        await getAllBrands()
+    }
+}
 </script>
 
 <template>
-    <BreezeLoading :isLoading="isLoading"></BreezeLoading>
-    <BreezeMetric></BreezeMetric>
+    <!--<BreezeMetric></BreezeMetric>-->
         
-    <div class="py-4 text-right lg:text-left">
+    <div class="flex flex-wrap -mx-1 overflow-hidden sm:-mx-1 md:-mx-1 lg:-mx-1 xl:-mx-1">
 
-        <BreezeButton :type="'button'" data-bs-toggle="modal" data-bs-target="#brandAddEditModal" @click="changeAction('Add')">
-            <span class="mdi mdi-plus-circle"> Add Brand</span> 
-        </BreezeButton>
+        <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-1 lg:px-1 lg:w-1/2 xl:my-1 xl:px-1 xl:w-1/2">
+            <BreezeButton :type="'button'" data-bs-toggle="modal" data-bs-target="#brandAddEditModal" @click="changeAction('Add')">
+                <span class="mdi mdi-plus-circle"> Add Brand</span> 
+            </BreezeButton>
+        </div>
 
+        <div class="my-1 px-1 w-full overflow-hidden sm:my-1 sm:px-1 sm:w-1/2 md:my-1 md:px-1 md:w-1/2 lg:my-1 lg:px-1 lg:w-1/2 xl:my-1 xl:px-1 xl:w-1/2">
+            <div class="sm:float-none md:float-right lg:float-right">
+                <BreezeSearch @search="searchTable"></BreezeSearch>
+            </div>
+        </div>
+        
     </div>
     <div class="py-4">
         <BreezeDataTable2
@@ -156,7 +169,7 @@ function onFileSelected(event){
                                 </o-field>
                     
                                 <o-field label="Description" :variant="errors.description ? 'danger':''" :message="errors.description?errors.description.toString():''">
-                                    <o-input maxlength="1000" type="textarea" v-model.trim.lazy="brand.description"></o-input>
+                                    <o-input maxlength="2000" type="textarea" v-model.trim.lazy="brand.description" :hasCounter="true"></o-input>
                                 </o-field>
                             </div>
 

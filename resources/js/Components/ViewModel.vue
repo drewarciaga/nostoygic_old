@@ -2,7 +2,7 @@
 import BreezCard3 from '@/Components/Card3.vue';
 import BreezeLoading from '@/Components/Loading.vue';
 import BreezeSkeletonCard3 from '@/Components/SkeletonCard3.vue';
-import { onMounted, watch } from 'vue'
+
 defineProps({
     model: {
         type: String,

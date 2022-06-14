@@ -28,17 +28,17 @@ class AdminController extends Controller
         if(empty($adminGridMenu)){
             $layouts = [
                 'lg' => array( //6 columns
-                    array('x' => 0, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 0, 'title' => 'Users',             'desc' => 'Create and Update Users',             'icon' => 'mdi-account',                'link' => ''),
+                    array('x' => 0, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 0, 'title' => 'Users',             'desc' => 'Create and Update Users',             'icon' => 'mdi-account',                'link' => 'users.index'),
                     array('x' => 1, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 1, 'title' => 'Settings',          'desc' => 'General app settings',                'icon' => 'mdi-cogs',                   'link' => ''),
                     array('x' => 2, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 2, 'title' => 'Item Settings',     'desc' => 'Brand or manufacturer of an item',    'icon' => 'mdi-billboard',              'link' => 'itemSettings'),
                 ),
                 'md' => array( //4 columns
-                    array('x' => 0, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 0, 'title' => 'Users',             'desc' => 'Create and Update Users',             'icon' => 'mdi-account',                'link' => ''),
+                    array('x' => 0, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 0, 'title' => 'Users',             'desc' => 'Create and Update Users',             'icon' => 'mdi-account',                'link' => 'users.index'),
                     array('x' => 1, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 1, 'title' => 'Settings',          'desc' => 'General app settings',                'icon' => 'mdi-cogs',                   'link' => ''),
                     array('x' => 2, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 2, 'title' => 'Item Settings',     'desc' => 'Brand or manufacturer of an item',    'icon' => 'mdi-billboard',              'link' => 'itemSettings'),
                 ),
                 'sm' => array(
-                    array('x' => 0, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 0, 'title' => 'Users',             'desc' => 'Create and Update Users',             'icon' => 'mdi-account',                'link' => ''),
+                    array('x' => 0, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 0, 'title' => 'Users',             'desc' => 'Create and Update Users',             'icon' => 'mdi-account',                'link' => 'users.index'),
                     array('x' => 1, 'y' => 0, 'w' => 1, 'h' => 5, 'i' => 1, 'title' => 'Settings',          'desc' => 'General app settings',                'icon' => 'mdi-cogs',                   'link' => ''),
                   
                 ),
@@ -66,14 +66,13 @@ class AdminController extends Controller
     }
 
     public function updateAdminMenuGrid(Request $request)
-    {\Log::info($request->layouts);
+    {
         $adminGridMenu = AdminMenuGrid::where('user_id', Auth::user()->id)->first();
 
         if(!empty($request->layouts)){
             if(!empty($adminGridMenu)){   
                 $adminGridMenu->layouts = json_encode($request->layouts);
                 $adminGridMenu->update();
-                \Log::info('updateAdminMenuGrid');
             }else{
                 $adminGridMenu = new AdminMenuGrid();
                 $adminGridMenu->layouts = json_encode($request->layouts);

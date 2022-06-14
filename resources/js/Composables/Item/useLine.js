@@ -10,9 +10,9 @@ export default function useLine(){
         id: '',
         name: '',
         image_url: null,
-        image_url_img: null,
+
         thumbnail_url: null,
-        thumbnail_url_img: null,
+
         description: '',
         tags: [],
         color: '',
@@ -54,8 +54,12 @@ export default function useLine(){
         })
     }
 
-    async function getAllLines(){
-        await axios.get('/lines/getAll').then(response => {
+    async function getAllLines(searchInput){
+        await axios.get('/lines/getAll',{
+            params: {
+                search: searchInput
+            }
+        }).then(response => {
             lines.value      = response.data.data
             totalLines.value = response.data.total
         })
@@ -70,17 +74,23 @@ export default function useLine(){
     function setFormData(){
         let formData = new FormData();
         formData.append('name', line.name);
-        formData.append('description', line.description);
+
+        if(line.description !=null){
+            formData.append('description', line.description);
+        }
     
         if(line.image_url !=null){
             formData.append('image_url', line.image_url, line.image_url.name);
         }
     
-        
         if(line.color != null && line.color != ''){
             formData.append('color', line.color);
         }
-        formData.append('active', line.active);
+
+        if(line.active !=null){
+            formData.append('active', line.active);
+        }
+
         if(line.tags != null && line.tags != ''){
             formData.append('tags', line.tags);
         }
@@ -88,7 +98,6 @@ export default function useLine(){
         if(line.delete_line_logo == true){
             formData.append('delete_line_logo', line.delete_line_logo);
         }
-        
 
         return formData;
     }
@@ -131,7 +140,6 @@ export default function useLine(){
                 errors.value = response.data.error
             }
         }).catch(error => {
-            console.log('test')
             errors.value = error
         })
     }

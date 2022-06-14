@@ -14,13 +14,20 @@ class ItemScaleController extends Controller
     use UtilsTrait;
 
     public function getScaleList(){
-        $scalesList = ItemScale::checkUser()->active()->select('id as value', 'name as label')->orderBy('name')->get();
+        $scalesList = ItemScale::active()->select('id as value', 'name as label')->orderBy('name')->get();
         
         return response()->json($scalesList);
     }
 
     public function getAll(Request $request){
-        $scales = ItemScale::checkUser()->get();
+        $search = "";
+        if(!empty($request->search)){
+            $search = $request->search;
+        }
+
+        $scales = ItemScale::when(!empty($search), function ($query) use ($search){
+                                return $query->where('name', 'like', '%'.$search.'%');
+                            })->get();
         $total = sizeof($scales);
 
         return response()->json([
@@ -43,7 +50,6 @@ class ItemScaleController extends Controller
             $scale->tags = explode(',', $scale->tags);
         }
         
-
     	return response()->json($scale);
     }
 
@@ -60,10 +66,10 @@ class ItemScaleController extends Controller
         $this->validate($request, $scale->rules, $scale->messages);
 
         $scale->name                     = $this->clearChars($input['name']);
-        $scale->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $scale->color                    = !empty($input['color'])?$input['color']:null;
-        $scale->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $scale->active                   = !empty($input['active']) ? 1 : 0;
+        $scale->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $scale->color                    = isset($input['color'])?$input['color']:null;
+        $scale->tags                     = isset($input['tags'])?$input['tags']:null;
+        $scale->active                   = isset($input['active']) ? 1 : 0;
         $scale->user_id                  = Auth::user()->id;
 
         $scale->save();
@@ -71,9 +77,7 @@ class ItemScaleController extends Controller
         if ($scale && $request->hasFile('image_url')) {
             $uploadProfileRes = $scale->uploadLogo($request);
         }
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
+
         return response()->json($scale);
         //return response()->json($item);
     }
@@ -92,10 +96,10 @@ class ItemScaleController extends Controller
         $this->validate($request, $scale->rules, $scale->messages);
 
         $scale->name                     = $this->clearChars($input['name']);
-        $scale->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $scale->color                    = !empty($input['color'])?$input['color']:null;
-        $scale->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $scale->active                   = !empty($input['active']) ? 1 : 0;
+        $scale->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $scale->color                    = isset($input['color'])?$input['color']:null;
+        $scale->tags                     = isset($input['tags'])?$input['tags']:null;
+        $scale->active                   = isset($input['active']) ? 1 : 0;
         $scale->user_id                  = Auth::user()->id;
 
         $scale->update();
@@ -111,9 +115,6 @@ class ItemScaleController extends Controller
             }
         }
 
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
         return response()->json($scale);
     }
 

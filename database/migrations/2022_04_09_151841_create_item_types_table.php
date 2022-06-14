@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('sortOrder')->default(0);
+            $table->unsignedInteger('sort_order')->default(0);
             $table->string('image_url')->nullable();
             $table->string('thumbnail_url')->nullable();
             $table->string('color')->nullable();

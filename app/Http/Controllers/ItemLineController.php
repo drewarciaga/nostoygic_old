@@ -14,13 +14,20 @@ class ItemLineController extends Controller
     use UtilsTrait;
 
     public function getLineList(){
-        $linesList = ItemLine::checkUser()->active()->select('id as value', 'name as label')->orderBy('name')->get();
+        $linesList = ItemLine::active()->select('id as value', 'name as label')->orderBy('name')->get();
         
         return response()->json($linesList);
     }
 
     public function getAll(Request $request){
-        $lines = ItemLine::checkUser()->get();
+        $search = "";
+        if(!empty($request->search)){
+            $search = $request->search;
+        }
+
+        $lines = ItemLine::when(!empty($search), function ($query) use ($search){
+                                return $query->where('name', 'like', '%'.$search.'%');
+                            })->get();
         $total = sizeof($lines);
 
         return response()->json([
@@ -43,7 +50,6 @@ class ItemLineController extends Controller
             $line->tags = explode(',', $line->tags);
         }
         
-
     	return response()->json($line);
     }
 
@@ -60,10 +66,10 @@ class ItemLineController extends Controller
         $this->validate($request, $line->rules, $line->messages);
 
         $line->name                     = $this->clearChars($input['name']);
-        $line->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $line->color                    = !empty($input['color'])?$input['color']:null;
-        $line->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $line->active                   = !empty($input['active']) ? 1 : 0;
+        $line->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $line->color                    = isset($input['color'])?$input['color']:null;
+        $line->tags                     = isset($input['tags'])?$input['tags']:null;
+        $line->active                   = isset($input['active']) ? 1 : 0;
         $line->user_id                  = Auth::user()->id;
 
         $line->save();
@@ -71,9 +77,7 @@ class ItemLineController extends Controller
         if ($line && $request->hasFile('image_url')) {
             $uploadProfileRes = $line->uploadLogo($request);
         }
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
+
         return response()->json($line);
         //return response()->json($item);
     }
@@ -92,7 +96,7 @@ class ItemLineController extends Controller
         $this->validate($request, $line->rules, $line->messages);
 
         $line->name                     = $this->clearChars($input['name']);
-        $line->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
+        $line->description              = !empty($input['description'])?$this->clearChars($input['description']):null;
         $line->color                    = !empty($input['color'])?$input['color']:null;
         $line->tags                     = !empty($input['tags'])?$input['tags']:null;
         $line->active                   = !empty($input['active']) ? 1 : 0;
@@ -111,9 +115,6 @@ class ItemLineController extends Controller
             }
         }
 
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
         return response()->json($line);
     }
 

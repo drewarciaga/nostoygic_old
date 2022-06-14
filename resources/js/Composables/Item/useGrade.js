@@ -10,9 +10,7 @@ export default function useGrade(){
         id: '',
         name: '',
         image_url: null,
-        image_url_img: null,
         thumbnail_url: null,
-        thumbnail_url_img: null,
         description: '',
         tags: [],
         color: '',
@@ -54,8 +52,12 @@ export default function useGrade(){
         })
     }
 
-    async function getAllGrades(){
-        await axios.get('/grades/getAll').then(response => {
+    async function getAllGrades(searchInput){
+        await axios.get('/grades/getAll',{
+            params: {
+                search: searchInput
+            }
+        }).then(response => {
             grades.value      = response.data.data
             totalGrades.value = response.data.total
         })
@@ -70,17 +72,23 @@ export default function useGrade(){
     function setFormData(){
         let formData = new FormData();
         formData.append('name', grade.name);
-        formData.append('description', grade.description);
+
+        if(grade.description !=null){
+            formData.append('description', grade.description);
+        }
     
         if(grade.image_url !=null){
             formData.append('image_url', grade.image_url, grade.image_url.name);
         }
     
-        
         if(grade.color != null && grade.color != ''){
             formData.append('color', grade.color);
         }
-        formData.append('active', grade.active);
+
+        if(grade.active !=null){
+            formData.append('active', grade.active);
+        }
+
         if(grade.tags != null && grade.tags != ''){
             formData.append('tags', grade.tags);
         }
@@ -88,7 +96,6 @@ export default function useGrade(){
         if(grade.delete_grade_logo == true){
             formData.append('delete_grade_logo', grade.delete_grade_logo);
         }
-        
 
         return formData;
     }
@@ -131,7 +138,6 @@ export default function useGrade(){
                 errors.value = response.data.error
             }
         }).catch(error => {
-            console.log('test')
             errors.value = error
         })
     }

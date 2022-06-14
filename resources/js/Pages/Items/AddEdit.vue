@@ -3,7 +3,7 @@ import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
 import BreezeLoading from '@/Components/Loading.vue';
 import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';   
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { createToast } from 'mosha-vue-toastify';
 import SelectElement from '@vueform/multiselect'
 import Multiselect from '@vueform/multiselect'
@@ -12,6 +12,7 @@ import useBrand from '../../Composables/Item/useBrand.js'
 import useGrade from '../../Composables/Item/useGrade.js'
 import useGroup from '../../Composables/Item/useGroup.js'
 import useLine from '../../Composables/Item/useLine.js'
+import useMaterial from '../../Composables/Item/useMaterial.js'
 import useScale from '../../Composables/Item/useScale.js'
 import useSeries from '../../Composables/Item/useSeries.js'
 import useType from '../../Composables/Item/useType.js'
@@ -23,54 +24,77 @@ const { toast } = useToast()
 const isLoading = ref(false)
 
 const { item, errors,
-        storeItem, updateItem, resetFields
+        storeItem, updateItem, resetFields, getItem
       } = useItem()
 
-const { brand_list, getBrandList }   = useBrand()
-const { grade_list, getGradeList }   = useGrade()
-const { group_list, getGroupList }   = useGroup()
-const { line_list, getLineList }     = useLine()
-const { scale_list, getScaleList }   = useScale()
-const { series_list, getSeriesList } = useSeries()
-const { type_list, getTypeList }     = useType()
-const { wave_list, getWaveList }     = useWave()
+const { brand_list, getBrandList }       = useBrand()
+const { grade_list, getGradeList }       = useGrade()
+const { group_list, getGroupList }       = useGroup()
+const { line_list, getLineList }         = useLine()
+const { material_list, getMaterialList } = useMaterial()
+const { scale_list, getScaleList }       = useScale()
+const { series_list, getSeriesList }     = useSeries()
+const { type_list, getTypeList }         = useType()
+const { wave_list, getWaveList }         = useWave()
 
 const props = defineProps({
     action: {
         default: 'Add'
     },
+    item_id: {
+        default: null
+    }
 })
 
 onMounted(async () => {
     isLoading.value = true
     await getBrandList()
-    await getGradeList()
+    //await getGradeList()
     await getGroupList()
     await getLineList()
     await getScaleList()
     await getSeriesList()
     await getTypeList()
-    await getWaveList()
+    await getMaterialList()
+    //await getWaveList()
+    if(props.action == 'Edit'){
+        await getItem(props.item_id)
+    }
     isLoading.value = false
 });
 
-async function saveForm(id){
+const lineselector = ref(null)
+const gundamLines = ['gunpla']
+const showGrade = ref(false)
+watch(item, async function(newValue, oldValue) {
+    showGrade.value = false
+    if(typeof lineselector.value.internalValue.label != 'undefined' && lineselector.value.internalValue.label != null){
+        if(gundamLines.includes(lineselector.value.internalValue.label.toLowerCase())){
+            showGrade.value = true
+            await getGradeList()
+        }
+    }
+})
+
+async function saveForm(){
     isLoading.value = true
     if(props.action == 'Add'){
         await storeItem()
     }else if(props.action == 'Edit'){
-        await updateItem(id)
+        await updateItem(props.item_id)
     }
     
     if(errors.value.length == 0){
         toast(props.action + ' Item Successful!', 'success')
+    }else{
+        toast(props.action + ' Item Failed!', 'danger')
     }
 
     isLoading.value = false
 }
 
 function onFileSelected(event){
-    item.profile_image = event.target.files[0]
+    item.profile_url = event.target.files[0]
 }
 </script>
 
@@ -83,9 +107,13 @@ function onFileSelected(event){
                 {{ action }} Item
             </h2>
         </template>
-
-        <div class="py-4 text-right">
-            <Link :href="route('items.index')">
+        <div class="p-4 text-right lg:text-left">
+            <Link :href="route('itemSettings')" class="mr-2">
+                <BreezeButton :type="'button'">
+                    <span class="mdi mdi-billboard"> Item Settings</span> 
+                </BreezeButton>
+            </Link>
+            <Link :href="route('items.index')" class="float-right">
                 <BreezeButton :type="'button'">
                     <span class="mdi mdi-arrow-left-circle"> Back</span> 
                 </BreezeButton>
@@ -139,7 +167,7 @@ function onFileSelected(event){
                             />
                         </o-field>
                     </div>
-                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
+                    <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4" v-if="showGrade">
                         <o-field label="Grade" :variant="errors.grade_id ? 'danger':''" :message="errors.grade_id?errors.grade_id.toString():''">
                             <SelectElement
                                 v-model="item.grade_id"
@@ -206,14 +234,14 @@ function onFileSelected(event){
 
                 <div class="flex flex-wrap -mx-2">
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
-                        <o-field class="file" label="Profile Image" ref="profileupload" :variant="errors.profile_image ? 'danger':''" :message="errors.profile_image?errors.profile_image.toString():''">
-                            <o-upload v-model="item.profile_image">
+                        <o-field class="file" label="Profile Image" ref="profileupload" :variant="errors.profile_url ? 'danger':''" :message="errors.profile_url?errors.profile_url.toString():''">
+                            <o-upload v-model="item.profile_url">
                             <o-button tag="a" variant="primary">
                                 <span class="mdi mdi-upload">Upload</span>
                             </o-button>
                             </o-upload>
-                            <span class="file-name" v-if="item.profile_image">
-                            {{ item.profile_image.name }}
+                            <span class="file-name" v-if="item.profile_url">
+                            {{ item.profile_url.name }}
                             </span>
                         </o-field>
                     </div>
@@ -245,7 +273,7 @@ function onFileSelected(event){
                                 :close-on-select="false"
                                 :searchable="true"
                                 :create-option="true"
-                                :options="type_list"
+                                :options="material_list"
                             />
                         </o-field>
                     </div>

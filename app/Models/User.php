@@ -7,27 +7,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
+    use SoftDeletes;
     use HasApiTokens, HasFactory, Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    
     protected $fillable = [
         'username',
-        'name',
+        'first_name',
+        'last_name',
+        'middle_name',
         'email',
         'password',
-        'phone',
+        'mobile_no',
         'active',
         'locked',
         'profile_url',
         'fb_link',
         'ig_link',
+        'super_admin',
+        'remarks'
     ];
 
     /**

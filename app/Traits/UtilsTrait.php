@@ -8,6 +8,10 @@ trait UtilsTrait {
 	    if(isset($input)){ //[`~!#\$%\^&\*\(\)\+=\{\}\[\]\,\|\\/@_\<\>\?\';:\"]
 	        $input = trim(preg_replace('/[`~#\$%\^\*\+=\{\}\[\]\,\<\>\?;]/', '', $input));
 	    }
+
+        if($input == 'null'){
+            return null;
+        }
 	    return $input;
     }
 

@@ -17,6 +17,9 @@ const BreezeItemGroup = defineAsyncComponent(()=>
 const BreezeItemLine = defineAsyncComponent(()=>
     import('@/SubPages/Items/ItemLine.vue')
 )
+const BreezeItemMaterial = defineAsyncComponent(()=>
+    import('@/SubPages/Items/ItemMaterial.vue')
+)
 const BreezeItemScale = defineAsyncComponent(()=>
     import('@/SubPages/Items/ItemScale.vue')
 )
@@ -65,6 +68,11 @@ const activeTab = ref('types')
                 <o-tab-item label="Lines" :value="'lines'">
                     <span  v-if="activeTab=='lines'">
                         <BreezeItemLine></BreezeItemLine>
+                    </span>
+                </o-tab-item>
+                <o-tab-item label="Materials" :value="'materials'">
+                    <span  v-if="activeTab=='materials'">
+                        <BreezeItemMaterial></BreezeItemMaterial>
                     </span>
                 </o-tab-item>
                 <o-tab-item label="Scales" :value="'scales'">

@@ -10,9 +10,9 @@ export default function useWave(){
         id: '',
         name: '',
         image_url: null,
-        image_url_img: null,
+
         thumbnail_url: null,
-        thumbnail_url_img: null,
+
         description: '',
         tags: [],
         color: '',
@@ -54,8 +54,12 @@ export default function useWave(){
         })
     }
 
-    async function getAllWaves(){
-        await axios.get('/waves/getAll').then(response => {
+    async function getAllWaves(searchInput){
+        await axios.get('/waves/getAll',{
+            params: {
+                search: searchInput
+            }
+        }).then(response => {
             waves.value      = response.data.data
             totalWaves.value = response.data.total
         })
@@ -70,17 +74,23 @@ export default function useWave(){
     function setFormData(){
         let formData = new FormData();
         formData.append('name', wave.name);
-        formData.append('description', wave.description);
+
+        if(wave.description !=null){
+            formData.append('description', wave.description);
+        }
     
         if(wave.image_url !=null){
             formData.append('image_url', wave.image_url, wave.image_url.name);
         }
     
-        
         if(wave.color != null && wave.color != ''){
             formData.append('color', wave.color);
         }
-        formData.append('active', wave.active);
+
+        if(wave.active !=null){
+            formData.append('active', wave.active);
+        }
+
         if(wave.tags != null && wave.tags != ''){
             formData.append('tags', wave.tags);
         }
@@ -88,7 +98,6 @@ export default function useWave(){
         if(wave.delete_wave_logo == true){
             formData.append('delete_wave_logo', wave.delete_wave_logo);
         }
-        
 
         return formData;
     }
@@ -131,7 +140,6 @@ export default function useWave(){
                 errors.value = response.data.error
             }
         }).catch(error => {
-            console.log('test')
             errors.value = error
         })
     }

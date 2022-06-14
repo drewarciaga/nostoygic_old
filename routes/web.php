@@ -6,10 +6,12 @@ use App\Http\Controllers\ItemBrandController;
 use App\Http\Controllers\ItemGradeController;
 use App\Http\Controllers\ItemGroupController;
 use App\Http\Controllers\ItemLineController;
+use App\Http\Controllers\ItemMaterialController;
 use App\Http\Controllers\ItemScaleController;
 use App\Http\Controllers\ItemSeriesController;
 use App\Http\Controllers\ItemTypeController;
 use App\Http\Controllers\ItemWaveController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -42,6 +44,7 @@ Route::get('getBrandList', [ItemBrandController::class, 'getBrandList']);
 Route::get('getGradeList', [ItemGradeController::class, 'getGradeList']);
 Route::get('getGroupList', [ItemGroupController::class, 'getGroupList']);
 Route::get('getLineList', [ItemLineController::class, 'getLineList']);
+Route::get('getMaterialList', [ItemMaterialController::class, 'getMaterialList']);
 Route::get('getScaleList', [ItemScaleController::class, 'getScaleList']);
 Route::get('getSeriesList', [ItemSeriesController::class, 'getSeriesList']);
 Route::get('getTypeList', [ItemTypeController::class, 'getTypeList']);
@@ -57,6 +60,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     
     Route::resource('items', ItemController::class)->names([
         'index'   => 'items.index',
+    ]);
+
+    Route::get('/users/getAll', [UserController::class, 'getAll'])->name('getAllUsers');
+    
+    Route::resource('users', UserController::class)->names([
+        'index'   => 'users.index',
     ]);
 
     Route::get('/admin/getAdminMenuItems', [AdminController::class, 'getAdminMenuItems'])->name('getAdminMenuItems');
@@ -83,6 +92,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/lines/getAll', [ItemLineController::class, 'getAll'])->name('getAllLines');
     Route::resource('lines', ItemLineController::class)->names([
         'index'   => 'lines.index',
+    ]);
+
+    Route::get('/materials/getAll', [ItemMaterialController::class, 'getAll'])->name('getAllMaterials');
+    Route::resource('materials', ItemMaterialController::class)->names([
+        'index'   => 'materials.index',
     ]);
 
     Route::get('/scales/getAll', [ItemScaleController::class, 'getAll'])->name('getAllScales');

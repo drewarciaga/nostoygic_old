@@ -10,9 +10,9 @@ export default function useScale(){
         id: '',
         name: '',
         image_url: null,
-        image_url_img: null,
+
         thumbnail_url: null,
-        thumbnail_url_img: null,
+
         description: '',
         tags: [],
         color: '',
@@ -54,8 +54,12 @@ export default function useScale(){
         })
     }
 
-    async function getAllScales(){
-        await axios.get('/scales/getAll').then(response => {
+    async function getAllScales(searchInput){
+        await axios.get('/scales/getAll',{
+            params: {
+                search: searchInput
+            }
+        }).then(response => {
             scales.value      = response.data.data
             totalScales.value = response.data.total
         })
@@ -70,17 +74,23 @@ export default function useScale(){
     function setFormData(){
         let formData = new FormData();
         formData.append('name', scale.name);
-        formData.append('description', scale.description);
+
+        if(scale.description !=null){
+            formData.append('description', scale.description);
+        }
     
         if(scale.image_url !=null){
             formData.append('image_url', scale.image_url, scale.image_url.name);
         }
     
-        
         if(scale.color != null && scale.color != ''){
             formData.append('color', scale.color);
         }
-        formData.append('active', scale.active);
+
+        if(scale.active !=null){
+            formData.append('active', scale.active);
+        }
+
         if(scale.tags != null && scale.tags != ''){
             formData.append('tags', scale.tags);
         }
@@ -89,7 +99,6 @@ export default function useScale(){
             formData.append('delete_scale_logo', scale.delete_scale_logo);
         }
         
-
         return formData;
     }
 
@@ -131,7 +140,6 @@ export default function useScale(){
                 errors.value = response.data.error
             }
         }).catch(error => {
-            console.log('test')
             errors.value = error
         })
     }

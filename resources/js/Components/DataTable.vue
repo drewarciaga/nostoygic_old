@@ -1,4 +1,5 @@
 <script setup>
+import { Link } from '@inertiajs/inertia-vue3';
 defineProps({
 	columns: {
 		default: [],
@@ -21,6 +22,18 @@ defineProps({
 	parentSortOrder:{
 		type: String,
 		default: 'DESC',
+	},
+	currentSearch:{
+		type: String,
+		default:'',
+	},
+	hasPopupEdit:{
+		type: Boolean,
+		default: false
+	},
+	routeName:{
+		type: String,
+		default: ''
 	}
 });
 </script>
@@ -63,15 +76,17 @@ defineProps({
 
 		:focusable="isFocusable"
 		:mobile-cards="hasMobileCards"
-
-
 	>
 		<template v-for="column in columns" :key="column.id">
 			<o-table-column v-if="column.label == 'Action'" :field="column.field" :label="column.label" :width="column.width?column.width:'40'" :sortable="column.sortable" v-slot="props">
-				<o-button class="btn-view"><span class="mdi mdi-eye"></span></o-button>
-				<o-button class="btn-edit"><span class="mdi mdi-note-edit"></span></o-button>
-				<o-button class="btn-delete"><span class="mdi mdi-trash-can"></span></o-button>
-			
+				<o-button class="btn-view"><span class="mdi mdi-eye" @click="$emit('viewModel', props.row[column.field])"></span></o-button>
+				
+				<Link v-if="hasPopupEdit == false" :href="route(routeName+'.edit',props.row[column.field])"><o-button class="btn-edit"><span class="mdi mdi-note-edit"></span></o-button></Link>
+				<o-button v-else class="btn-edit"><span class="mdi mdi-note-edit" @click="$emit('editModel', props.row[column.field])"></span></o-button>
+				
+				<span v-if="props.row['super_admin'] == null || props.row['super_admin'] == 0">
+					<o-button class="btn-delete"><span class="mdi mdi-trash-can" @click="$emit('deleteModel', props.row[column.field])"></span></o-button>
+				</span>
 			</o-table-column>
 
 			<o-table-column v-else :field="column.field" :label="column.label" :width="column.width?column.width:'40'" :sortable="column.sortable" v-slot="props">
@@ -107,8 +122,6 @@ defineProps({
 				sortField: 'id',
 				sortOrder: 'desc',
 				defaultSortOrder: 'desc',
-				search: "",
-
 			}
 		},
 		mounted() {
@@ -118,19 +131,19 @@ defineProps({
 		methods:{
 			onPageChange(page){
 				this.page = page
-				this.$emit('onPageChange', this.page, this.perPage, this.sortField, this.sortOrder, this.search)
+				this.$emit('onPageChange', this.page, this.perPage, this.sortField, this.sortOrder, this.currentSearch)
 			},
 			onSort(field, order) {
 				this.sortField = field
         		this.sortOrder = order
 
-				this.$emit('onSort', this.page, this.perPage, this.sortField, this.sortOrder, this.search)
+				this.$emit('onSort', this.page, this.perPage, this.sortField, this.sortOrder, this.currentSearch)
 			},
 		},
 		watch: {
         	perPage: function(val){
 				this.perPage = val
-				this.$emit('onPageChange', this.page, this.perPage, this.sortField, this.sortOrder, this.search)
+				this.$emit('onPageChange', this.page, this.perPage, this.sortField, this.sortOrder, this.currentSearch)
 			}
 		}
 

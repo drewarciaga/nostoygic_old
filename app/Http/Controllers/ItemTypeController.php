@@ -14,13 +14,20 @@ class ItemTypeController extends Controller
     use UtilsTrait;
 
     public function getTypeList(){
-        $typesList = ItemType::checkUser()->active()->select('id as value', 'name as label')->orderBy('name')->get();
+        $typesList = ItemType::active()->select('id as value', 'name as label')->orderBy('name')->get();
         
         return response()->json($typesList);
     }
 
     public function getAll(Request $request){
-        $types = ItemType::checkUser()->get();
+        $search = "";
+        if(!empty($request->search)){
+            $search = $request->search;
+        }
+
+        $types = ItemType::when(!empty($search), function ($query) use ($search){
+                            return $query->where('name', 'like', '%'.$search.'%');
+                        })->get();
         $total = sizeof($types);
 
         return response()->json([
@@ -43,7 +50,6 @@ class ItemTypeController extends Controller
             $type->tags = explode(',', $type->tags);
         }
         
-
     	return response()->json($type);
     }
 
@@ -60,10 +66,10 @@ class ItemTypeController extends Controller
         $this->validate($request, $type->rules, $type->messages);
 
         $type->name                     = $this->clearChars($input['name']);
-        $type->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $type->color                    = !empty($input['color'])?$input['color']:null;
-        $type->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $type->active                   = !empty($input['active']) ? 1 : 0;
+        $type->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $type->color                    = isset($input['color'])?$input['color']:null;
+        $type->tags                     = isset($input['tags'])?$input['tags']:null;
+        $type->active                   = isset($input['active']) ? 1 : 0;
         $type->user_id                  = Auth::user()->id;
 
         $type->save();
@@ -71,9 +77,7 @@ class ItemTypeController extends Controller
         if ($type && $request->hasFile('image_url')) {
             $uploadProfileRes = $type->uploadLogo($request);
         }
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
+
         return response()->json($type);
         //return response()->json($item);
     }
@@ -92,10 +96,10 @@ class ItemTypeController extends Controller
         $this->validate($request, $type->rules, $type->messages);
 
         $type->name                     = $this->clearChars($input['name']);
-        $type->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $type->color                    = !empty($input['color'])?$input['color']:null;
-        $type->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $type->active                   = !empty($input['active']) ? 1 : 0;
+        $type->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $type->color                    = isset($input['color'])?$input['color']:null;
+        $type->tags                     = isset($input['tags'])?$input['tags']:null;
+        $type->active                   = isset($input['active']) ? 1 : 0;
         $type->user_id                  = Auth::user()->id;
 
         $type->update();
@@ -111,9 +115,6 @@ class ItemTypeController extends Controller
             }
         }
 
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
         return response()->json($type);
     }
 

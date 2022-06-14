@@ -14,13 +14,20 @@ class ItemBrandController extends Controller
     use UtilsTrait;
 
     public function getBrandList(){
-        $brandsList = ItemBrand::checkUser()->active()->select('id as value', 'name as label')->orderBy('name')->get();
+        $brandsList = ItemBrand::active()->select('id as value', 'name as label')->orderBy('name')->get();
         
         return response()->json($brandsList);
     }
 
     public function getAll(Request $request){
-        $brands = ItemBrand::checkUser()->get();
+        $search = "";
+        if(!empty($request->search)){
+            $search = $request->search;
+        }
+
+        $brands = ItemBrand::when(!empty($search), function ($query) use ($search){
+                                return $query->where('name', 'like', '%'.$search.'%');
+                            })->get();
         $total = sizeof($brands);
 
         return response()->json([
@@ -42,7 +49,6 @@ class ItemBrandController extends Controller
         if(!empty($brand->tags)){
             $brand->tags = explode(',', $brand->tags);
         }
-        
 
     	return response()->json($brand);
     }
@@ -60,10 +66,10 @@ class ItemBrandController extends Controller
         $this->validate($request, $brand->rules, $brand->messages);
 
         $brand->name                     = $this->clearChars($input['name']);
-        $brand->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $brand->color                    = !empty($input['color'])?$input['color']:null;
-        $brand->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $brand->active                   = !empty($input['active']) ? 1 : 0;
+        $brand->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $brand->color                    = isset($input['color'])?$input['color']:null;
+        $brand->tags                     = isset($input['tags'])?$input['tags']:null;
+        $brand->active                   = isset($input['active']) ? 1 : 0;
         $brand->user_id                  = Auth::user()->id;
 
         $brand->save();
@@ -71,9 +77,7 @@ class ItemBrandController extends Controller
         if ($brand && $request->hasFile('image_url')) {
             $uploadProfileRes = $brand->uploadLogo($request);
         }
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
+
         return response()->json($brand);
         //return response()->json($item);
     }
@@ -92,10 +96,10 @@ class ItemBrandController extends Controller
         $this->validate($request, $brand->rules, $brand->messages);
 
         $brand->name                     = $this->clearChars($input['name']);
-        $brand->description              = !empty($input['description'])?$this->clearChars($input['description']):'';
-        $brand->color                    = !empty($input['color'])?$input['color']:null;
-        $brand->tags                     = !empty($input['tags'])?$input['tags']:null;
-        $brand->active                   = !empty($input['active']) ? 1 : 0;
+        $brand->description              = isset($input['description'])?$this->clearChars($input['description']):null;
+        $brand->color                    = isset($input['color'])?$input['color']:null;
+        $brand->tags                     = isset($input['tags'])?$input['tags']:null;
+        $brand->active                   = isset($input['active']) ? 1 : 0;
         $brand->user_id                  = Auth::user()->id;
 
         $brand->update();
@@ -111,9 +115,6 @@ class ItemBrandController extends Controller
             }
         }
 
-        /*if ($item && $request->hasFile('profile_image')) {
-            $uploadProfileRes = $item->uploadProfile($request);
-        }*/
         return response()->json($brand);
     }
 

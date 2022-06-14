@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class MyBaseModel extends \Illuminate\Database\Eloquent\Model
 {
-    public function uploadImage($request, $type, $folder, $size){
+    public function uploadImage($request, $type, $folder, $size, $name){
         $url = null;
 
         try{
@@ -18,7 +18,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             $user_id = Auth::user()->id;
             $file      = $request->file($type);
             //$filename  = Str::slug($this->name).'-profile_image-'.md5(time()).'.'.strtolower($file->getClientOriginalExtension());
-            $filename  = Str::slug($this->name) . '-' . $type . '-' . $this->id . date('jnGi') . '.' . strtolower($file->getClientOriginalExtension());
+            $filename  = Str::slug($this->name) . '-' . $name . '-' . $this->id . date('jnGi') . '.' . strtolower($file->getClientOriginalExtension());
             $file_path = $user_id . '/' . $folder.'/' . $filename;
     
             if (Storage::disk('local5')->exists($file_path)) {
@@ -50,7 +50,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
         return $url;
     }
 
-    public function createThumbnail($request, $type, $folder, $size){
+    public function createThumbnail($request, $type, $folder, $size, $name){
         $url = null;
 
         try{
@@ -60,7 +60,7 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             $file      = $request->file($type);
     
             //$filename  = Str::slug($this->name).'-profile_image-thumb-'.md5(time()).'.'.strtolower($file->getClientOriginalExtension());
-            $filename  = Str::slug($this->name) . '-' . $type . '-thumb-' . $this->id . date('jnGi') . '.' . strtolower($file->getClientOriginalExtension());
+            $filename  = Str::slug($this->name) . '-' . $name . '-thumb-' . $this->id . date('jnGi') . '.' . strtolower($file->getClientOriginalExtension());
             $file_path = $user_id . '/' . $folder . '/thumbnails/' . $filename;
     
             if (Storage::disk('local5')->exists($file_path)) {

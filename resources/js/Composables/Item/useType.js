@@ -10,9 +10,9 @@ export default function useType(){
         id: '',
         name: '',
         image_url: null,
-        image_url_img: null,
+
         thumbnail_url: null,
-        thumbnail_url_img: null,
+
         description: '',
         tags: [],
         color: '',
@@ -54,8 +54,12 @@ export default function useType(){
         })
     }
 
-    async function getAllTypes(){
-        await axios.get('/types/getAll').then(response => {
+    async function getAllTypes(searchInput){
+        await axios.get('/types/getAll',{
+            params: {
+                search: searchInput
+            }
+        }).then(response => {
             types.value      = response.data.data
             totalTypes.value = response.data.total
         })
@@ -70,17 +74,23 @@ export default function useType(){
     function setFormData(){
         let formData = new FormData();
         formData.append('name', type.name);
-        formData.append('description', type.description);
+
+        if(type.description !=null){
+            formData.append('description', type.description);
+        }
     
         if(type.image_url !=null){
             formData.append('image_url', type.image_url, type.image_url.name);
         }
     
-        
         if(type.color != null && type.color != ''){
             formData.append('color', type.color);
         }
-        formData.append('active', type.active);
+
+        if(type.active !=null){
+            formData.append('active', type.active);
+        }
+
         if(type.tags != null && type.tags != ''){
             formData.append('tags', type.tags);
         }
@@ -89,7 +99,6 @@ export default function useType(){
             formData.append('delete_type_logo', type.delete_type_logo);
         }
         
-
         return formData;
     }
 
@@ -131,7 +140,6 @@ export default function useType(){
                 errors.value = response.data.error
             }
         }).catch(error => {
-            console.log('test')
             errors.value = error
         })
     }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('display_name')->nullable();
             $table->text('description')->nullable();
             $table->string('variant')->nullable();
+            $table->unsignedInteger('parent_variant_id')->nullable();
             $table->date('release_date')->nullable();
             $table->unsignedInteger('grade_id')->nullable();
             $table->unsignedInteger('scale_id')->nullable();
@@ -29,18 +30,18 @@ return new class extends Migration
             $table->unsignedInteger('series_id')->nullable();
             $table->unsignedInteger('group_id')->nullable();
             $table->unsignedInteger('wave_id')->nullable();
-            $table->unsignedInteger('item_category_id')->nullable();
             $table->string('bar_code')->nullable();
             $table->string('profile_url')->nullable();
             $table->string('thumbnail_url')->nullable();
             $table->text('image_links')->nullable();
-            $table->unsignedTinyInteger('active')->default(1);
-            $table->unsignedInteger('user_id');
             $table->text('tags')->nullable();
             $table->string('item_material_ids')->nullable();
             $table->string('item_size')->nullable();
             $table->string('item_weight')->nullable();
             $table->string('remarks')->nullable();
+            $table->string('color')->nullable();
+            $table->unsignedTinyInteger('active')->default(1);
+            $table->unsignedInteger('user_id');
 
             $table->softDeletes();
             $table->timestamps();

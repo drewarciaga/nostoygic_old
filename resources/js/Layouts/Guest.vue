@@ -1,6 +1,13 @@
 <script setup>
 import BreezeApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/inertia-vue3';
+
+defineProps({
+    type: {
+        type: String,
+        default: '',
+    },
+});
 </script>
 
 <template>
@@ -11,7 +18,10 @@ import { Link } from '@inertiajs/inertia-vue3';
             </Link>
         </div>
 
-        <div class="w-90pct sm:w-90pct lg:w-full sm:max-w-md mt-6 px-6 py-4 bg-nos-900 shadow-4xl shadow-cyan-500/50 overflow-hidden sm:rounded-lg">
+        <div v-if="type=='register'" class="w-90pct sm:w-90pct lg:w-full sm:max-w-xl mt-6 px-6 py-4 bg-nos-900 shadow-4xl shadow-cyan-500/50 overflow-hidden sm:rounded-lg">
+            <slot />
+        </div>
+        <div v-else class="w-90pct sm:w-90pct lg:w-full sm:max-w-md mt-6 px-6 py-4 bg-nos-900 shadow-4xl shadow-cyan-500/50 overflow-hidden sm:rounded-lg">
             <slot />
         </div>
     </div>
