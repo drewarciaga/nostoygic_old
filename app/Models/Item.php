@@ -47,7 +47,7 @@ class Item extends MyBaseModel
     public $rules = [
         'description'        => 'max:2000',
         'profile_url'        =>  'image|mimes:jpeg,bmp,png,webp|max:2000',
-        'remarks'            => 'max:200',
+        'remarks'            => 'max:2000',
         'bar_code'           => 'max:200',
     ];
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use App\Traits\UtilsTrait;
 use Illuminate\Support\Facades\Auth;
@@ -93,18 +94,37 @@ class UserController extends Controller
      */
     public function store(Request $request){
         $input = $request->all();
-
-        $user = new User();
       
+        $user = new User();
         $this->validate($request, $user->rules, $user->messages);
 
         $user->first_name                   = $this->clearChars($input['first_name']);
         $user->last_name                    = $this->clearChars($input['last_name']);
         $user->middle_name                  = isset($input['middle_name'])?$this->clearChars($input['middle_name']):null;
-        $user->user_name                    = $this->clearChars($input['user_name']);
-
+        $user->email                        = $input['email'];
+        $user->mobile_no                    = isset($input['mobile_no'])?$this->clearChars($input['mobile_no']):null;
+        $user->username                     = $this->clearChars($input['username']);
+        if(!empty($input['password'])){
+            $user->password                     = Hash::make($input['password']);
+        }else{
+            $user->password                     = Hash::make('password');
+        }
+        $user->active                       = isset($input['active']) && !empty($input['active']) ? 1 : 0;
+        $user->locked                       = isset($input['locked']) && !empty($input['locked']) ? 1 : 0;
+        $user->remarks                      = isset($input['remarks'])?$this->clearChars($input['remarks']):null;
         
         $user->save();
+/*
+        if(!empty($request->delete_line_logo)){
+            $line->deleteImage($line->image_url, $line->thumbnail_url);
+            $line->image_url = null;
+            $line->thumbnail_url = null;
+            $line->update();
+        }else{
+            if ($line && $request->hasFile('image_url')) {
+                $uploadProfileRes = $line->uploadLogo($request);
+            }
+        }*/
 
         if ($user && $request->hasFile('profile_url')) {
             $uploadProfileRes = $user->uploadProfile($request);
@@ -152,7 +172,33 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update($id, Request $request){
+        $input = $request->all();
 
+        $user = User::findOrFail($id);
+        $user->rules['username'] = 'required|max:200|unique:users,username,'. $id . ',id,deleted_at,NULL';
+        
+        $this->validate($request, $user->rules, $user->messages);
+
+        $user->first_name                   = $this->clearChars($input['first_name']);
+        $user->last_name                    = $this->clearChars($input['last_name']);
+        $user->middle_name                  = isset($input['middle_name'])?$this->clearChars($input['middle_name']):null;
+        $user->email                        = $input['email'];
+        $user->mobile_no                    = isset($input['mobile_no'])?$this->clearChars($input['mobile_no']):null;
+        $user->username                     = $this->clearChars($input['username']);
+        if(!empty($input['password'])){
+            $user->password                     = Hash::make($input['password']);
+        }
+        $user->active                       = isset($input['active']) && !empty($input['active']) ? 1 : 0;
+        $user->locked                       = isset($input['locked']) && !empty($input['locked']) ? 1 : 0;
+        $user->remarks                      = isset($input['remarks'])?$this->clearChars($input['remarks']):null;
+
+        $user->update();
+
+        if ($user && $request->hasFile('profile_url')) {
+            $uploadProfileRes = $user->uploadProfile($request);
+        }
+
+        return response()->json($user);
     }
 
     /**

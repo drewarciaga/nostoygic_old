@@ -15,15 +15,16 @@ export default function useUser(){
         username: '',
         email: '',
         password: '',
-        phone: '',
+        password_confirmation: '',
+        mobile_no: '',
         active: 1,
         locked: 0,
         profile_url: null,
         profile_img: null,
+        delete_profile_img: false,
         fb_link: '',
         ig_link: '',
         super_admin: 0,
-        delete_profile_img: false,
         remarks: '',
     })
 
@@ -43,7 +44,8 @@ export default function useUser(){
         user.username = ''
         user.email = ''
         user.password = ''
-        user.phone = ''
+        user.password_confirmation = ''
+        user.mobile_no = ''
         user.active = 1
         user.locked = 0
         user.profile_url = null
@@ -66,10 +68,10 @@ export default function useUser(){
                 user.username           = response.data.username
                 user.email              = response.data.email
                 user.password           = response.data.password
-                user.phone              = response.data.phone
+                user.mobile_no          = response.data.mobile_no
                 user.active             = response.data.active.toString()
                 user.locked             = response.data.locked.toString()
-                user.profile_url        = response.data.profile_url
+                user.profile_img        = response.data.profile_url
                 user.fb_link            = response.data.fb_link
                 user.ig_link            = response.data.ig_link
                 user.super_admin        = response.data.super_admin.toString()
@@ -102,23 +104,43 @@ export default function useUser(){
         let formData = new FormData();
         formData.append('first_name', user.first_name);
         formData.append('last_name', user.last_name);
+        formData.append('email', user.email);
+        formData.append('username', user.username);
 
         if(user.middle_name !=null){
             formData.append('middle_name', user.middle_name);
         }
+
+        if(user.mobile_no !=null){
+            formData.append('mobile_no', user.mobile_no);
+        }
+
+        if(user.password !=null){
+            formData.append('password', user.password);
+        }
+
+        if(user.password_confirmation !=null){
+            formData.append('password_confirmation', user.password_confirmation);
+        }
     
-        if(user.image_url !=null){
+        if(user.profile_url !=null){
             formData.append('profile_url', user.profile_url, user.profile_url.name);
         }
     
-
-
         if(user.active !=null){
             formData.append('active', user.active);
+        }
+
+        if(user.locked !=null){
+            formData.append('locked', user.locked);
         }
         
         if(user.delete_profile_img == true){
             formData.append('delete_profile_img', user.delete_profile_img);
+        }
+
+        if(user.remarks !=null){
+            formData.append('remarks', user.remarks);
         }
         
         return formData;

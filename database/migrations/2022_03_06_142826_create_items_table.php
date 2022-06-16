@@ -38,7 +38,7 @@ return new class extends Migration
             $table->string('item_material_ids')->nullable();
             $table->string('item_size')->nullable();
             $table->string('item_weight')->nullable();
-            $table->string('remarks')->nullable();
+            $table->text('remarks')->nullable();
             $table->string('color')->nullable();
             $table->unsignedTinyInteger('active')->default(1);
             $table->unsignedInteger('user_id');

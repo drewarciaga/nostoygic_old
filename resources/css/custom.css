@@ -65,6 +65,12 @@
     color: #cecece;
 }
 
+.model_name .o-field__label{
+    color: cadetblue;
+    font-family: sans-serif;
+    font-size:x-small;
+}
+
 html {
     background-color: rgb(8,12,13);
 }

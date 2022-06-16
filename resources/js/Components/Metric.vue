@@ -7,7 +7,7 @@
             <div class="flex flex-row items-center">
                 <div class="flex-shrink pr-4">
                     <div class="inline-flex flex-shrink-0 justify-center items-center w-12 h-12 text-white bg-gradient-to-br from-nos-pink-900 to-purple-700 rounded-lg shadow-md">
-                        <i class="mdi mdi-package-variant text-lg" aria-hidden="true"></i>
+                        <i class="text-lg" :class="[metric.icon]" aria-hidden="true"></i>
                     </div>
                 </div>
                 <div class="flex-1 text-right md:text-center">

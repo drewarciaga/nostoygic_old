@@ -117,6 +117,4 @@ class MyBaseModel extends \Illuminate\Database\Eloquent\Model
             }
         }
     }
-
-
 }

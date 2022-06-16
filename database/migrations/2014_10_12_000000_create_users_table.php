@@ -27,8 +27,10 @@ return new class extends Migration
             $table->unsignedTinyInteger('locked')->default(0);
             $table->unsignedTinyInteger('super_admin')->default(0);
             $table->string('profile_url')->nullable();
+            $table->string('thumbnail_url')->nullable();
             $table->string('fb_link')->nullable();
             $table->string('ig_link')->nullable();
+            $table->text('remarks')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

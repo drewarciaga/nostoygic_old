@@ -117,7 +117,7 @@ class ItemController extends Controller
         $item->item_material_ids       = isset($input['item_material_ids'])?$input['item_material_ids']:null;
         $item->remarks                 = isset($input['remarks'])?$this->clearChars($input['remarks']):"";
         $item->color                   = isset($input['color'])?$input['color']:null;
-        $item->active                  = isset($input['active']) ? 1 : 0;
+        $item->active                  = isset($input['active']) && !empty($input['active']) ? 1 : 0;
         $item->variant                 = isset($input['variant'])?$input['variant']:null;
         $item->parent_variant_id       = isset($input['parent_variant_id'])?$input['parent_variant_id']:null;
         $item->user_id                 = Auth::user()->id;
@@ -202,7 +202,7 @@ class ItemController extends Controller
         $item->item_material_ids       = isset($input['item_material_ids'])?$input['item_material_ids']:null;
         $item->remarks                 = isset($input['remarks'])?$this->clearChars($input['remarks']):"";
         $item->color                   = isset($input['color'])?$input['color']:null;
-        $item->active                  = isset($input['active']) ? 1 : 0;
+        $item->active                  = isset($input['active']) && !empty($input['active']) ? 1 : 0;
         $item->variant                 = isset($input['variant'])?$input['variant']:null;
         $item->parent_variant_id       = isset($input['parent_variant_id'])?$input['parent_variant_id']:null;
         $item->user_id                 = Auth::user()->id;

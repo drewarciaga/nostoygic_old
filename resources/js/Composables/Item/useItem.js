@@ -10,6 +10,10 @@ export default function useitem(){
         id: '',
         name: '',
         profile_url: null,
+        profile_img: null,
+        thumbnail_url: null,
+        thumb_img: null,
+        delete_profile_url: false,
         model: '',
         display_name: '',
         description: '',
@@ -42,7 +46,10 @@ export default function useitem(){
     function resetFields(){
         item.name = ''
         item.profile_url = null
+        item.profile_img = null
+        item.thumb_img = null
         item.thumbnail_url = null
+        item.delete_profile_url = false
         item.model = ''
         item.display_name = ''
         item.description = ''
@@ -94,8 +101,8 @@ export default function useitem(){
                 item.color              = response.data.color
                 item.remarks            = response.data.remarks
                 item.release_date       = response.data.release_date
-                item.profile_url        = response.data.profile_url
-                item.thumbnail_url      = response.data.thumbnail_url
+                item.profile_img        = response.data.profile_url
+                item.thumb_img          = response.data.thumbnail_url
             }
         })
     }
@@ -205,6 +212,10 @@ export default function useitem(){
         
         if(item.profile_url !=null){
             formData.append('profile_url', item.profile_url, item.profile_url.name);
+        }
+
+        if(item.delete_profile_url == true){
+            formData.append('delete_profile_url', item.delete_profile_url);
         }
 
         return formData;

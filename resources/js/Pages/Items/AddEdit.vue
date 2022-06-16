@@ -1,10 +1,10 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import BreezeButton from '@/Components/Button.vue';
+import BreezeCheckbox from '@/Components/Checkbox.vue';
 import BreezeLoading from '@/Components/Loading.vue';
-import { Head, Link, usePage  } from '@inertiajs/inertia-vue3';   
-import { ref, reactive, onMounted, watch } from 'vue'
-import { createToast } from 'mosha-vue-toastify';
+import { Head, Link } from '@inertiajs/inertia-vue3';   
+import { ref, onMounted, watch } from 'vue'
 import SelectElement from '@vueform/multiselect'
 import Multiselect from '@vueform/multiselect'
 import useItem from '../../Composables/Item/useItem.js'
@@ -86,6 +86,7 @@ async function saveForm(){
     
     if(errors.value.length == 0){
         toast(props.action + ' Item Successful!', 'success')
+        $('.btn_back').trigger('click');
     }else{
         toast(props.action + ' Item Failed!', 'danger')
     }
@@ -115,7 +116,7 @@ function onFileSelected(event){
             </Link>
             <Link :href="route('items.index')" class="float-right">
                 <BreezeButton :type="'button'">
-                    <span class="mdi mdi-arrow-left-circle"> Back</span> 
+                    <span class="mdi mdi-arrow-left-circle btn_back"> Back</span> 
                 </BreezeButton>
             </Link>
         </div>
@@ -236,13 +237,16 @@ function onFileSelected(event){
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/4 xl:w-1/4">
                         <o-field class="file" label="Profile Image" ref="profileupload" :variant="errors.profile_url ? 'danger':''" :message="errors.profile_url?errors.profile_url.toString():''">
                             <o-upload v-model="item.profile_url">
-                            <o-button tag="a" variant="primary">
-                                <span class="mdi mdi-upload">Upload</span>
-                            </o-button>
+                                <o-button tag="a" variant="primary">
+                                    <span class="mdi mdi-upload">Upload</span>
+                                </o-button>
                             </o-upload>
                             <span class="file-name" v-if="item.profile_url">
-                            {{ item.profile_url.name }}
+                                {{ item.profile_url.name }}
                             </span>
+                        </o-field>
+                        <o-field label="Delete Profile Image?" v-if="item.profile_img != null">
+                            <BreezeCheckbox v-model:checked="item.delete_profile_url" color="secondary" />
                         </o-field>
                     </div>
 
@@ -282,7 +286,7 @@ function onFileSelected(event){
                 <div class="flex flex-wrap -mx-2">
                     <div class="my-2 px-2 w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/2">
                         <o-field label="Remarks" :variant="errors.remarks ? 'danger':''" :message="errors.remarks?errors.remarks.toString():''">
-                            <o-input maxlength="2000" type="textarea" v-model.trim.lazy="item.remarks"></o-input>
+                            <o-input maxlength="2000" type="textarea" v-model.trim.lazy="item.remarks" :hasCounter="true"></o-input>
                         </o-field>
                     </div>
                 </div>

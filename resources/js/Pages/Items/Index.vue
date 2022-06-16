@@ -41,6 +41,7 @@ onMounted(async () => {
     await getAllItems(1,5,'name','asc','')
     metric.name = 'Items'
     metric.value = totalItems
+    metric.icon = 'mdi mdi-package-variant'
     metrics.value.push(metric)
 
     isLoading.value = false

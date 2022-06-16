@@ -41,6 +41,7 @@ onMounted(async () => {
     await getAllUsers(1,5,'last_name','asc','')
     metric.name = 'Users'
     metric.value = totalUsers
+    metric.icon = 'mdi mdi-account'
     metrics.value.push(metric)
 
     isLoading.value = false

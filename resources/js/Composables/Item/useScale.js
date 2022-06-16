@@ -10,9 +10,9 @@ export default function useScale(){
         id: '',
         name: '',
         image_url: null,
-
+        main_img: null,
         thumbnail_url: null,
-
+        main_thumb_img: null,
         description: '',
         tags: [],
         color: '',
